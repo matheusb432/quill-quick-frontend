@@ -1,0 +1,17 @@
+{
+  "testMatch": ["**/*.test.ts"],
+  "moduleNameMapper": {
+    "\\.(css|less|sass|scss)$": "identity-obj-proxy"
+  },
+  "preset": "ts-jest",
+  "moduleFileExtensions": ["tsx", "ts", "js", "jsx"],
+  "globals": {
+    "ts-jest": {
+      "isolatedModules": true,
+      "tsconfig": "tsconfig.json",
+      "babelConfig": {
+        "presets": ["babel-preset-solid", "@babel/preset-env"]
+      }
+    }
+  }
+}
