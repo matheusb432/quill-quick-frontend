@@ -2,6 +2,30 @@
 
 SolidJS web app to review stuff
 
+## Linting
+
+To lint the project, run the following command:
+
+```bash
+npm run lint
+```
+
+## Formatting
+
+To format the project, run the following command:
+
+```bash
+npm run format
+```
+
+## Testing
+
+To test the project, run the following command:
+
+```bash
+npm run test
+```
+
 ## SolidStart
 
 Everything you need to build a Solid project, powered by [`solid-start`](https://start.solidjs.com);

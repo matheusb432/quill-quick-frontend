@@ -1,0 +1,6 @@
+dist
+.solid
+node_modules
+public
+*.js
+package-lock.json
