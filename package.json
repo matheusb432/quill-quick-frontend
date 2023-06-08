@@ -3,7 +3,7 @@
   "scripts": {
     "dev": "solid-start dev",
     "build": "solid-start build",
-    "start": "solid-start dev --open",
+    "start": "solid-start dev",
     "test": "jest --watch",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives",
     "format": "prettier --write .",
@@ -35,6 +35,7 @@
     "@solidjs/router": "^0.8.2",
     "solid-js": "^1.7.2",
     "solid-start": "^0.2.26",
+    "tailwind-merge": "^1.13.0",
     "undici": "^5.15.1"
   },
   "engines": {

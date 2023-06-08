@@ -6,8 +6,8 @@ export function NavMenu() {
 
   function active(path: string) {
     return path === location.pathname
-      ? 'border-green-500'
-      : 'border-transparent hover:border-green-500';
+      ? 'border-green-700'
+      : 'border-transparent hover:border-green-700';
   }
 
   const navItems = [
