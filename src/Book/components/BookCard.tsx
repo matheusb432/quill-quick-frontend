@@ -1,21 +1,20 @@
-import { IconCheckBadge } from '~/assets/icons/IconCheckBadge';
-import { IconStar } from '~/assets/icons/IconStar';
+import { HICheckBadge } from '~/assets/icons/HICheckBadge';
+import { HIPencilSquare } from '~/assets/icons/HIPencilSquare';
+import { HIStar } from '~/assets/icons/HIStar';
+import { Button } from '~/components/Button';
+import { IconButton } from '~/components/IconButton';
 
 export function BookCard() {
   return (
     <div class="relative h-72 w-56 shadow-lg">
-      <article class="absolute z-20 flex h-full w-full flex-col items-center justify-between rounded-md rounded-bl-none border-4 border-l-0 border-green-700 bg-black-500">
-        <header class="p-2">
-          <h2 class="text-2xl font-semibold capitalize">Really long book title etc</h2>
-        </header>
-        <div>
-          <button>Review Quill</button>
-        </div>
-        <footer class={'flex w-full items-center justify-between gap-x-2 p-2'}>
-          <IconCheckBadge class="h-12 w-12 text-green-500" />
+      <article class="p-2 absolute z-20 flex h-full w-full flex-col items-center justify-between rounded-md rounded-bl-none border-4 border-l-0 border-green-700 bg-black-500">
+        <h2 class="text-2xl font-semibold capitalize">Really long book title etc</h2>
+        <IconButton iconFn={HIPencilSquare} />
+        <footer class={'flex w-full items-center justify-between gap-x-2'}>
+          <HICheckBadge class="h-12 w-12 text-green-500" />
           <div class="flex items-end gap-x-2 text-3xl">
             3.5
-            <IconStar class="h-12 w-12 text-yellow-500" />
+            <HIStar class="h-12 w-12 text-yellow-500" />
           </div>
         </footer>
       </article>

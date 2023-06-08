@@ -1,7 +1,7 @@
 import { HeroIconProps } from './types';
 import { iconUtil } from './icon-util';
 
-export function IconCheckBadge(props: HeroIconProps) {
+export function HICheckBadge(props: HeroIconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

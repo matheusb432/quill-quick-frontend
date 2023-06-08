@@ -1,7 +1,7 @@
 import { iconUtil } from './icon-util';
 import { HeroIconProps } from './types';
 
-export function IconStar(props: HeroIconProps) {
+export function HIStar(props: HeroIconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

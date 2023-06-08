@@ -7,9 +7,8 @@ import { arrUtil } from './arr-util';
  */
 function cx(...names: (string | undefined)[]) {
   if (arrUtil.isEmpty(names)) return '';
-  return twMerge(names);
 
-  return names.filter(Boolean).join(' ');
+  return twMerge(names);
 }
 
 export const strUtil = {
