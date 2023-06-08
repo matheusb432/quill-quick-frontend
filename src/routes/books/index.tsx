@@ -1,17 +1,17 @@
-import { BookCard } from '~/Book/components/BookCard';
+import { BookForm } from '~/Book/components/BookForm';
+import { Book } from '~/Book/types/book';
 import { PageTitle } from '~/components/PageTitle';
 
 export default function Books() {
+  function handleSubmit(data: Book) {
+    console.warn(data);
+  }
+
   return (
     <>
-      <PageTitle>Books</PageTitle>
-      <section class="flex w-full flex-wrap items-center justify-center gap-16 p-4">
-        <BookCard />
-        <BookCard />
-        <BookCard />
-        <BookCard />
-        <BookCard />
-      </section>
+      <PageTitle subtitle="Review or add new books">Books</PageTitle>
+      <BookForm isLoading={false} onSubmit={handleSubmit} />
+      {/* <BookList books={[]} /> */}
     </>
   );
 }

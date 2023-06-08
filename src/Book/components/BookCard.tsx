@@ -1,7 +1,6 @@
 import { HICheckBadge } from '~/assets/icons/HICheckBadge';
 import { HIPencilSquare } from '~/assets/icons/HIPencilSquare';
 import { HIStar } from '~/assets/icons/HIStar';
-import { Button } from '~/components/Button';
 import { IconButton } from '~/components/IconButton';
 
 export function BookCard() {

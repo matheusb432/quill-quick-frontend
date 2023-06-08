@@ -1,9 +1,9 @@
-import { JSX, mergeProps } from 'solid-js';
+import { Component, mergeProps } from 'solid-js';
 import { HeroIconProps } from '~/assets/icons/types';
 import { Button, ButtonProps } from './Button';
 
 interface IconButtonProps extends Omit<ButtonProps, 'mode' | 'children'> {
-  iconFn: (props: HeroIconProps) => JSX.Element;
+  iconFn: Component<HeroIconProps>;
 }
 
 export function IconButton(props: IconButtonProps) {
