@@ -36,6 +36,20 @@ module.exports = {
         serif: ['Texturina', 'serif'],
         hand: ['Indie Flower', 'cursive'],
       },
+      animation: {
+        type: 'type 3s ease-out infinite alternate both',
+      },
+      keyframes: {
+        type: {
+          '0%': { transform: 'translateX(0%)' },
+          '20%': { transform: 'translateX(0%)' },
+          '30%': { transform: 'translateX(40%)' },
+          '40%': { transform: 'translateX(60%)' },
+          '50%': { transform: 'translateX(80%)' },
+          '60%': { transform: 'translateX(100%)' },
+          '100%': { transform: 'translateX(100%)' },
+        },
+      },
     },
   },
   plugins: [require('@tailwindcss/forms')],

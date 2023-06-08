@@ -1,9 +1,10 @@
 import { Ping } from '~/components/Ping';
+import { Slogan } from '~/components/Slogan';
 
 export default function Home() {
   return (
     <>
-      <h1 class="text-6xl font-thin uppercase text-green-500 ">Hello world!</h1>
+      <Slogan />
       <p class="align-center my-4 flex justify-center gap-x-4">
         <span class="font-sans text-4xl font-bold text-green-300">Home</span>
         <span class="font-hand text-4xl font-bold text-green-500">Home</span>
