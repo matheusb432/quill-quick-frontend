@@ -6,8 +6,8 @@ export default function Books() {
     <>
       <PageTitle>Books</PageTitle>
       <section
-        class="flex flex-wrap w-full gap-16 p-4
-        items-center justify-center sm:justify-start"
+        class="flex w-full flex-wrap items-center justify-center
+        gap-16 p-4 sm:justify-start"
       >
         <BookCard />
         <BookCard />

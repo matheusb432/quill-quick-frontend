@@ -13,12 +13,12 @@ export function Logo(props: LogoProps) {
       when={props.type === 'rounded'}
       fallback={
         <div class={strUtil.cx('p-1', props.class)}>
-          <Image src="/logo-dark.svg" alt="logo" class="inline-block w-16 h-16" />
+          <Image src="/logo-dark.svg" alt="logo" class="inline-block h-16 w-16" />
         </div>
       }
     >
-      <div class={strUtil.cx('bg-black-500 rounded-full p-1', props.class)}>
-        <Image src="/logo.svg" alt="logo" class="inline-block w-8 h-8" />
+      <div class={strUtil.cx('rounded-full bg-black-500 p-1', props.class)}>
+        <Image src="/logo.svg" alt="logo" class="inline-block h-8 w-8" />
       </div>
     </Show>
   );

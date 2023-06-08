@@ -9,7 +9,7 @@ export function Loading(props: LoadingProps) {
   return (
     <div>
       <div
-        class={`w-12 h-12 border-4 border-black-500 border-t-green-500 animate-spin rounded-full ${props.class}`}
+        class={`h-12 w-12 animate-spin rounded-full border-4 border-black-500 border-t-green-500 ${props.class}`}
       >
         {props?.children}
       </div>

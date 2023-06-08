@@ -3,10 +3,10 @@ import { NavMenu } from './NavMenu';
 
 export function MainHeader() {
   return (
-    <nav class=" bg-green-500 h-16 flex px-6 justify-between items-center">
-      <div class="flex gap-x-2 items-center">
+    <nav class=" flex h-16 items-center justify-between bg-green-500 px-6">
+      <div class="flex items-center gap-x-2">
         <Logo type="normal" />
-        <h1 class="text-xl font-serif">Quill Quick</h1>
+        <h1 class="font-serif text-xl">Quill Quick</h1>
       </div>
 
       <NavMenu />

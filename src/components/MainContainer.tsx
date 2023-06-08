@@ -11,7 +11,7 @@ export function MainContainer(props: ContainerProps) {
     <main class="min-h-screen bg-black-700 text-black-100">
       <MainHeader />
       <Suspense fallback={<Loading class="h-24 w-24 border-[16px]" />}>
-        <div class="py-8 px-6">{props.children}</div>
+        <div class="px-6 py-8">{props.children}</div>
       </Suspense>
     </main>
   );

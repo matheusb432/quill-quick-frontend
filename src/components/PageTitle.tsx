@@ -5,5 +5,5 @@ interface PageTitleProps {
 }
 
 export function PageTitle(props: PageTitleProps) {
-  return <h1 class="text-4xl font-thin font-serif">{props.children}</h1>;
+  return <h1 class="font-serif text-4xl font-thin">{props.children}</h1>;
 }
