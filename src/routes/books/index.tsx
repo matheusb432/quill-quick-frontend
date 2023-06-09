@@ -32,7 +32,6 @@ export default function Books() {
         onCancel={handleCancel}
         onDelete={handleDelete}
       />
-      {/* <BookList books={[]} /> */}
     </>
   );
 }

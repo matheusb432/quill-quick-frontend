@@ -13,7 +13,7 @@ export function FormFooter(props: FormFooterProps) {
   const merged = mergeProps({ submitLabel: 'Submit' }, props);
 
   return (
-    <footer class="flex justify-between items-center sticky bottom-0">
+    <footer class="flex justify-between items-center sticky bottom-0 left-0 bg-primary-base py-4">
       <ButtonsWrapper>
         {merged.onDelete && (
           <Button theme="danger" onClick={merged.onDelete}>

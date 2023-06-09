@@ -24,7 +24,7 @@ export function BookForm(props: BookFormProps) {
   };
 
   return (
-    <Form class="flex flex-col gap-y-2 relative" onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit}>
       <Field name="title">
         {(field, props) => {
           return <InputField field={field} props={props} label="Title" name="title" />;

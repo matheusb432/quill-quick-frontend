@@ -8,7 +8,7 @@ interface ContainerProps {
 
 export function MainContainer(props: ContainerProps) {
   return (
-    <main class="min-h-screen bg-black-700 text-black-50 overflow-x-hidden">
+    <main class="min-h-screen max-h-screen bg-primary-base scroll-smooth text-primary-text overflow-x-hidden">
       <MainHeader />
       <Suspense fallback={<Loading class="h-24 w-24 border-[16px]" />}>
         <div class="px-6 py-8">{props.children}</div>

@@ -17,7 +17,7 @@ export function Logo(props: LogoProps) {
         </div>
       }
     >
-      <div class={strUtil.cx('rounded-full bg-black-500 p-1', props.class)}>
+      <div class={strUtil.cx('rounded-full bg-primary-light p-1', props.class)}>
         <Image src="/logo.svg" alt="logo" class="inline-block h-8 w-8" />
       </div>
     </Show>
