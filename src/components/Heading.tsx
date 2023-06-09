@@ -1,5 +1,6 @@
 import { JSX, mergeProps } from 'solid-js';
 import { Dynamic } from 'solid-js/web';
+import { strUtil } from '~/core/util/str-util';
 
 interface HeadingProps {
   children: JSX.Element;
@@ -13,13 +14,12 @@ export function Heading(props: HeadingProps) {
   return (
     <Dynamic
       component={merged.as}
+      class={strUtil.cx('font-serif font-thin', merged.class)}
       classList={{
-        'font-serif font-thin': true,
         'text-4xl': merged.as === 'h1',
         'text-2xl': merged.as === 'h2',
         'text-xl': merged.as === 'h3',
         'text-lg': merged.as === 'h4' || merged.as === 'h5' || merged.as === 'h6',
-        [merged.class]: !!merged.class,
       }}
     >
       {props.children}

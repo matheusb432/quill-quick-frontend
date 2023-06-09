@@ -1,4 +1,4 @@
-import { Logo } from './Logo';
+import { Logo } from '~/Home/Logo';
 import { NavMenu } from './NavMenu';
 
 export function MainHeader() {

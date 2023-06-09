@@ -1,47 +1,64 @@
 import { SubmitHandler, createForm, zodForm } from '@modular-forms/solid';
 import { mergeProps } from 'solid-js';
-import { Button } from '~/components/Button';
-import { ShowFormErrors } from '~/components/dev-utils/ShowFormErrors';
 import { Book, zBook } from '../types/book';
-import { strUtil } from '~/core/util/str-util';
-import { Input } from '~/components/Input';
+import { FormFooter } from '~/components/Form/FormFooter';
+import { FormRow } from '~/components/Form/FormRow';
+import { InputField } from '~/components/Inputs/InputField';
 
 interface BookFormProps {
   onSubmit: (data: Book) => void;
+  onCancel?: () => void;
+  onDelete?: () => void;
   isLoading?: boolean;
   type?: string;
 }
 
 export function BookForm(props: BookFormProps) {
   const merged = mergeProps({}, props);
-  // TODO test store of form in different cmps
-  const [bookForm, { Form, Field }] = createForm<Book>({
+  const [, { Form, Field }] = createForm<Book>({
     validate: zodForm(zBook),
   });
 
   const handleSubmit: SubmitHandler<Book> = (values) => {
     console.warn(values);
   };
+
   return (
-    <Form class="flex flex-col gap-y-2" onSubmit={handleSubmit}>
-      {/* <ShowFormErrors form={bookForm} /> */}
+    <Form class="flex flex-col gap-y-2 relative" onSubmit={handleSubmit}>
       <Field name="title">
         {(field, props) => {
-          return <Input field={field} props={props} label="Title" name="title" />;
+          return <InputField field={field} props={props} label="Title" name="title" />;
         }}
       </Field>
-      <Field name="author">
+      <FormRow>
+        <Field name="publisher">
+          {(field, props) => {
+            return <InputField field={field} props={props} label="Publisher" name="publisher" />;
+          }}
+        </Field>
+        <Field name="author">
+          {(field, props) => {
+            return <InputField field={field} props={props} label="Author" name="author" />;
+          }}
+        </Field>
+      </FormRow>
+      <Field name="pageCount" type="number">
         {(field, props) => {
-          return <Input field={field} props={props} label="Author" name="author" />;
+          return (
+            <InputField field={field} props={props} label="Pages" name="pageCount" type="number" />
+          );
         }}
       </Field>
-      {/* <Field name="author" />
-        <Field name="publisher" />
-        <Field name="summary" />
-        <Field name="pageCount" /> */}
-      <Button type="submit" isLoading={merged.isLoading} theme="primary">
-        Submit
-      </Button>
+      <Field name="summary">
+        {(field, props) => {
+          return <InputField field={field} props={props} label="Summary" name="summary" />;
+        }}
+      </Field>
+      <FormFooter
+        isLoading={merged.isLoading}
+        onCancel={merged.onCancel}
+        onDelete={merged.onDelete}
+      />
     </Form>
   );
 }

@@ -9,14 +9,18 @@ export interface ButtonProps {
   theme?: Themes;
   onClick?: () => void;
   disabled?: boolean;
-  type?: 'button' | 'submit' | 'reset';
+  type?: BtnTypes;
 }
 
 export function Button(props: ButtonProps) {
   const merged = mergeProps(
-    { theme: 'primary', type: 'button', mode: 'filled' },
+    {
+      theme: 'primary',
+      type: 'button',
+      mode: 'filled',
+    },
     props,
-  ) as ButtonProps;
+  ) as Required<ButtonProps>;
   return (
     <button
       class={strUtil.cx(
@@ -65,3 +69,4 @@ function getTheming(mode: Modes = 'filled', theme: Themes = 'primary') {
 
 type Modes = 'filled' | 'stroked' | 'fab';
 type Themes = 'primary' | 'danger';
+type BtnTypes = 'button' | 'submit' | 'reset';

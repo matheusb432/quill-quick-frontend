@@ -1,6 +1,6 @@
 import { strUtil } from '~/core/util/str-util';
-import { Image } from './Image';
 import { Show } from 'solid-js';
+import { Image } from '~/components/Image';
 
 interface LogoProps {
   class?: string;
