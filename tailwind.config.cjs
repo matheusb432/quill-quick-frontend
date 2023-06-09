@@ -38,7 +38,7 @@ module.exports = {
         hand: ['Indie Flower', 'cursive'],
       },
       animation: {
-        type: 'type 3s ease-out infinite alternate both',
+        type: 'type 2s ease-out infinite alternate both',
       },
       keyframes: {
         type: {

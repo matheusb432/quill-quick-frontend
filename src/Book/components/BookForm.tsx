@@ -23,7 +23,7 @@ export function BookForm(props: BookFormProps) {
     console.warn(values);
   };
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form class="flex flex-col gap-y-2" onSubmit={handleSubmit}>
       {/* <ShowFormErrors form={bookForm} /> */}
       <Field name="title">
         {(field, props) => {
@@ -32,7 +32,7 @@ export function BookForm(props: BookFormProps) {
       </Field>
       <Field name="author">
         {(field, props) => {
-          return <input {...props} />;
+          return <Input field={field} props={props} label="Author" name="author" />;
         }}
       </Field>
       {/* <Field name="author" />

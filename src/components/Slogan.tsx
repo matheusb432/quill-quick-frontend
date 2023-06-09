@@ -12,7 +12,7 @@ export function Slogan() {
 
       return prev + 1;
     });
-  }, 6000);
+  }, 4000);
 
   onCleanup(() => {
     clearInterval(timer);
