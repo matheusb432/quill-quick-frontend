@@ -1,5 +1,5 @@
 import { FieldElementProps, FieldPath, FieldStore, FieldValues } from '@modular-forms/solid';
-import { mergeProps } from 'solid-js';
+import { createMemo, mergeProps } from 'solid-js';
 import { InputContainer } from './InputContainer';
 
 interface InputFieldProps<TForm extends FieldValues, TName extends FieldPath<TForm>> {
@@ -17,6 +17,17 @@ export function InputField<TForm extends FieldValues, TName extends FieldPath<TF
 ) {
   const merged = mergeProps({ errorText: 'Invalid input!', type: 'text' }, props);
 
+  const getValue = createMemo<string | number | undefined>((prevValue) => {
+    const isUndefined = props.field.value === undefined;
+
+    if (merged.type === 'number') {
+      const isNumber = !Number.isNaN(props.field.value);
+      return isNumber && !isUndefined ? (props.field.value as number) : prevValue;
+    }
+
+    return isUndefined ? '' : (props.field.value as string);
+  }, '');
+
   return (
     <InputContainer
       name={merged.name}
@@ -25,11 +36,12 @@ export function InputField<TForm extends FieldValues, TName extends FieldPath<TF
       errorText={merged.errorText}
     >
       <input
+        {...merged.props}
         id={merged.name}
+        value={getValue()}
         class="peer form-input pb-0 placeholder-transparent text-xl focus:placeholder-divider bg-primary-light h-16 border-0 border-l-4 hover:bg-primary-hover focus:bg-primary-focus border-accent focus:ring-accent focus:outline-offset-4 focus:outline-4 focus:border-accent transition-all"
         placeholder={merged.placeholder || `Enter the ${merged.label}`}
         type={merged.type}
-        {...merged.props}
       />
     </InputContainer>
   );

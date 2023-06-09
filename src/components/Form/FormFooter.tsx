@@ -4,7 +4,7 @@ import { ButtonsWrapper } from '../ButtonsWrapper';
 
 interface FormFooterProps {
   isLoading?: boolean;
-  onCancel?: () => void;
+  onReset?: () => void;
   onDelete?: () => void;
   submitLabel?: string;
 }
@@ -23,9 +23,9 @@ export function FormFooter(props: FormFooterProps) {
       </ButtonsWrapper>
       <ButtonsWrapper>
         {/* TODO add modal to confirm */}
-        {merged.onCancel && (
-          <Button mode="stroked" onClick={merged.onCancel}>
-            Cancel
+        {merged.onReset && (
+          <Button mode="stroked" onClick={props.onReset}>
+            Reset
           </Button>
         )}
         <Button type="submit" isLoading={merged.isLoading} theme="primary">

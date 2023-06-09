@@ -1,13 +1,13 @@
-import { SubmitHandler, createForm, zodForm } from '@modular-forms/solid';
+import { SubmitHandler } from '@modular-forms/solid';
 import { mergeProps } from 'solid-js';
-import { Book, zBook } from '../types/book';
 import { FormFooter } from '~/components/Form/FormFooter';
 import { FormRow } from '~/components/Form/FormRow';
 import { InputField } from '~/components/Inputs/InputField';
+import { booksActions, booksState } from '../data/store';
+import { Book } from '../types/book';
 
 interface BookFormProps {
-  onSubmit: (data: Book) => void;
-  onCancel?: () => void;
+  onSubmit: SubmitHandler<Book>;
   onDelete?: () => void;
   isLoading?: boolean;
   type?: string;
@@ -15,16 +15,19 @@ interface BookFormProps {
 
 export function BookForm(props: BookFormProps) {
   const merged = mergeProps({}, props);
-  const [, { Form, Field }] = createForm<Book>({
-    validate: zodForm(zBook),
-  });
 
-  const handleSubmit: SubmitHandler<Book> = (values) => {
-    console.warn(values);
-  };
+  // TODO refactor with selector?
+  const {
+    formData: [, { Form, Field }],
+  } = booksState;
+  const { resetForm } = booksActions;
+
+  function handleReset() {
+    resetForm();
+  }
 
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form onSubmit={merged.onSubmit}>
       <Field name="title">
         {(field, props) => {
           return <InputField field={field} props={props} label="Title" name="title" />;
@@ -54,11 +57,7 @@ export function BookForm(props: BookFormProps) {
           return <InputField field={field} props={props} label="Summary" name="summary" />;
         }}
       </Field>
-      <FormFooter
-        isLoading={merged.isLoading}
-        onCancel={merged.onCancel}
-        onDelete={merged.onDelete}
-      />
+      <FormFooter isLoading={merged.isLoading} onReset={handleReset} onDelete={merged.onDelete} />
     </Form>
   );
 }
