@@ -7,6 +7,7 @@ import { PageTitle } from '~/components/PageTitle';
 export default function Books() {
   const handleSubmit: SubmitHandler<Book> = (data) => {
     // TODO implement
+    console.warn(data);
   };
 
   function handleDelete() {

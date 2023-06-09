@@ -3,7 +3,7 @@ import { mergeProps } from 'solid-js';
 import { FormFooter } from '~/components/Form/FormFooter';
 import { FormRow } from '~/components/Form/FormRow';
 import { InputField } from '~/components/Inputs/InputField';
-import { booksActions, booksState } from '../data/store';
+import { booksActions, useBooksForm } from '../data/store';
 import { Book } from '../types/book';
 
 interface BookFormProps {
@@ -16,10 +16,7 @@ interface BookFormProps {
 export function BookForm(props: BookFormProps) {
   const merged = mergeProps({}, props);
 
-  // TODO refactor with selector?
-  const {
-    formData: [, { Form, Field }],
-  } = booksState;
+  const [, { Form, Field }] = useBooksForm();
   const { resetForm } = booksActions;
 
   function handleReset() {

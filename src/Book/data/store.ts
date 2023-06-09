@@ -14,7 +14,7 @@ type BookState = {
   formData: ReturnType<typeof createBookForm>;
 };
 
-function createBooksStore(): [BookState, { resetForm: () => void }] {
+function createBooksStore() {
   const formData = createBookForm();
   // TODO expose only necessary form data
   const [state] = createStore<BookState>({ formData });
@@ -25,15 +25,15 @@ function createBooksStore(): [BookState, { resetForm: () => void }] {
     reset(state.formData[0], options);
   }
 
-  return [
+  return {
     state,
-    {
+    actions: {
       resetForm,
     },
-  ];
+  };
 }
 
-const [state, actions] = createRoot(createBooksStore);
-// TODO implement selector?
-export const booksState = state;
+const { state, actions } = createRoot(createBooksStore);
+const useBooksState = <T>(selector: (state: BookState) => T) => selector(state);
+export const useBooksForm = () => useBooksState((state) => state.formData);
 export const booksActions = actions;
