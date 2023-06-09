@@ -1,7 +1,7 @@
 import { createSignal, onCleanup } from 'solid-js';
 import { AnimatedTyping } from './AnimatedTyping';
 
-const animatedTexts = ['Video Games', 'Movies', 'Books', 'Music'];
+const animatedTexts = ['Books', 'Video Games', 'Movies', 'Music'];
 
 export function Slogan() {
   const [index, setIndex] = createSignal(0);

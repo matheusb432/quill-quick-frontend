@@ -3,6 +3,8 @@ import { mergeProps } from 'solid-js';
 import { Button } from '~/components/Button';
 import { ShowFormErrors } from '~/components/dev-utils/ShowFormErrors';
 import { Book, zBook } from '../types/book';
+import { strUtil } from '~/core/util/str-util';
+import { Input } from '~/components/Input';
 
 interface BookFormProps {
   onSubmit: (data: Book) => void;
@@ -22,17 +24,10 @@ export function BookForm(props: BookFormProps) {
   };
   return (
     <Form onSubmit={handleSubmit}>
-      <ShowFormErrors form={bookForm} />
+      {/* <ShowFormErrors form={bookForm} /> */}
       <Field name="title">
         {(field, props) => {
-          return (
-            <div class="flex flex-col gap-y-2 w-full h-full">
-              <input
-                class="form-input bg-black-400  h-14 border-0 border-l-4 border-green-500 focus:ring-green-500 focus:border-green-500 transition-all"
-                {...props}
-              />
-            </div>
-          );
+          return <Input field={field} props={props} label="Title" name="title" />;
         }}
       </Field>
       <Field name="author">
