@@ -18,4 +18,19 @@ describe('str-util', () => {
       expect(strUtil.cx(undefined, undefined)).toBe('');
     });
   });
+
+  describe('capitalizeFirst', () => {
+    it('should capitalize the first letter of a string', () => {
+      expect(strUtil.capitalizeFirst('foo')).toBe('Foo');
+      expect(strUtil.capitalizeFirst('bar')).toBe('Bar');
+    });
+
+    it('should return an empty string if no string is provided', () => {
+      expect(strUtil.capitalizeFirst(undefined as never)).toBe('');
+    });
+
+    it('should capitalize only the first letter of a string', () => {
+      expect(strUtil.capitalizeFirst('foo bar')).toBe('Foo bar');
+    });
+  });
 });

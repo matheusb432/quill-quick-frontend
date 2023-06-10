@@ -51,7 +51,7 @@ module.exports = {
     colors: {
       transparent: 'transparent',
       current: 'currentColor',
-      yellow: { 500: colors.yellow[500] },
+      yellow: colors.yellow,
       black: newBlack,
       green: newGreen,
       red: colors.red,

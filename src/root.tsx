@@ -13,14 +13,13 @@ export default function Root() {
         refetchOnMount: true,
         staleTime: ONE_HOUR,
         retry: false,
+        refetchOnWindowFocus: false,
       },
     },
     queryCache: new QueryCache({
       // NOTE Global error handler, only shows error once for each query
-      onError: (error, query) => {
-        if (query.state.data) {
-          console.error(error);
-        }
+      onError: (error) => {
+        console.warn(error);
       },
     }),
   });
