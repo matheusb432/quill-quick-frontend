@@ -2,6 +2,7 @@ import { SubmitHandler } from '@modular-forms/solid';
 import { createQuery } from '@tanstack/solid-query';
 import { Suspense, createSignal } from 'solid-js';
 import { BookForm } from '~/Book/components/BookForm';
+import { bookApi } from '~/Book/data/api';
 import { Book } from '~/Book/types/book';
 import { Loading } from '~/components/Loading';
 import { PageTitle } from '~/components/PageTitle';
@@ -9,20 +10,19 @@ import { asyncUtil } from '~/core/util/async-util';
 
 // TODO on details/edit, reset the form on cleanup
 export default function Books() {
-  const [mockId, setMockId] = createSignal(3);
+  const [mockId, setMockId] = createSignal(4);
 
   // TODO remove
   setInterval(() => {
     setMockId((prev) => prev + 1);
-  }, 5000);
+  }, 15000);
 
   const query = createQuery<Book[]>({
     queryKey: () => ['books', mockId()],
     queryFn: async () => {
-      // TODO add axios
-      const res = await fetch(`http://127.0.0.1:5000/api/Books?$filter=id eq ${mockId()}`);
-      await asyncUtil.sleep(2000);
-      return await res.json();
+      const res = await bookApi.get();
+      await asyncUtil.sleep(500);
+      return res.data;
     },
     get enabled() {
       return mockId() > 3;

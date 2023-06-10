@@ -2,7 +2,7 @@
 import { Body, FileRoutes, Head, Html, Meta, Routes, Scripts, Title } from 'solid-start';
 import { RootLayout } from './components/RootLayout';
 import './root.css';
-import { QueryClient, QueryClientProvider } from '@tanstack/solid-query';
+import { QueryCache, QueryClient, QueryClientProvider } from '@tanstack/solid-query';
 
 const ONE_HOUR = 1000 * 60 * 60;
 
@@ -12,8 +12,17 @@ export default function Root() {
       queries: {
         refetchOnMount: true,
         staleTime: ONE_HOUR,
+        retry: false,
       },
     },
+    queryCache: new QueryCache({
+      // NOTE Global error handler, only shows error once for each query
+      onError: (error, query) => {
+        if (query.state.data) {
+          console.error(error);
+        }
+      },
+    }),
   });
 
   return (
