@@ -13,6 +13,7 @@ import { AlertTypes } from '~/core/types/alert-types';
 interface AlertProps {
   children: JSX.Element;
   type: AlertTypes;
+  class?: string;
   canDismiss?: boolean;
   onDismiss?: () => void;
 }
@@ -30,11 +31,12 @@ export function Alert(props: AlertProps) {
     <Show when={show()}>
       <div
         class={strUtil.cx(
-          'flex justify-between items-center rounded-lg border px-4 py-3 my-6',
+          'flex justify-between items-center rounded-lg border px-4 py-3 my-6 text-xl',
           getTheming(merged.type),
+          merged.class,
         )}
       >
-        <span class="flex items-center gap-x-2 text-xl">
+        <span class="flex items-center gap-x-2">
           <i>
             <Dynamic component={getIcon(merged.type)} class="w-8 h-8" />
           </i>
