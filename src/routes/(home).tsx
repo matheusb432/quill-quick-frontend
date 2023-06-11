@@ -1,6 +1,7 @@
 import { Slogan } from '~/Home/Slogan';
 import { Heading } from '~/components/Heading';
 import { Ping } from '~/components/Ping';
+import { Toast } from '~/components/Toast';
 
 export default function Home() {
   return (
@@ -16,6 +17,7 @@ export default function Home() {
         <span class="text-4xl font-bold text-green-700">Home</span>
         <Ping />
       </p>
+      <Toast type="success">This is a toast!</Toast>
     </>
   );
 }

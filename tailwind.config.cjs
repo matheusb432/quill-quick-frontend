@@ -35,6 +35,7 @@ module.exports = {
     extend: {
       animation: {
         type: 'type 2s ease-out infinite alternate both',
+        slideIn: 'slideIn 0.5s ease-out',
       },
       keyframes: {
         type: {
@@ -45,6 +46,10 @@ module.exports = {
           '50%': { transform: 'translateX(80%)' },
           '60%': { transform: 'translateX(100%)' },
           '100%': { transform: 'translateX(100%)' },
+        },
+        slideIn: {
+          '0%': { transform: 'translateX(100%)' },
+          '100%': { transform: 'translateX(0%)' },
         },
       },
     },
