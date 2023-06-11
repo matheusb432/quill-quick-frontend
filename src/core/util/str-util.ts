@@ -17,7 +17,15 @@ function capitalizeFirst(str: string) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
+function to00(value: number | string): string {
+  if (!value) return '00';
+  if (typeof value === 'string') value = parseInt(value, 10);
+
+  return value < 10 ? `0${value}` : `${value}`;
+}
+
 export const strUtil = {
   cx,
   capitalizeFirst,
+  to00,
 };
