@@ -6,7 +6,6 @@ import { bookApi } from '~/Book/data/api';
 import { Book } from '~/Book/types/book';
 import { Alert } from '~/components/Alert';
 import { PageTitle } from '~/components/PageTitle';
-import { asyncUtil } from '~/core/util/async-util';
 
 // TODO on details/edit, reset the form on cleanup
 export default function Books() {
@@ -15,15 +14,11 @@ export default function Books() {
   // TODO remove
   // setInterval(() => {
   //   setMockId((prev) => prev + 1);
-  // }, 15000);
+  // }, 1000);
 
-  const query = createQuery<Book[]>({
+  const query = createQuery<Book>({
     queryKey: () => ['books', mockId()],
-    queryFn: async () => {
-      const res = await bookApi.get();
-      await asyncUtil.sleep(500);
-      return res.data;
-    },
+    queryFn: () => bookApi.getById(mockId()),
     get enabled() {
       return mockId() > 3;
     },

@@ -19,7 +19,8 @@ export default function Root() {
     queryCache: new QueryCache({
       // NOTE Global error handler, only shows error once for each query
       onError: (error) => {
-        console.warn(error);
+        // TODO toast error
+        // console.warn(error);
       },
     }),
   });
