@@ -5,9 +5,11 @@ import { ToastData } from '~/core/types/toast-types';
 import { strUtil } from '~/core/util/str-util';
 import { Alert } from './Alert';
 import { Timer } from './Timer';
-import { toastStore } from '~/core/data/store';
+import { toastStore } from '~/core/data/toast-store';
+import { Portal } from 'solid-js/web';
+import { ElementIds } from '~/core/constants/element-ids';
 
-export default function Toast() {
+export function Toast() {
   const state = () => toastStore.state;
   const toast = () => state().queue[0];
   function onDidClose(id?: string | number) {
@@ -15,14 +17,16 @@ export default function Toast() {
   }
 
   return (
-    <Show when={toast() != null}>
-      <ToastContent
-        data={toast()}
-        didClose={onDidClose}
-        count={state().queue.length}
-        closing={state().closing}
-      />
-    </Show>
+    <Portal mount={document.getElementById(ElementIds.OverlayRoot) ?? undefined}>
+      <Show when={toast() != null}>
+        <ToastContent
+          data={toast()}
+          didClose={onDidClose}
+          count={state().queue.length}
+          closing={state().closing}
+        />
+      </Show>
+    </Portal>
   );
 }
 

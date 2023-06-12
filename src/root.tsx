@@ -1,8 +1,10 @@
 // @refresh reload
 import { QueryCache, QueryClient, QueryClientProvider } from '@tanstack/solid-query';
 import { Body, FileRoutes, Head, Html, Meta, Routes, Scripts, Title } from 'solid-start';
+import { Toast } from '~/components/Toast';
 import { RootLayout } from './components/RootLayout';
-import { toastStore } from './core/data/store';
+import { ElementIds } from './core/constants/element-ids';
+import { toastStore } from './core/data/toast-store';
 import { ToastAs } from './core/types/toast-types';
 import './root.css';
 
@@ -19,7 +21,7 @@ export default function Root() {
       },
     },
     queryCache: new QueryCache({
-      onError: (error) => {
+      onError: () => {
         toastStore.actions.next(ToastAs.error('Failed to load data!'));
       },
     }),
@@ -42,6 +44,9 @@ export default function Root() {
         </QueryClientProvider>
         <Scripts />
       </Body>
+      <div id={ElementIds.BackdropRoot} />
+      <div id={ElementIds.OverlayRoot} />
+      <Toast />
     </Html>
   );
 }
