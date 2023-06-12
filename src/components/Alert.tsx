@@ -20,7 +20,7 @@ interface AlertProps {
 }
 
 export function Alert(props: AlertProps) {
-  const merged = mergeProps({ type: 'info', canDismiss: false, alwaysShow: false }, props);
+  const merged = mergeProps({ type: 'info' }, props);
   const title = () => strUtil.capitalizeFirst(merged.type);
 
   const [show, setShow] = createSignal(true);
