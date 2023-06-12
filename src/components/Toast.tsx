@@ -1,39 +1,28 @@
 import { Show } from 'solid-js';
 import { ToastDefaults } from '~/core/constants/defaults';
-import { toastActions, useActiveToast, useToastState } from '~/core/data/store';
 import { AlertTypes } from '~/core/types/alert-types';
-import { ToastAs, ToastData } from '~/core/types/toast-types';
+import { ToastData } from '~/core/types/toast-types';
 import { strUtil } from '~/core/util/str-util';
 import { Alert } from './Alert';
-import { Button } from './Button';
 import { Timer } from './Timer';
+import { toastStore } from '~/core/data/store';
 
-export function Toast() {
-  const toast = () => useActiveToast();
-  const closing = () => useToastState((s) => s.closing);
-  const count = () => useToastState((s) => s.queue.length);
-  const { next, remove } = toastActions;
-
-  function resetToast() {
-    next(ToastAs.error(`Toast - ${new Date().getTime()}`, 4000));
-  }
-
+export default function Toast() {
+  const state = () => toastStore.state;
+  const toast = () => state().queue[0];
   function onDidClose(id?: string | number) {
-    remove(id);
+    toastStore.actions.remove(id);
   }
 
   return (
-    <>
-      <Button onClick={resetToast}>Reset Toast</Button>
-      <Show when={toast() != null}>
-        <ToastContent
-          data={toast() as ToastData}
-          didClose={onDidClose}
-          count={count()}
-          closing={closing()}
-        />
-      </Show>
-    </>
+    <Show when={toast() != null}>
+      <ToastContent
+        data={toast()}
+        didClose={onDidClose}
+        count={state().queue.length}
+        closing={state().closing}
+      />
+    </Show>
   );
 }
 
@@ -63,10 +52,10 @@ function ToastContent(props: ToastContentProps) {
 
   return (
     <div
-      class={strUtil.cx('fixed top-0 right-3 w-80 transition-all duration-500', slideAnimation())}
+      class={strUtil.cx('fixed top-3 right-3 w-80 transition-all duration-500', slideAnimation())}
     >
       <Alert
-        class={strUtil.cx(theming(), 'text-md')}
+        class={strUtil.cx(theming(), 'text-md my-0')}
         type={props.data.type}
         title={title()}
         onDismiss={closeToast}
@@ -74,7 +63,7 @@ function ToastContent(props: ToastContentProps) {
         alwaysShow
       >
         {props.data.message}
-        <Timer key={toastId()} durationMs={duration} class={timerTheming()} />
+        <Timer key={toastId()} durationMs={duration()} class={timerTheming()} />
       </Alert>
     </div>
   );
@@ -88,7 +77,7 @@ const classMap: Record<AlertTypes, string> = {
   info: 'bg-black-100',
   error: 'bg-red-100',
   success: 'bg-green-100',
-  warning: 'bg-yellow-100',
+  warning: 'bg-yellow-100 text-secondary-text',
 };
 
 const timerClassMap: Record<AlertTypes, string> = {

@@ -1,17 +1,8 @@
-import { createSignal } from 'solid-js';
 import { Slogan } from '~/Home/Slogan';
-import { Button } from '~/components/Button';
 import { Heading } from '~/components/Heading';
 import { Ping } from '~/components/Ping';
-import { Timer } from '~/components/Timer';
-import { Toast } from '~/components/Toast';
-import { ToastAs } from '~/core/types/toast-types';
 
 export default function Home() {
-  function resetToast() {
-    // setToast(ToastAs.warning(`Toast - ${new Date().getTime()}`));
-  }
-
   return (
     <>
       <header class="px-6 py-8">
@@ -25,8 +16,6 @@ export default function Home() {
         <span class="text-4xl font-bold text-green-700">Home</span>
         <Ping />
       </p>
-      {/* <Button onClick={resetToast}>Reset Toast</Button> */}
-      <Toast />
     </>
   );
 }

@@ -1,15 +1,14 @@
 // @refresh reload
+import { QueryCache, QueryClient, QueryClientProvider } from '@tanstack/solid-query';
 import { Body, FileRoutes, Head, Html, Meta, Routes, Scripts, Title } from 'solid-start';
 import { RootLayout } from './components/RootLayout';
-import './root.css';
-import { QueryCache, QueryClient, QueryClientProvider } from '@tanstack/solid-query';
-import { toastActions } from './core/data/store';
+import { toastStore } from './core/data/store';
 import { ToastAs } from './core/types/toast-types';
+import './root.css';
 
 const ONE_HOUR = 1000 * 60 * 60;
 
 export default function Root() {
-  const { next } = toastActions;
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
@@ -20,11 +19,8 @@ export default function Root() {
       },
     },
     queryCache: new QueryCache({
-      // NOTE Global error handler, only shows error once for each query
       onError: (error) => {
-        // TODO toast error
-        // console.warn(error);
-        next(ToastAs.error('Failed to load data!'));
+        toastStore.actions.next(ToastAs.error('Failed to load data!'));
       },
     }),
   });

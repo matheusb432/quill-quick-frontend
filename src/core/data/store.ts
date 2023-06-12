@@ -1,37 +1,12 @@
-import { createEffect, createRoot, createSignal, onCleanup } from 'solid-js';
+import { createEffect, createRoot, onCleanup } from 'solid-js';
 import { createStore, produce } from 'solid-js/store';
+import { ToastDefaults } from '../constants/defaults';
 import { ToastData } from '../types/toast-types';
-import { Defaults, ToastDefaults } from '../constants/defaults';
-
-type UiState = {
-  toastQueue: ToastData[];
-};
 
 type ToastState = {
   queue: ToastData[];
   closing: boolean;
 };
-
-const initialState: UiState = {
-  toastQueue: [],
-};
-
-// function createUiStore() {
-//   const {state: toastState, actions: toastActions} = createToastStore();
-
-//   const [state, setState] = createStore<UiState>(initialState);
-
-//   function nextToast(data: ToastData) {
-//     setState('toastQueue', (queue) => [...queue, data]);
-//   }
-
-//   return {
-//     state,
-//     actions: {
-//       nextToast,
-//     },
-//   };
-// }
 
 const initialToastState: ToastState = {
   queue: [],
@@ -54,6 +29,7 @@ function createToastStore() {
     clearTimeout(closedTimeout);
 
     closedTimeout = setTimeout(startClosing, duration());
+    onCleanup(() => clearTimeout(closedTimeout));
   });
 
   function next(data: ToastData) {
@@ -101,12 +77,4 @@ function createToastStore() {
   };
 }
 
-// const { state, actions } = createRoot(createUiStore);
-// const useUiState = <T>(selector: (state: UiState) => T) => selector(state);
-// export const useUiActiveToast = (): ToastData | undefined =>
-//   useUiState((state) => state.toastQueue[0]);
-// export const uiActions = actions;
-const { state, actions } = createRoot(createToastStore);
-export const useToastState = <T>(selector: (state: ToastState) => T) => selector(state);
-export const useActiveToast = (): ToastData | undefined => useToastState((state) => state.queue[0]);
-export const toastActions = actions;
+export const toastStore = createRoot(createToastStore);
