@@ -13,6 +13,7 @@ import { AlertTypes } from '~/core/types/alert-types';
 interface AlertProps {
   children: JSX.Element;
   type: AlertTypes;
+  title?: JSX.Element;
   class?: string;
   canDismiss?: boolean;
   alwaysShow?: boolean;
@@ -21,7 +22,7 @@ interface AlertProps {
 
 export function Alert(props: AlertProps) {
   const merged = mergeProps({ type: 'info' }, props);
-  const title = () => strUtil.capitalizeFirst(merged.type);
+  const title = () => (props.title ? props.title : strUtil.capitalizeFirst(merged.type));
 
   const [show, setShow] = createSignal(true);
 

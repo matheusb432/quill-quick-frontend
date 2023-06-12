@@ -1,67 +1,82 @@
-import { Show, createEffect, createSignal, onCleanup } from 'solid-js';
-import { Defaults } from '~/core/constants/defaults';
+import { Show } from 'solid-js';
+import { ToastDefaults } from '~/core/constants/defaults';
+import { toastActions, useActiveToast, useToastState } from '~/core/data/store';
 import { AlertTypes } from '~/core/types/alert-types';
-import { ToastData } from '~/core/types/toast-types';
+import { ToastAs, ToastData } from '~/core/types/toast-types';
 import { strUtil } from '~/core/util/str-util';
 import { Alert } from './Alert';
+import { Button } from './Button';
 import { Timer } from './Timer';
 
-interface ToastProps {
-  data: ToastData;
+export function Toast() {
+  const toast = () => useActiveToast();
+  const closing = () => useToastState((s) => s.closing);
+  const count = () => useToastState((s) => s.queue.length);
+  const { next, remove } = toastActions;
+
+  function resetToast() {
+    next(ToastAs.error(`Toast - ${new Date().getTime()}`, 4000));
+  }
+
+  function onDidClose(id?: string | number) {
+    remove(id);
+  }
+
+  return (
+    <>
+      <Button onClick={resetToast}>Reset Toast</Button>
+      <Show when={toast() != null}>
+        <ToastContent
+          data={toast() as ToastData}
+          didClose={onDidClose}
+          count={count()}
+          closing={closing()}
+        />
+      </Show>
+    </>
+  );
 }
 
-export function Toast(props: ToastProps) {
-  // const merged = mergeProps({}, props);
-  const [closing, setClosing] = createSignal(false);
-  const [closed, setClosed] = createSignal(false);
-  const duration = () => props.data.duration || Defaults.ToastDuration;
+type ToastContentProps = {
+  data: ToastData;
+  count: number;
+  closing?: boolean;
+  didClose?: (id?: string | number) => void;
+};
+
+function ToastContent(props: ToastContentProps) {
+  const duration = () => props.data.duration || ToastDefaults.DurationMs;
   const theming = () => getTheming(props.data.type);
   const timerTheming = () => timerClassMap[props.data.type];
-  let closingTimeout: NodeJS.Timeout;
-  let closedTimeout: NodeJS.Timeout;
+  const toastId = () => props.data.id;
 
-  onCleanup(() => {
-    clearTimeout(closingTimeout);
-    clearTimeout(closedTimeout);
-  });
+  const title = () =>
+    strUtil.capitalizeFirst(props.data.type) + (props.count > 1 ? ` - 1/${props.count}` : '');
 
-  createEffect(() => {
-    if (!closing()) return;
-
-    closingTimeout = setTimeout(() => setClosed(true), 500);
-  });
-
-  createEffect(() => {
-    clearTimeout(closedTimeout);
-
-    closedTimeout = setTimeout(startClosing, duration());
-  });
-
-  const slideAnimation = () => {
-    return closing() ? 'opacity-0 translate-x-full invisible' : 'animate-slideIn visible';
+  const closeToast = () => {
+    props.didClose?.(props.data?.id);
   };
 
-  const startClosing = () => {
-    setClosing(true);
+  const slideAnimation = () => {
+    return props.closing ? 'opacity-0 translate-x-full invisible' : 'animate-slideIn visible';
   };
 
   return (
-    <Show when={!closed()}>
-      <div
-        class={strUtil.cx('fixed top-0 right-3 w-80 transition-all duration-500', slideAnimation())}
+    <div
+      class={strUtil.cx('fixed top-0 right-3 w-80 transition-all duration-500', slideAnimation())}
+    >
+      <Alert
+        class={strUtil.cx(theming(), 'text-md')}
+        type={props.data.type}
+        title={title()}
+        onDismiss={closeToast}
+        canDismiss
+        alwaysShow
       >
-        <Alert
-          class={strUtil.cx(theming(), 'text-md')}
-          type={props.data.type}
-          onDismiss={startClosing}
-          canDismiss
-          alwaysShow
-        >
-          {props.data.message}
-          <Timer durationMs={duration()} class={timerTheming()} />
-        </Alert>
-      </div>
-    </Show>
+        {props.data.message}
+        <Timer key={toastId()} durationMs={duration} class={timerTheming()} />
+      </Alert>
+    </div>
   );
 }
 
@@ -79,6 +94,6 @@ const classMap: Record<AlertTypes, string> = {
 const timerClassMap: Record<AlertTypes, string> = {
   info: 'bg-black-500',
   error: 'bg-red-500',
-  success: 'bg-green-500',
+  success: 'bg-accent',
   warning: 'bg-yellow-500',
 };

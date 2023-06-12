@@ -7,13 +7,9 @@ import { Timer } from '~/components/Timer';
 import { Toast } from '~/components/Toast';
 import { ToastAs } from '~/core/types/toast-types';
 
-const toastData = ToastAs.success('Book reviews created successfully!');
-
 export default function Home() {
-  const [toast, setToast] = createSignal(toastData);
-
   function resetToast() {
-    setToast(ToastAs.warning(`Toast - ${new Date().getTime()}`));
+    // setToast(ToastAs.warning(`Toast - ${new Date().getTime()}`));
   }
 
   return (
@@ -29,8 +25,8 @@ export default function Home() {
         <span class="text-4xl font-bold text-green-700">Home</span>
         <Ping />
       </p>
-      <Button onClick={resetToast}>Reset Toast</Button>
-      <Toast data={toast()} />
+      {/* <Button onClick={resetToast}>Reset Toast</Button> */}
+      <Toast />
     </>
   );
 }

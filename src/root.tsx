@@ -3,10 +3,13 @@ import { Body, FileRoutes, Head, Html, Meta, Routes, Scripts, Title } from 'soli
 import { RootLayout } from './components/RootLayout';
 import './root.css';
 import { QueryCache, QueryClient, QueryClientProvider } from '@tanstack/solid-query';
+import { toastActions } from './core/data/store';
+import { ToastAs } from './core/types/toast-types';
 
 const ONE_HOUR = 1000 * 60 * 60;
 
 export default function Root() {
+  const { next } = toastActions;
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
@@ -21,6 +24,7 @@ export default function Root() {
       onError: (error) => {
         // TODO toast error
         // console.warn(error);
+        next(ToastAs.error('Failed to load data!'));
       },
     }),
   });
