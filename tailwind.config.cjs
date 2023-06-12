@@ -35,7 +35,8 @@ module.exports = {
     extend: {
       animation: {
         type: 'type 2s ease-out infinite alternate both',
-        slideIn: 'slideIn 0.5s ease-out',
+        slideIn: 'slideIn 0.5s ease-in-out',
+        slideOut: 'slideIn 0.5s ease-out reverse',
       },
       keyframes: {
         type: {
@@ -48,8 +49,9 @@ module.exports = {
           '100%': { transform: 'translateX(100%)' },
         },
         slideIn: {
-          '0%': { transform: 'translateX(100%)' },
-          '100%': { transform: 'translateX(0%)' },
+          '0%': { transform: 'translateX(150%)', opacity: '0' },
+          '50%': { transform: 'translateX(50%)', opacity: '0' },
+          '100%': { transform: 'translateX(0%)', opacity: '1' },
         },
       },
     },

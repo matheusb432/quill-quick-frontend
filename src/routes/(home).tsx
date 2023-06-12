@@ -17,7 +17,7 @@ export default function Home() {
         <span class="text-4xl font-bold text-green-700">Home</span>
         <Ping />
       </p>
-      <Toast type="success">This is a toast!</Toast>
+      <Toast type="success">Book reviews created successfully!</Toast>
     </>
   );
 }

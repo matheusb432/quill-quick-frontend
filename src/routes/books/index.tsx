@@ -36,6 +36,14 @@ export default function Books() {
   return (
     <>
       <PageTitle subtitle="Review or add new books">Books - {mockId()}</PageTitle>
+      <Alert type="info" canDismiss>
+        This is a test alert
+      </Alert>
+      <Alert type="error" canDismiss>
+        This is a test alert
+      </Alert>
+      <Alert type="success">This is a test alert</Alert>
+      <Alert type="warning">This is a test alert</Alert>
       <Switch>
         <Match when={query.isError}>
           <Alert type="error">Failed to load books!</Alert>

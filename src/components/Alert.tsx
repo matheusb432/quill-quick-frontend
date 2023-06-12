@@ -15,11 +15,13 @@ interface AlertProps {
   type: AlertTypes;
   class?: string;
   canDismiss?: boolean;
+  alwaysShow?: boolean;
   onDismiss?: () => void;
 }
 
 export function Alert(props: AlertProps) {
-  const merged = mergeProps({ type: 'info', canDismiss: false }, props);
+  const merged = mergeProps({ type: 'info', canDismiss: false, alwaysShow: false }, props);
+  const title = () => strUtil.capitalizeFirst(merged.type);
 
   const [show, setShow] = createSignal(true);
 
@@ -28,21 +30,22 @@ export function Alert(props: AlertProps) {
     merged.onDismiss?.();
   }
   return (
-    <Show when={show()}>
+    <Show when={show() || merged.alwaysShow}>
       <div
         class={strUtil.cx(
-          'flex justify-between items-center rounded-lg border px-4 py-3 my-6 text-xl',
+          'flex justify-center flex-col rounded-lg border px-4 py-3 my-6 gap-y-2 text-xl',
           getTheming(merged.type),
           merged.class,
         )}
       >
-        <span class="flex items-center gap-x-2">
-          <i>
-            <Dynamic component={getIcon(merged.type)} class="w-8 h-8" />
-          </i>
-          {merged.children}
-        </span>
-        {merged.canDismiss && <ActionIcon iconFn={HIXCircle} onClick={dismiss} />}
+        <header class="flex justify-between items-center w-full">
+          <span class="flex items-center gap-x-2">
+            <Dynamic component={getIcon(merged.type)} class="w-6 h-6" />
+            {title()}
+          </span>
+          {merged.canDismiss && <ActionIcon iconFn={HIXCircle} onClick={dismiss} />}
+        </header>
+        <article>{merged.children}</article>
       </div>
     </Show>
   );
