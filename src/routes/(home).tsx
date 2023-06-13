@@ -19,7 +19,7 @@ export default function Home() {
     isLoadingConfirm: false,
     title: 'Dialog Title',
     message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-    type: 'confirm',
+    type: 'danger',
   });
 
   function handleClose() {

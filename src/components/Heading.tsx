@@ -14,7 +14,7 @@ export function Heading(props: HeadingProps) {
   return (
     <Dynamic
       component={merged.as}
-      class={strUtil.cx('font-serif font-thin', merged.class)}
+      class={strUtil.cx('font-serif font-normal', merged.class)}
       classList={{
         'text-4xl': merged.as === 'h1',
         'text-2xl': merged.as === 'h2',

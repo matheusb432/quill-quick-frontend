@@ -1,12 +1,13 @@
 import { JSX, mergeProps } from 'solid-js';
 import { strUtil } from '~/core/util/str-util';
 import { Loading } from './Loading';
+import { ActionTypes } from '~/core/types/action-types';
 
 export interface ButtonProps {
   children: JSX.Element;
   isLoading?: boolean;
   mode?: Modes;
-  theme?: Themes;
+  theme?: ActionTypes;
   onClick?: () => void;
   disabled?: boolean;
   type?: BtnTypes;

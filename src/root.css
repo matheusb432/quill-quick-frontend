@@ -41,3 +41,22 @@
     opacity: 0;
   }
 }
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #9ca3af #f9f6f8;
+}
+
+*::-webkit-scrollbar {
+  width: 12px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #f9f6f8;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #9ca3af;
+  border-radius: 14px;
+  border: 2px solid #f9f6f8;
+}

@@ -1,5 +1,5 @@
-import { Portal } from 'solid-js/web';
 import { mergeProps } from 'solid-js';
+import { Portal } from 'solid-js/web';
 import { ElementIds } from '~/core/constants/element-ids';
 
 interface BackdropProps {
@@ -8,7 +8,6 @@ interface BackdropProps {
   onClick?: () => void;
 }
 
-// export function Backdrop({ bgColor, show = true, animationMs = 500, onClick }: BackdropProps) {
 export function Backdrop(props: BackdropProps) {
   const merged = mergeProps({ show: true, animationMs: 500 }, props);
 
