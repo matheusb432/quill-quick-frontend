@@ -1,16 +1,14 @@
 import { SubmitHandler } from '@modular-forms/solid';
-import { createQuery } from '@tanstack/solid-query';
-import { Match, Switch, createSignal } from 'solid-js';
+import { createSignal } from 'solid-js';
 import { BookForm } from '~/Book/components/BookForm';
-import { bookApi } from '~/Book/data/api';
+import { useBooksForm } from '~/Book/data/store';
 import { Book } from '~/Book/types/book';
-import { Alert } from '~/components/Alert';
 import { PageTitle } from '~/components/PageTitle';
+import { FormProvider } from '~/core/data/form-context';
 
 // TODO on details/edit, reset the form on cleanup
 export default function Books() {
   const [mockId, setMockId] = createSignal(4);
-
   // TODO remove
   // setInterval(() => {
   //   setMockId((prev) => prev + 1);
@@ -30,7 +28,7 @@ export default function Books() {
   };
 
   function handleDelete() {
-    // TODO implement
+    // TODO implement modal & logic
   }
 
   return (
@@ -42,7 +40,9 @@ export default function Books() {
         </Match>
         <Match when={query.isSuccess}>{JSON.stringify(query.data)}</Match>
       </Switch> */}
-      <BookForm isLoading={false} onSubmit={handleSubmit} onDelete={handleDelete} />
+      <FormProvider formData={useBooksForm()}>
+        <BookForm isLoading={false} onSubmit={handleSubmit} onDelete={handleDelete} />
+      </FormProvider>
     </>
   );
 }

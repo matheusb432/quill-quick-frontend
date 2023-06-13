@@ -2,10 +2,10 @@ import { SubmitHandler } from '@modular-forms/solid';
 import { mergeProps } from 'solid-js';
 import { FormFooter } from '~/components/Form/FormFooter';
 import { FormRow } from '~/components/Form/FormRow';
-import { InputField } from '~/components/Inputs/InputField';
-import { booksActions, useBooksForm } from '../data/store';
-import { Book } from '../types/book';
+import { Input } from '~/components/Inputs/Input';
 import { Textarea } from '~/components/Inputs/Textarea';
+import { useFormContext } from '~/core/data/form-context';
+import { Book } from '../types/book';
 
 interface BookFormProps {
   onSubmit: SubmitHandler<Book>;
@@ -17,45 +17,28 @@ interface BookFormProps {
 export function BookForm(props: BookFormProps) {
   const merged = mergeProps({}, props);
 
-  const [, { Form, Field }] = useBooksForm();
-  const { resetForm } = booksActions;
-
-  function handleReset() {
-    resetForm();
-  }
+  const [form, { Form, Field }] = useFormContext<Book>().formData;
 
   return (
     <Form onSubmit={merged.onSubmit}>
       <Field name="title">
-        {(field, props) => {
-          return <InputField field={field} props={props} label="Title" name="title" />;
-        }}
+        {(field, props) => <Input field={field} props={props} label="Title" />}
       </Field>
       <FormRow>
         <Field name="publisher">
-          {(field, props) => {
-            return <InputField field={field} props={props} label="Publisher" name="publisher" />;
-          }}
+          {(field, props) => <Input field={field} props={props} label="Publisher" />}
         </Field>
         <Field name="author">
-          {(field, props) => {
-            return <InputField field={field} props={props} label="Author" name="author" />;
-          }}
+          {(field, props) => <Input field={field} props={props} label="Author" />}
         </Field>
       </FormRow>
       <Field name="pageCount" type="number">
-        {(field, props) => {
-          return (
-            <InputField field={field} props={props} label="Pages" name="pageCount" type="number" />
-          );
-        }}
+        {(field, props) => <Input field={field} props={props} label="Pages" type="number" />}
       </Field>
       <Field name="summary">
-        {(field, props) => {
-          return <Textarea field={field} props={props} label="Summary" name="summary" />;
-        }}
+        {(field, props) => <Textarea field={field} props={props} label="Summary" />}
       </Field>
-      <FormFooter isLoading={merged.isLoading} onReset={handleReset} onDelete={merged.onDelete} />
+      <FormFooter of={form} onDelete={merged.onDelete} />
     </Form>
   );
 }

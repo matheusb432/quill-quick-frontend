@@ -1,25 +1,16 @@
-import { FieldElementProps, FieldPath, FieldStore, FieldValues } from '@modular-forms/solid';
-import { createEffect, createMemo, mergeProps } from 'solid-js';
+import { createMemo, mergeProps } from 'solid-js';
+import { FieldCmp } from '~/core/types/form-types';
 import { InputContainer } from './InputContainer';
 
-interface InputFieldProps<TForm extends FieldValues, TName extends FieldPath<TForm>> {
-  field: FieldStore<TForm, TName>;
-  props: FieldElementProps<TForm, TName>;
-  name: TName;
+type InputProps<TF, TN> = FieldCmp<TF, TN> & {
   label: string;
   type?: 'text' | 'number' | 'email' | 'password';
   placeholder?: string;
-}
+};
 
-export function InputField<TForm extends FieldValues, TName extends FieldPath<TForm>>(
-  props: InputFieldProps<TForm, TName>,
-) {
+export function Input<TF, TN>(props: InputProps<TF, TN>) {
   const merged = mergeProps({ type: 'text' }, props);
   const errorText = createMemo<string>((prev) => merged.field.error || prev || 'Invalid field!');
-
-  createEffect(() => {
-    console.log(merged.field.error);
-  });
 
   const getValue = createMemo<string | number | undefined>((prevValue) => {
     const isUndefined = props.field.value === undefined;
@@ -34,16 +25,16 @@ export function InputField<TForm extends FieldValues, TName extends FieldPath<TF
 
   return (
     <InputContainer
-      name={merged.name}
+      name={merged.field.name}
       label={merged.label}
       isError={!!merged.field.error}
       errorText={errorText()}
     >
       <input
         {...merged.props}
-        id={merged.name}
+        id={merged.field.name}
         value={getValue()}
-        class="peer form-input h-16 border-0 border-l-4 border-accent bg-primary-light pb-0 text-xl placeholder-transparent transition-colors hover:bg-primary-hover focus:border-accent focus:bg-primary-focus focus:placeholder-divider focus:outline-4 focus:outline-offset-4 focus:ring-accent"
+        class="peer form-input h-16 border-0 border-l-4 border-accent bg-primary-light pb-0 text-xl placeholder-transparent transition-all hover:bg-primary-hover focus:border-accent focus:bg-primary-focus focus:placeholder-divider focus:outline-4 focus:outline-offset-4 focus:ring-accent"
         placeholder={merged.placeholder || `Enter the ${merged.label}`}
         type={merged.type}
       />
