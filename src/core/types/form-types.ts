@@ -23,3 +23,8 @@ export type FieldCmp<TForm, TName> = {
   field: TFieldStore<TForm, TName>;
   props: TFieldElementProps<TForm, TName>;
 };
+
+export type SelectItemData = {
+  label: string;
+  value: string;
+};

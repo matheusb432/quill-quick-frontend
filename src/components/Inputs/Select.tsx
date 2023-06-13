@@ -1,32 +1,24 @@
-import { createMemo, mergeProps } from 'solid-js';
-import { FieldCmp } from '~/core/types/form-types';
+import { For, createMemo, mergeProps } from 'solid-js';
+import { FieldCmp, SelectItemData } from '~/core/types/form-types';
 import { InputContainer } from './InputContainer';
 import { useFormContext } from '~/core/data/form-context';
-import { FieldValues } from '@modular-forms/solid';
 
-type InputProps<TF, TN> = FieldCmp<TF, TN> & {
+type SelectProps<TF, TN> = FieldCmp<TF, TN> & {
+  options: SelectItemData[];
   label: string;
-  type?: 'text' | 'number' | 'email' | 'password';
   placeholder?: string;
 };
 
-export function Input<TF, TN>(props: InputProps<TF, TN>) {
-  const merged = mergeProps({ type: 'text' }, props);
+export function Select<TF, TN>(props: SelectProps<TF, TN>) {
+  const merged = mergeProps({}, props);
   const errorText = createMemo<string>((prev) => merged.field.error || prev || 'Invalid field!');
   const ctx = useFormContext().state;
   const canEdit = () => !ctx.isLoading && !ctx.disabled;
 
-  const getValue = createMemo<string | number | undefined>((prevValue) => {
+  const getValue = createMemo<string | number | undefined>(() => {
     const isUndefined = props.field.value === undefined;
-
-    if (merged.type === 'number') {
-      const isNumber = !Number.isNaN(props.field.value);
-      return isNumber && !isUndefined ? (props.field.value as number) : prevValue;
-    }
-
     return isUndefined ? '' : (props.field.value as string);
   }, '');
-
   return (
     <InputContainer
       name={merged.field.name}
@@ -35,15 +27,21 @@ export function Input<TF, TN>(props: InputProps<TF, TN>) {
       isLoading={ctx.isLoading}
       errorText={errorText()}
     >
-      <input
+      <select
         {...merged.props}
         id={merged.field.name}
         value={getValue()}
-        class="peer input-fx form-input h-16 pb-0 transition-all"
-        placeholder={merged.placeholder || `Enter the ${merged.label}`}
-        type={merged.type}
+        class="peer form-select input-fx h-16 border-0 border-l-4 pb-0 transition-all"
+        classList={{ 'text-divider': !getValue() }}
         disabled={!canEdit()}
-      />
+      >
+        <option value="" disabled>
+          {merged.placeholder || `Select the ${merged.label}`}
+        </option>
+        <For each={merged.options}>
+          {(option) => <option value={option.value}>{option.label}</option>}
+        </For>
+      </select>
     </InputContainer>
   );
 }
