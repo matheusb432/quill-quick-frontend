@@ -19,7 +19,7 @@ export function Slogan() {
   });
 
   return (
-    <p class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl flex items-center gap-x-3">
+    <p class="flex items-center gap-x-3 text-4xl sm:text-5xl md:text-6xl lg:text-7xl">
       Review
       <AnimatedTyping>{animatedTexts[index()]}</AnimatedTyping>
     </p>

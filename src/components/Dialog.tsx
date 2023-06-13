@@ -24,13 +24,13 @@ export function Dialog(props: DialogProps) {
         <Backdrop onClick={data().onClose} show={props.show} />
         <div
           class={strUtil.cx(
-            `fixed w-[480px] bg-primary-base text-primary-text top-1/2 rounded-md flex flex-col items-center justify-between left-1/2 -translate-x-1/2 -translate-y-1/2 transition-all ease-out duration-500`,
-            props.show ? 'visible z-50' : 'scale-0 invisible -z-50',
+            `fixed left-1/2 top-1/2 flex w-[480px] -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-between rounded-md bg-primary-base text-primary-text transition-all duration-500 ease-out`,
+            props.show ? 'visible z-50' : 'invisible -z-50 scale-0',
           )}
         >
           <header
             class={strUtil.cx(
-              `relative w-full flex justify-center rounded-t-md p-4 items-center`,
+              `relative flex w-full items-center justify-center rounded-t-md p-4`,
               headerThemeMap[type()],
             )}
           >
@@ -41,12 +41,12 @@ export function Dialog(props: DialogProps) {
               <ActionIcon
                 iconFn={HIXCircle}
                 onClick={data().onClose}
-                class="absolute right-2 top-2 w-5 h-5"
+                class="absolute right-2 top-2 h-5 w-5"
               />
             }
           </header>
-          <article class="p-4 max-h-32 overflow-y-auto">{data().message}</article>
-          <footer class="flex items-center w-full justify-center gap-x-6 p-4 border-t-divider/30 border-t">
+          <article class="max-h-32 overflow-y-auto p-4">{data().message}</article>
+          <footer class="flex w-full items-center justify-center gap-x-6 border-t border-t-divider/30 p-4">
             <Button onClick={data().onClose} theme={type()} mode="stroked">
               Cancel
             </Button>

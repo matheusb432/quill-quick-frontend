@@ -55,7 +55,7 @@ function TimerContent(props: TimerContentProps) {
   return (
     <div
       class={strUtil.cx(
-        `rounded-lg transition-all delay-0 w-full ease-linear h-1`,
+        `h-1 w-full rounded-lg transition-all delay-0 ease-linear`,
         transitionOut(),
         props.class,
       )}

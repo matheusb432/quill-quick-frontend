@@ -25,7 +25,7 @@ export function Button(props: ButtonProps) {
   return (
     <button
       class={strUtil.cx(
-        `relative rounded-sm border ring-2 ring-secondary-text/5 ring-offset-1 ring-offset-primary-light/20 px-4 py-2 transition-colors disabled:pointer-events-none  disabled:bg-opacity-30 disabled:border-opacity-30 focus:outline-none`,
+        `relative rounded-sm border px-4 py-2 ring-2 ring-secondary-text/5 ring-offset-1 ring-offset-primary-light/20 transition-colors focus:outline-none  disabled:pointer-events-none disabled:border-opacity-30 disabled:bg-opacity-30`,
         getTheming(merged.mode, merged.theme),
       )}
       type={merged.type}

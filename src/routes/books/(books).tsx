@@ -16,13 +16,13 @@ export default function Books() {
   //   setMockId((prev) => prev + 1);
   // }, 1000);
 
-  const query = createQuery<Book>({
-    queryKey: () => ['books', mockId()],
-    queryFn: () => bookApi.getById(mockId()),
-    get enabled() {
-      return mockId() > 3;
-    },
-  });
+  // const query = createQuery<Book>({
+  //   queryKey: () => ['books', mockId()],
+  //   queryFn: () => bookApi.getById(mockId()),
+  //   get enabled() {
+  //     return mockId() > 3;
+  //   },
+  // });
 
   const handleSubmit: SubmitHandler<Book> = (data) => {
     // TODO implement
@@ -36,20 +36,12 @@ export default function Books() {
   return (
     <>
       <PageTitle subtitle="Review or add new books">Books - {mockId()}</PageTitle>
-      <Alert type="info" canDismiss>
-        This is a test alert
-      </Alert>
-      <Alert type="error" canDismiss>
-        This is a test alert
-      </Alert>
-      <Alert type="success">This is a test alert</Alert>
-      <Alert type="warning">This is a test alert</Alert>
-      <Switch>
+      {/* <Switch>
         <Match when={query.isError}>
           <Alert type="error">Failed to load books!</Alert>
         </Match>
         <Match when={query.isSuccess}>{JSON.stringify(query.data)}</Match>
-      </Switch>
+      </Switch> */}
       <BookForm isLoading={false} onSubmit={handleSubmit} onDelete={handleDelete} />
     </>
   );

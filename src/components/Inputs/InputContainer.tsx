@@ -14,7 +14,7 @@ export function InputContainer(props: InputContainerProps) {
   const merged = mergeProps({ errorText: 'Invalid field!', type: 'text' }, props);
 
   return (
-    <div class="flex relative flex-col gap-y-1 w-full h-full">
+    <div class="relative flex h-full w-full flex-col gap-y-1">
       {merged.children}
       <Label forId={merged.name}>{merged.label}</Label>
       <ErrorText isError={merged.isError} errorText={merged.errorText} />

@@ -34,14 +34,14 @@ export function Alert(props: AlertProps) {
     <Show when={show() || merged.alwaysShow}>
       <div
         class={strUtil.cx(
-          'flex justify-center flex-col rounded-lg border px-4 py-3 my-6 gap-y-2 text-xl',
+          'my-6 flex flex-col justify-center gap-y-2 rounded-lg border px-4 py-3 text-xl',
           getTheming(merged.type),
           merged.class,
         )}
       >
-        <header class="flex justify-between items-center w-full">
+        <header class="flex w-full items-center justify-between">
           <span class="flex items-center gap-x-2">
-            <Dynamic component={getIcon(merged.type)} class="w-6 h-6" />
+            <Dynamic component={getIcon(merged.type)} class="h-6 w-6" />
             {title()}
           </span>
           {merged.canDismiss && <ActionIcon iconFn={HIXCircle} onClick={dismiss} />}

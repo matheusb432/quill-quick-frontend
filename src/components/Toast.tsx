@@ -56,7 +56,7 @@ function ToastContent(props: ToastContentProps) {
 
   return (
     <div
-      class={strUtil.cx('fixed top-3 right-3 w-80 transition-all duration-500', slideAnimation())}
+      class={strUtil.cx('fixed right-3 top-3 w-80 transition-all duration-500', slideAnimation())}
     >
       <Alert
         class={strUtil.cx(theming(), 'text-md my-0')}

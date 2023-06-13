@@ -6,7 +6,7 @@ import { IconButton } from '~/components/IconButton';
 export function BookCard() {
   return (
     <div class="relative h-72 w-56 shadow-lg">
-      <article class="p-2 absolute z-20 flex h-full w-full flex-col items-center justify-between rounded-md rounded-bl-none border-4 border-l-0 border-green-700 bg-primary-light">
+      <article class="absolute z-20 flex h-full w-full flex-col items-center justify-between rounded-md rounded-bl-none border-4 border-l-0 border-green-700 bg-primary-light p-2">
         <h2 class="text-2xl font-semibold capitalize">Really long book title etc</h2>
         <IconButton iconFn={HIPencilSquare} />
         <footer class={'flex w-full items-center justify-between gap-x-2'}>

@@ -37,7 +37,7 @@ export default function Home() {
       <Button onClick={() => toastStore.actions.next(ToastAs.success('helo'))}>Show toast</Button>
       <Dialog show={show()} data={data()} />
       <header class="px-6 py-8">
-        <Heading class="font-sans font-normal mb-4">Welcome to Quill Quick</Heading>
+        <Heading class="mb-4 font-sans font-normal">Welcome to Quill Quick</Heading>
         <Slogan />
       </header>
       <p class="align-center my-4 flex justify-center gap-x-4">

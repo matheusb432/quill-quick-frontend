@@ -19,7 +19,7 @@ export function NavMenu() {
     <ul class="flex items-center text-primary-text">
       <For each={navItems}>
         {(item) => (
-          <li class={`border-b-2 ${active(item.path)} mx-1.5 sm:mx-6 transition-colors`}>
+          <li class={`border-b-2 ${active(item.path)} mx-1.5 transition-colors sm:mx-6`}>
             <A href={item.path}>{item.label}</A>
           </li>
         )}

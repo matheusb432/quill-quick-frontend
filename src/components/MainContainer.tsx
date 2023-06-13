@@ -8,7 +8,7 @@ interface ContainerProps {
 export function MainContainer(props: ContainerProps) {
   return (
     <>
-      <main class="min-h-screen max-h-screen bg-primary-base scroll-smooth text-primary-text overflow-x-hidden">
+      <main class="max-h-screen min-h-screen overflow-x-hidden scroll-smooth bg-primary-base text-primary-text">
         <MainHeader />
         <div class="px-6 py-8">{props.children}</div>
       </main>

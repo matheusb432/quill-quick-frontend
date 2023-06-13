@@ -5,6 +5,7 @@ import { FormRow } from '~/components/Form/FormRow';
 import { InputField } from '~/components/Inputs/InputField';
 import { booksActions, useBooksForm } from '../data/store';
 import { Book } from '../types/book';
+import { Textarea } from '~/components/Inputs/Textarea';
 
 interface BookFormProps {
   onSubmit: SubmitHandler<Book>;
@@ -51,7 +52,7 @@ export function BookForm(props: BookFormProps) {
       </Field>
       <Field name="summary">
         {(field, props) => {
-          return <InputField field={field} props={props} label="Summary" name="summary" />;
+          return <Textarea field={field} props={props} label="Summary" name="summary" />;
         }}
       </Field>
       <FormFooter isLoading={merged.isLoading} onReset={handleReset} onDelete={merged.onDelete} />
