@@ -2,7 +2,10 @@ import { FieldValues, createForm } from '@modular-forms/solid';
 import { JSX, createContext, splitProps, useContext } from 'solid-js';
 
 interface FormContextProps<TFieldValues extends FieldValues> {
-  formData: ReturnType<typeof createForm<TFieldValues>>;
+  state: Omit<FormProviderProps<TFieldValues>, 'children'>;
+  // formData: ReturnType<typeof createForm<TFieldValues>>;
+  // isLoading?: boolean;
+  // disabled?: boolean;
 }
 
 const FormContext = createContext();
@@ -10,6 +13,8 @@ const FormContext = createContext();
 type FormProviderProps<TFieldValues extends FieldValues> = {
   children: JSX.Element;
   formData: ReturnType<typeof createForm<TFieldValues>>;
+  isLoading?: boolean;
+  disabled?: boolean;
 };
 
 export function FormProvider<TFieldValues extends FieldValues>(
@@ -17,7 +22,8 @@ export function FormProvider<TFieldValues extends FieldValues>(
 ) {
   const [local, others] = splitProps(props, ['children']);
 
-  return <FormContext.Provider value={others}>{local.children}</FormContext.Provider>;
+  // return <FormContext.Provider value={others}>{local.children}</FormContext.Provider>;
+  return <FormContext.Provider value={{ state: others }}>{local.children}</FormContext.Provider>;
 }
 
 export function useFormContext<TFieldValues extends FieldValues>() {

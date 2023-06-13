@@ -41,7 +41,7 @@ export default function Books() {
         <Match when={query.isSuccess}>{JSON.stringify(query.data)}</Match>
       </Switch> */}
       <FormProvider formData={useBooksForm()}>
-        <BookForm isLoading={false} onSubmit={handleSubmit} onDelete={handleDelete} />
+        <BookForm onSubmit={handleSubmit} onDelete={handleDelete} />
       </FormProvider>
     </>
   );

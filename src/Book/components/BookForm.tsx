@@ -10,14 +10,15 @@ import { Book } from '../types/book';
 interface BookFormProps {
   onSubmit: SubmitHandler<Book>;
   onDelete?: () => void;
-  isLoading?: boolean;
-  type?: string;
+  mode?: string;
 }
 
 export function BookForm(props: BookFormProps) {
   const merged = mergeProps({}, props);
 
-  const [form, { Form, Field }] = useFormContext<Book>().formData;
+  const ctx = useFormContext<Book>().state;
+  const [form, { Form, Field }] = ctx.formData;
+  const isLoading = () => ctx.isLoading;
 
   return (
     <Form onSubmit={merged.onSubmit}>
