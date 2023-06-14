@@ -9,7 +9,7 @@ import { toastStore } from '~/core/data/toast-store';
 import { Portal } from 'solid-js/web';
 import { ElementIds } from '~/core/constants/element-ids';
 
-export function Toast() {
+export function ToastQueue() {
   const state = () => toastStore.state;
   const toast = () => state().queue[0];
   function onDidClose(id?: string | number) {
@@ -19,7 +19,7 @@ export function Toast() {
   return (
     <Portal mount={document.getElementById(ElementIds.OverlayRoot) ?? undefined}>
       <Show when={toast() != null}>
-        <ToastContent
+        <Toast
           data={toast()}
           didClose={onDidClose}
           count={state().queue.length}
@@ -30,21 +30,21 @@ export function Toast() {
   );
 }
 
-type ToastContentProps = {
+type ToastProps = {
   data: ToastData;
   count: number;
   closing?: boolean;
   didClose?: (id?: string | number) => void;
 };
 
-function ToastContent(props: ToastContentProps) {
+function Toast(props: ToastProps) {
   const duration = () => props.data.duration || ToastDefaults.DurationMs;
   const theming = () => getTheming(props.data.type);
   const timerTheming = () => timerClassMap[props.data.type];
   const toastId = () => props.data.id;
 
   const title = () =>
-    strUtil.capitalizeFirst(props.data.type) + (props.count > 1 ? ` - 1/${props.count}` : '');
+    strUtil.capitalizeFirst(props.data.type) + (props.count > 1 ? ` - 1 of ${props.count}` : '');
 
   const closeToast = () => {
     props.didClose?.(props.data?.id);

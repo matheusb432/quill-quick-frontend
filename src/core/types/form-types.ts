@@ -28,3 +28,5 @@ export type SelectItemData = {
   label: string;
   value: string;
 };
+
+export type CanEditData = { isLoading: boolean; disabled: boolean; mode: string };

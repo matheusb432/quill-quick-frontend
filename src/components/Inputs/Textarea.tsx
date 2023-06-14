@@ -3,6 +3,7 @@ import { createMemo, mergeProps } from 'solid-js';
 import { FieldCmp, FormModes } from '~/core/types/form-types';
 import { InputContainer } from './InputContainer';
 import { useFormContext } from '~/core/data/form-context';
+import { formUtil } from '~/core/util/form-util';
 
 type TextareaProps<TF, TN> = FieldCmp<TF, TN> & {
   label: string;
@@ -13,8 +14,7 @@ export function Textarea<TF, TN>(props: TextareaProps<TF, TN>) {
   const merged = mergeProps({}, props);
   const errorText = createMemo<string>((prev) => merged.field.error || prev || 'Invalid field!');
   const ctx = useFormContext().state;
-  const isViewMode = () => ctx.mode === FormModes.View;
-  const canEdit = () => !ctx.isLoading && !isViewMode();
+  const canEdit = () => formUtil.canEditField(ctx);
 
   const getValue = createMemo<string>(() => {
     const isUndefined = props.field.value === undefined;

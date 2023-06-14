@@ -11,6 +11,7 @@ const FormContext = createContext();
 type FormProviderProps<TFieldValues extends FieldValues> = {
   children: JSX.Element;
   formData: ReturnType<typeof createForm<TFieldValues>>;
+  disabled?: boolean;
   isLoading?: boolean;
   mode?: FormModes;
 };
@@ -19,7 +20,7 @@ export function FormProvider<TFieldValues extends FieldValues>(
   props: FormProviderProps<TFieldValues>,
 ) {
   const [local, others] = splitProps(props, ['children']);
-  const merged = mergeProps({ isLoading: false, mode: FormModes.Create }, others);
+  const merged = mergeProps({ isLoading: false, disabled: false, mode: FormModes.Create }, others);
 
   return <FormContext.Provider value={{ state: merged }}>{local.children}</FormContext.Provider>;
 }

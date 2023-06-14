@@ -3,6 +3,7 @@ import { FieldCmp, FormModes } from '~/core/types/form-types';
 import { InputContainer } from './InputContainer';
 import { useFormContext } from '~/core/data/form-context';
 import { FieldValues } from '@modular-forms/solid';
+import { formUtil } from '~/core/util/form-util';
 
 type InputProps<TF, TN> = FieldCmp<TF, TN> & {
   label: string;
@@ -14,8 +15,7 @@ export function Input<TF, TN>(props: InputProps<TF, TN>) {
   const merged = mergeProps({ type: 'text' }, props);
   const errorText = createMemo<string>((prev) => merged.field.error || prev || 'Invalid field!');
   const ctx = useFormContext().state;
-  const isViewMode = () => ctx.mode === FormModes.View;
-  const canEdit = () => !ctx.isLoading && !isViewMode();
+  const canEdit = () => formUtil.canEditField(ctx);
 
   const getValue = createMemo<string | number | undefined>((prevValue) => {
     const isUndefined = props.field.value === undefined;

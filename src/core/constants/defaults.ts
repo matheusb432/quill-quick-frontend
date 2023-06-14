@@ -4,6 +4,6 @@ export enum Defaults {
 }
 
 export enum ToastDefaults {
-  DurationMs = 4000,
+  DurationMs = 5000,
   TransitionDurationMs = 500,
 }

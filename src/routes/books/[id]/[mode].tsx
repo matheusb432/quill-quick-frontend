@@ -1,4 +1,5 @@
 import { SubmitHandler } from '@modular-forms/solid';
+import { useBeforeLeave, BeforeLeaveEventArgs } from '@solidjs/router';
 import { createMutation, createQuery } from '@tanstack/solid-query';
 import { Show, createEffect, onCleanup } from 'solid-js';
 import { useNavigate, useParams } from 'solid-start';
@@ -8,6 +9,7 @@ import { booksActions, useBooksForm } from '~/Book/data/store';
 import { Book } from '~/Book/types/book';
 import { Alert } from '~/components/Alert';
 import { Button } from '~/components/Button';
+import { PageError } from '~/components/PageError';
 import { PageTitle } from '~/components/PageTitle';
 import { RoutePaths } from '~/core/constants/route-paths';
 import { FormProvider } from '~/core/data/form-context';
@@ -32,6 +34,22 @@ export default function BooksDetail() {
     // TODO test
     // reset(formData[0]);
     booksActions.resetForm();
+  });
+
+  // TODO use root dialog
+  useBeforeLeave((e: BeforeLeaveEventArgs) => {
+    console.log(formData[0].dirty);
+    if (formData[0].dirty && !e.defaultPrevented) {
+      // preventDefault to block immediately and prompt user async
+      e.preventDefault();
+
+      setTimeout(() => {
+        if (window.confirm('Discard unsaved changes - are you sure?')) {
+          // user wants to proceed anyway so retry with force=true
+          e.retry(true);
+        }
+      }, 100);
+    }
   });
 
   createEffect(() => {
@@ -107,19 +125,18 @@ export default function BooksDetail() {
   return (
     <>
       <PageTitle>{title()}</PageTitle>
-      {/* TODO to component */}
-      <Show when={query.isError}>
-        <Alert type="error">
-          Failed to load book!
-          <div class="flex gap-x-6 justify-center items-center mb-4">
-            <Button mode="stroked" onClick={() => navigate(RoutePaths.Books)}>
-              Go to Books
-            </Button>
-            {<Button onClick={() => query.refetch()}>Try again</Button>}
-          </div>
-        </Alert>
-      </Show>
-      <FormProvider formData={formData} isLoading={isLoading()} mode={mode()}>
+      <PageError
+        when={query.isError}
+        message="Failed to load book!"
+        onRetry={() => query.refetch()}
+        goBackPath={RoutePaths.Books}
+      />
+      <FormProvider
+        formData={formData}
+        isLoading={isLoading()}
+        disabled={query.isError}
+        mode={mode()}
+      >
         <BookForm onSubmit={handleSubmit} onDelete={handleDelete} />
       </FormProvider>
     </>

@@ -10,7 +10,7 @@ import { Button } from './Button';
 import { Heading } from './Heading';
 
 export interface DialogProps {
-  data: DialogData;
+  data: Required<DialogData>;
   show: boolean;
 }
 
@@ -47,7 +47,12 @@ export function Dialog(props: DialogProps) {
           </header>
           <article class="max-h-32 overflow-y-auto p-4">{data().message}</article>
           <footer class="flex w-full items-center justify-center gap-x-6 border-t border-t-divider/30 p-4">
-            <Button onClick={data().onClose} theme={type()} mode="stroked">
+            <Button
+              onClick={data().onClose}
+              theme={type()}
+              disabled={data().isLoadingConfirm}
+              mode="stroked"
+            >
               Cancel
             </Button>
             <Button onClick={data().onConfirm} theme={type()} isLoading={data().isLoadingConfirm}>

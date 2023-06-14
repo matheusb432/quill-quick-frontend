@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { FormModes } from '../types/form-types';
+import { CanEditData, FormModes } from '../types/form-types';
 
 function getDefaults<Schema extends z.AnyZodObject>(schema: Schema) {
   const defaults: { [key: string]: unknown } = {};
@@ -26,9 +26,14 @@ function isEdit(formType: string) {
   return formType === FormModes.Edit;
 }
 
+function canEditField<T extends CanEditData>(data: T) {
+  return !data.isLoading && !data.disabled && data.mode !== FormModes.View;
+}
+
 export const formUtil = {
   getDefaults,
   isView,
   isCreate,
   isEdit,
+  canEditField,
 };

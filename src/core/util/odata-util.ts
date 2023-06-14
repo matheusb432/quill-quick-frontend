@@ -102,17 +102,6 @@ class ODataBuilder {
   }
 }
 
-/**
- * @description
- * Cria uma URL OData com base em `url` e `options`.
- *
- * @example
- * odataUtil.build('https://example.com', {
- *       filter: { name: 'John', age: [[ODataOperators.GreaterThanOrEqualTo, 20]] },
- *       orderBy: ['name', 'asc'],
- *     })
- * // Resultado: "https://example.com?$filter=(name eq 'John') and (age ge 20)&$orderby=name asc"
- */
 function build(url: string, options?: ODataOptions): string {
   return new ODataBuilder(url).buildUrl(options);
 }

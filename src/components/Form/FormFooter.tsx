@@ -15,7 +15,6 @@ interface FormFooterProps {
 export function FormFooter(props: FormFooterProps) {
   const ctx = useFormContext().state;
   const [form] = ctx.formData;
-  const isLoading = () => ctx.isLoading;
   const isEditMode = () => ctx.mode === FormModes.Edit;
   const isViewMode = () => ctx.mode === FormModes.View;
 
@@ -28,7 +27,7 @@ export function FormFooter(props: FormFooterProps) {
     <footer class="sticky bottom-0 left-0 flex items-center justify-between bg-primary-base py-4">
       <ButtonsWrapper>
         {canDelete() && (
-          <Button theme="danger" disabled={isLoading()} onClick={merged.onDelete}>
+          <Button theme="danger" disabled={ctx.isLoading || ctx.disabled} onClick={merged.onDelete}>
             Delete
           </Button>
         )}
@@ -36,11 +35,11 @@ export function FormFooter(props: FormFooterProps) {
       <ButtonsWrapper>
         <Show when={canRenderSubmit()}>
           {merged.withReset && (
-            <Button mode="stroked" disabled={isLoading()} onClick={() => reset(form)}>
+            <Button mode="stroked" disabled={ctx.isLoading} onClick={() => reset(form)}>
               Reset
             </Button>
           )}
-          <Button type="submit" isLoading={isLoading()} theme="primary">
+          <Button type="submit" isLoading={ctx.isLoading} disabled={ctx.disabled} theme="primary">
             {submitLabel()}
           </Button>
         </Show>
