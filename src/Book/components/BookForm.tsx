@@ -6,11 +6,11 @@ import { Input } from '~/components/Inputs/Input';
 import { Textarea } from '~/components/Inputs/Textarea';
 import { useFormContext } from '~/core/data/form-context';
 import { Book } from '../types/book';
+import { FormModes } from '~/core/types/form-types';
 
 interface BookFormProps {
   onSubmit: SubmitHandler<Book>;
   onDelete?: () => void;
-  mode?: string;
 }
 
 export function BookForm(props: BookFormProps) {

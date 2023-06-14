@@ -12,6 +12,7 @@ import { PageTitle } from '~/components/PageTitle';
 import { RoutePaths } from '~/core/constants/route-paths';
 import { FormProvider } from '~/core/data/form-context';
 import { toastStore } from '~/core/data/toast-store';
+import { FormModes } from '~/core/types/form-types';
 import { DetailParams } from '~/core/types/router-types';
 import { ToastAs, ToastData } from '~/core/types/toast-types';
 import { routerUtil } from '~/core/util/router-util';
@@ -23,7 +24,7 @@ export default function BooksDetail() {
   const navigate = useNavigate();
 
   // TODO redirect to mode if getMode is invalid
-  const mode = () => routerUtil.getMode(params.mode);
+  const mode = () => routerUtil.getMode(params.mode) as FormModes;
   const title = () => routerUtil.buildTitle(mode(), 'Book');
   const formData = useBooksForm();
 
@@ -108,7 +109,7 @@ export default function BooksDetail() {
       <PageTitle>{title()}</PageTitle>
       {/* TODO to component */}
       <Show when={query.isError}>
-        <Alert type="error" canDismiss>
+        <Alert type="error">
           Failed to load book!
           <div class="flex gap-x-6 justify-center items-center mb-4">
             <Button mode="stroked" onClick={() => navigate(RoutePaths.Books)}>
@@ -118,8 +119,8 @@ export default function BooksDetail() {
           </div>
         </Alert>
       </Show>
-      <FormProvider formData={formData} isLoading={isLoading()}>
-        <BookForm onSubmit={handleSubmit} onDelete={handleDelete} mode={mode()} />
+      <FormProvider formData={formData} isLoading={isLoading()} mode={mode()}>
+        <BookForm onSubmit={handleSubmit} onDelete={handleDelete} />
       </FormProvider>
     </>
   );

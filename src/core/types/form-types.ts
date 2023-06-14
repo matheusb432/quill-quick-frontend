@@ -1,6 +1,6 @@
 import { FieldValues, FieldPath, FieldStore, FieldElementProps } from '@modular-forms/solid';
 
-export enum FormTypes {
+export enum FormModes {
   Create = 'create',
   Edit = 'edit',
   View = 'view',

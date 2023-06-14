@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { FormTypes } from '../types/form-types';
+import { FormModes } from '../types/form-types';
 
 function getDefaults<Schema extends z.AnyZodObject>(schema: Schema) {
   const defaults: { [key: string]: unknown } = {};
@@ -15,15 +15,15 @@ function getDefaults<Schema extends z.AnyZodObject>(schema: Schema) {
 }
 
 function isView(formType: string) {
-  return formType === FormTypes.View;
+  return formType === FormModes.View;
 }
 
 function isCreate(formType: string) {
-  return formType === FormTypes.Create;
+  return formType === FormModes.Create;
 }
 
 function isEdit(formType: string) {
-  return formType === FormTypes.Edit;
+  return formType === FormModes.Edit;
 }
 
 export const formUtil = {

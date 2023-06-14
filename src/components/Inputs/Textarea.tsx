@@ -1,6 +1,6 @@
 import { FieldPath, FieldValues } from '@modular-forms/solid';
 import { createMemo, mergeProps } from 'solid-js';
-import { FieldCmp } from '~/core/types/form-types';
+import { FieldCmp, FormModes } from '~/core/types/form-types';
 import { InputContainer } from './InputContainer';
 import { useFormContext } from '~/core/data/form-context';
 
@@ -13,7 +13,8 @@ export function Textarea<TF, TN>(props: TextareaProps<TF, TN>) {
   const merged = mergeProps({}, props);
   const errorText = createMemo<string>((prev) => merged.field.error || prev || 'Invalid field!');
   const ctx = useFormContext().state;
-  const canEdit = () => !ctx.isLoading && !ctx.disabled;
+  const isViewMode = () => ctx.mode === FormModes.View;
+  const canEdit = () => !ctx.isLoading && !isViewMode();
 
   const getValue = createMemo<string>(() => {
     const isUndefined = props.field.value === undefined;
