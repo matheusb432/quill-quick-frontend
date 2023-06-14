@@ -2,6 +2,7 @@ import { JSX, mergeProps } from 'solid-js';
 import { strUtil } from '~/core/util/str-util';
 import { Loading } from './Loading';
 import { ActionTypes } from '~/core/types/action-types';
+import { Ping } from './Ping';
 
 export interface ButtonProps {
   children: JSX.Element;
@@ -23,18 +24,20 @@ export function Button(props: ButtonProps) {
     props,
   ) as Required<ButtonProps>;
   return (
-    <button
-      class={strUtil.cx(
-        `relative rounded-sm border px-4 py-2 ring-2 ring-secondary-text/5 ring-offset-1 ring-offset-primary-light/20 transition-colors focus:outline-none  disabled:pointer-events-none disabled:border-opacity-30 disabled:bg-opacity-30`,
-        getTheming(merged.mode, merged.theme),
-      )}
-      type={merged.type}
-      disabled={merged.disabled || merged.isLoading}
-      onClick={() => merged.onClick?.()}
-    >
-      {merged.children}
-      {merged.isLoading && <Loading />}
-    </button>
+    <div title={merged.isLoading ? 'Loading...' : ''}>
+      <button
+        class={strUtil.cx(
+          `relative flex gap-x-2 items-center rounded-sm border px-4 py-2 ring-2 ring-secondary-text/5 ring-offset-1 ring-offset-primary-light/20 transition-colors focus:outline-none  disabled:pointer-events-none disabled:border-opacity-30 disabled:bg-opacity-30`,
+          getTheming(merged.mode, merged.theme),
+        )}
+        type={merged.type}
+        disabled={merged.disabled || merged.isLoading}
+        onClick={() => merged.onClick?.()}
+      >
+        {merged.children}
+        {merged.isLoading && <Ping class="absolute -top-1 -right-1" />}
+      </button>
+    </div>
   );
 }
 

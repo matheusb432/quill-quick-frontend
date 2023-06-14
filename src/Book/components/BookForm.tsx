@@ -17,8 +17,7 @@ export function BookForm(props: BookFormProps) {
   const merged = mergeProps({}, props);
 
   const ctx = useFormContext<Book>().state;
-  const [form, { Form, Field }] = ctx.formData;
-  const isLoading = () => ctx.isLoading;
+  const [, { Form, Field }] = ctx.formData;
 
   return (
     <Form onSubmit={merged.onSubmit}>
@@ -39,7 +38,7 @@ export function BookForm(props: BookFormProps) {
       <Field name="summary">
         {(field, props) => <Textarea field={field} props={props} label="Summary" />}
       </Field>
-      <FormFooter of={form} onDelete={merged.onDelete} />
+      <FormFooter onDelete={merged.onDelete} />
     </Form>
   );
 }

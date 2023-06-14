@@ -7,15 +7,17 @@ import { bookApi } from '~/Book/data/api';
 import { useBooksForm } from '~/Book/data/store';
 import { Book } from '~/Book/types/book';
 import { PageTitle } from '~/components/PageTitle';
+import { RoutePaths } from '~/core/constants/route-paths';
 import { FormProvider } from '~/core/data/form-context';
 import { toastStore } from '~/core/data/toast-store';
 import { ToastAs, ToastData } from '~/core/types/toast-types';
+import { routerUtil } from '~/core/util/router-util';
 
 export default function BooksCreate() {
   const nextToast = (t: ToastData) => toastStore.actions.next(t);
   const navigate = useNavigate();
   const mutation = createMutation({
-    mutationKey: ['book', 'create'],
+    mutationKey: ['book', 'add'],
     mutationFn: (data: Book) => bookApi.create(data),
     onSuccess: (data) => {
       console.log(data);
@@ -26,7 +28,12 @@ export default function BooksCreate() {
         nextToast(ToastAs.warning('Failed to redirect to book details!'));
         return;
       }
-      navigate(`/books/${id}`);
+      // TODO to fn
+      const detailPath = routerUtil.replaceDetailParams(RoutePaths.BookDetail, {
+        id: id.toString(),
+        mode: 'edit',
+      });
+      navigate(detailPath);
     },
   });
 
