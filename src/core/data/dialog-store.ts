@@ -1,54 +1,62 @@
-import { createEffect, createRoot } from 'solid-js';
+import { ActionTypes } from '~/core/types/action-types';
+import { createRoot } from 'solid-js';
 import { createStore, produce } from 'solid-js/store';
-import { DialogBaseData, DialogData } from '../types/dialog-types';
+import { DialogAs, DialogBaseData, DialogData } from '../types/dialog-types';
+
+type StoreDialog = Required<DialogData> & { id: number };
 
 type DialogState = {
-  dialogs: Required<DialogData>[];
-  show: boolean;
+  dialogs: StoreDialog[];
 };
 
 const initialState: DialogState = {
   dialogs: [],
-  show: false,
 };
 
 function createDialogStore() {
   const [state, setState] = createStore<DialogState>(initialState);
   const isCurrentLoading = () => state.dialogs[0]?.isLoadingConfirm;
+  const show = () => state.dialogs.length > 0;
 
-  createEffect(() => {
-    // TODO clean
-    console.log(state);
-  });
-
-  function buildDialog(data: Required<DialogBaseData>): Required<DialogData> {
+  function buildDialog(data: Required<DialogBaseData>): Required<DialogData> & { id: number } {
+    const id = new Date().getTime();
     return {
       ...data,
-      onConfirm: () => handleConfirm(data.onConfirm),
-      onClose: () => handleClose(data.onClose),
+      id,
+      onConfirm: () => handleConfirm(id, data.onConfirm),
+      onClose: () => handleClose(id, data.onClose),
       isLoadingConfirm: false,
     };
   }
 
-  async function handleConfirm(fn: () => void | Promise<void>) {
+  async function handleConfirm(id: number, fn: () => void | Promise<void>) {
     try {
-      setCurrentLoading(true);
+      setCurrentLoading(id, true);
       await fn();
     } finally {
-      setCurrentLoading(false);
-      // TODO should only close the original dialog
-      closeCurrent();
+      setCurrentLoading(id, false);
+      closeById(id);
     }
   }
 
-  function setCurrentLoading(loading: boolean) {
-    if (state.dialogs.length === 0) return;
-    setState('dialogs', 0, 'isLoadingConfirm', loading);
+  function handleClose(id: number, fn?: () => void) {
+    fn?.();
+    closeById(id);
   }
 
-  function handleClose(fn?: () => void) {
-    fn?.();
-    closeCurrent();
+  function closeById(id: number) {
+    setState(
+      produce((state) => {
+        const index = state.dialogs.findIndex((d) => d.id === id);
+        if (index === -1) return;
+
+        state.dialogs.splice(index, 1);
+      }),
+    );
+  }
+
+  function setCurrentLoading(id: number, loading: boolean) {
+    setState('dialogs', (b) => b.id === id, 'isLoadingConfirm', loading);
   }
 
   /**
@@ -63,8 +71,6 @@ function createDialogStore() {
     setState(
       produce((state) => {
         state.dialogs.unshift(buildDialog(data));
-        console.log(state.dialogs);
-        state.show = true;
       }),
     );
   }
@@ -73,13 +79,15 @@ function createDialogStore() {
     setState(
       produce((state) => {
         state.dialogs.shift();
-        if (state.dialogs.length === 0) state.show = false;
       }),
     );
   }
 
   return {
     state,
+    computed: {
+      show,
+    },
     actions: {
       create,
       closeCurrent,
