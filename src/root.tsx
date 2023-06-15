@@ -1,5 +1,5 @@
 // @refresh reload
-import { QueryCache, QueryClient, QueryClientProvider } from '@tanstack/solid-query';
+import { MutationCache, QueryCache, QueryClient, QueryClientProvider } from '@tanstack/solid-query';
 import { Body, FileRoutes, Head, Html, Link, Meta, Routes, Scripts, Title } from 'solid-start';
 import { ToastQueue } from '~/components/ToastQueue';
 import { RootLayout } from './components/RootLayout';
@@ -9,24 +9,29 @@ import { ToastAs } from './core/types/toast-types';
 import './root.css';
 import { RootDialog } from './components/RootDialog';
 
-const ONE_HOUR = 1000 * 60 * 60;
+const TEN_MINUTES = 1000 * 60 * 10;
 
 export default function Root() {
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
         refetchOnMount: true,
-        staleTime: ONE_HOUR,
+        staleTime: TEN_MINUTES,
         retry: false,
         refetchOnWindowFocus: false,
       },
     },
     queryCache: new QueryCache({
-      onError: () => {
-        toastStore.actions.next(ToastAs.error('Failed to load data!'));
-      },
+      onError: handleNetworkError,
+    }),
+    mutationCache: new MutationCache({
+      onError: handleNetworkError,
     }),
   });
+
+  function handleNetworkError() {
+    toastStore.actions.next(ToastAs.error('There was an error connecting to the server!'));
+  }
 
   return (
     <Html lang="en">

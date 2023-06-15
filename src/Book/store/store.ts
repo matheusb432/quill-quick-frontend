@@ -8,6 +8,7 @@ const createBookForm = () =>
   createForm<Book>({
     validate: zodForm(zBook),
     initialValues: formUtil.getDefaults(zBook),
+    validateOn: 'blur',
   });
 
 type BookState = {

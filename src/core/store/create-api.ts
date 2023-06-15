@@ -17,11 +17,10 @@ export function createApi() {
     const headers = {
       'Content-Type': 'application/json',
       // TODO add auth token
-      // # NOTE mo
       // Authorization: `Bearer ${}`
     };
 
-    const responseData = apiUtil.responseToData(
+    return apiUtil.responseToData(
       api.request<TResponse>({
         method,
         headers,
@@ -29,8 +28,6 @@ export function createApi() {
         data,
       }),
     );
-
-    return responseData;
   }
 
   const omitId = <T>(obj: T): Omit<T, 'id'> => ({ ...obj, id: undefined });

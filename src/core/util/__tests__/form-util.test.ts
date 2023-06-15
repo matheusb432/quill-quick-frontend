@@ -19,4 +19,16 @@ describe('form-util', () => {
       expect(formUtil.getDefaults(schema)).toEqual(expected);
     });
   });
+
+  describe('nameToLabel', () => {
+    it('should convert form name to label', () => {
+      expect(formUtil.nameToLabel('formFieldName')).toEqual('Form Field Name');
+    });
+
+    it('should return an empty string if name is falsy', () => {
+      expect(formUtil.nameToLabel('')).toEqual('');
+      expect(formUtil.nameToLabel(null as never)).toEqual('');
+      expect(formUtil.nameToLabel(undefined as never)).toEqual('');
+    });
+  });
 });

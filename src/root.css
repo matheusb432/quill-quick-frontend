@@ -12,7 +12,7 @@
 
 @layer components {
   .input-fx {
-    @apply border-0 border-l-4 border-accent disabled:text-divider disabled:border-divider disabled:pointer-events-none disabled:bg-opacity-50 bg-primary-light text-xl placeholder-transparent hover:bg-primary-hover focus:border-accent focus:bg-primary-focus focus:placeholder-divider focus:outline-4 focus:outline-offset-4 focus:ring-accent;
+    @apply border-0 border-l-4 border-transparent border-l-green-700 disabled:text-divider disabled:border-divider disabled:pointer-events-none disabled:bg-opacity-30 bg-primary-light text-xl placeholder-transparent hover:bg-primary-hover focus:border-accent focus:bg-primary-focus focus:placeholder-divider focus:outline-4 focus:outline-offset-4 focus:ring-0;
   }
 }
 

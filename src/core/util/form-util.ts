@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { CanEditData, FormModes } from '../types/form-types';
+import { strUtil } from './str-util';
 
 function getDefaults<Schema extends z.AnyZodObject>(schema: Schema) {
   const defaults: { [key: string]: unknown } = {};
@@ -30,10 +31,18 @@ function canEditField<T extends CanEditData>(data: T) {
   return !data.isLoading && !data.disabled && data.mode !== FormModes.View;
 }
 
+function nameToLabel(name: string) {
+  if (!name) return '';
+
+  const words = name.split(/(?=[A-Z])/);
+  return strUtil.capitalizeFirst(words.join(' '));
+}
+
 export const formUtil = {
   getDefaults,
   isView,
   isCreate,
   isEdit,
   canEditField,
+  nameToLabel,
 };
