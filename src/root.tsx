@@ -1,6 +1,6 @@
 // @refresh reload
 import { QueryCache, QueryClient, QueryClientProvider } from '@tanstack/solid-query';
-import { Body, FileRoutes, Head, Html, Meta, Routes, Scripts, Title } from 'solid-start';
+import { Body, FileRoutes, Head, Html, Link, Meta, Routes, Scripts, Title } from 'solid-start';
 import { ToastQueue } from '~/components/ToastQueue';
 import { RootLayout } from './components/RootLayout';
 import { ElementIds } from './core/constants/element-ids';
@@ -32,6 +32,7 @@ export default function Root() {
     <Html lang="en">
       <Head>
         <Title>Quill Quick</Title>
+        <Link rel="icon" href="/logo.svg" />
         <Meta charset="utf-8" />
         <Meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
