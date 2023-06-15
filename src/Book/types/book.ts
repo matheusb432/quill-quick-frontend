@@ -6,7 +6,7 @@ export const zBook = z.object({
   author: z.string().min(1).max(100),
   publisher: z.string().max(50).optional(),
   summary: z.string().max(300).optional(),
-  pageCount: z.coerce.number().int().nonnegative().optional(),
+  pageCount: z.coerce.number().int().positive(),
 });
 
 export type Book = z.infer<typeof zBook>;

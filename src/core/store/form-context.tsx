@@ -1,32 +1,45 @@
-import { FieldValues, createForm } from '@modular-forms/solid';
-import { JSX, createContext, mergeProps, splitProps, useContext } from 'solid-js';
+import { FieldPath, FieldValues, createForm } from '@modular-forms/solid';
+import {
+  Accessor,
+  JSX,
+  createContext,
+  createSignal,
+  mergeProps,
+  splitProps,
+  useContext,
+} from 'solid-js';
 import { FormModes } from '../types/form-types';
 
-interface FormContextProps<TFieldValues extends FieldValues> {
-  state: Omit<Required<FormProviderProps<TFieldValues>>, 'children'>;
+interface FormContextProps<TForm extends FieldValues> {
+  state: Omit<Required<FormProviderProps<TForm>>, 'children'>;
+  labels: Accessor<Record<FieldPath<TForm>, string>>;
+  setLabels: (labels: Partial<Record<FieldPath<TForm>, string>>) => void;
 }
 
 const FormContext = createContext();
 
-type FormProviderProps<TFieldValues extends FieldValues> = {
+type FormProviderProps<TForm extends FieldValues> = {
   children: JSX.Element;
-  formData: ReturnType<typeof createForm<TFieldValues>>;
+  formData: ReturnType<typeof createForm<TForm>>;
   disabled?: boolean;
   isLoading?: boolean;
   mode?: FormModes;
 };
 
-export function FormProvider<TFieldValues extends FieldValues>(
-  props: FormProviderProps<TFieldValues>,
-) {
+export function FormProvider<TForm extends FieldValues>(props: FormProviderProps<TForm>) {
   const [local, others] = splitProps(props, ['children']);
   const merged = mergeProps({ isLoading: false, disabled: false, mode: FormModes.Create }, others);
+  const [labels, setLabels] = createSignal<Record<FieldPath<TForm>, string>>({} as never);
 
-  return <FormContext.Provider value={{ state: merged }}>{local.children}</FormContext.Provider>;
+  return (
+    <FormContext.Provider value={{ state: merged, labels, setLabels }}>
+      {local.children}
+    </FormContext.Provider>
+  );
 }
 
-export function useFormContext<TFieldValues extends FieldValues>() {
-  const context = useContext<FormContextProps<TFieldValues>>(FormContext as never);
+export function useFormContext<TForm extends FieldValues>() {
+  const context = useContext<FormContextProps<TForm>>(FormContext as never);
 
   if (!context) throw new Error('useFormContext: cannot find a FormContext');
 

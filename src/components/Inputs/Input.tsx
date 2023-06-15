@@ -1,13 +1,10 @@
-import { createEffect, createMemo, mergeProps } from 'solid-js';
-import { FieldCmp, FormModes } from '~/core/types/form-types';
-import { InputContainer } from './InputContainer';
+import { createMemo, mergeProps } from 'solid-js';
 import { useFormContext } from '~/core/store/form-context';
-import { FieldValues, getValues } from '@modular-forms/solid';
+import { FieldCmp } from '~/core/types/form-types';
 import { formUtil } from '~/core/util/form-util';
-import { create } from 'domain';
+import { InputContainer } from './InputContainer';
 
 type InputProps<TF, TN> = FieldCmp<TF, TN> & {
-  label: string;
   type?: 'text' | 'number' | 'email' | 'password';
   placeholder?: string;
 };
@@ -15,8 +12,11 @@ type InputProps<TF, TN> = FieldCmp<TF, TN> & {
 export function Input<TF, TN>(props: InputProps<TF, TN>) {
   const merged = mergeProps({ type: 'text' }, props);
   const errorText = createMemo<string>((prev) => merged.field.error || prev || 'Invalid field!');
-  const ctx = useFormContext().state;
-  const canEdit = () => formUtil.canEditField(ctx);
+  const { state, labels } = useFormContext();
+  const canEdit = () => formUtil.canEditField(state);
+  const name = () => merged.field.name;
+  const label = () => labels()[name()] || formUtil.nameToLabel(name());
+  const placeholder = () => merged.placeholder || `Enter the ${label()}`;
 
   const getValue = createMemo<string | number | undefined>((prevValue) => {
     const isUndefined = props.field.value === undefined;
@@ -31,18 +31,18 @@ export function Input<TF, TN>(props: InputProps<TF, TN>) {
 
   return (
     <InputContainer
-      name={merged.field.name}
-      label={merged.label}
+      name={name()}
+      label={label()}
       isError={!!merged.field.error}
-      isLoading={ctx.isLoading}
+      isLoading={state.isLoading}
       errorText={errorText()}
     >
       <input
         {...merged.props}
-        id={merged.field.name}
+        id={name()}
         value={getValue()}
         class="peer input-fx form-input h-16 pb-0 transition-all"
-        placeholder={merged.placeholder || `Enter the ${merged.label}`}
+        placeholder={placeholder()}
         type={merged.type}
         disabled={!canEdit()}
       />

@@ -1,34 +1,22 @@
-import { getErrors, reset } from '@modular-forms/solid';
-import { For, Show, mergeProps } from 'solid-js';
+import { reset } from '@modular-forms/solid';
+import { Show, mergeProps } from 'solid-js';
 import { useFormContext } from '~/core/store/form-context';
-import { Button } from '../Button';
-import { ButtonsWrapper } from '../ButtonsWrapper';
 import { FormModes } from '~/core/types/form-types';
 import { strUtil } from '~/core/util/str-util';
-import { DebugForm } from '../_dev-utils/DebugForm';
-import { Alert } from '../Alert';
-import { formUtil } from '~/core/util/form-util';
+import { Button } from '../Button';
+import { ButtonsWrapper } from '../ButtonsWrapper';
+import { InvalidFormAlert } from './InvalidFormAlert';
 
 interface FormFooterProps {
   withReset?: boolean;
   onDelete?: () => void;
   submitLabel?: string;
-  names?: Record<string, string>;
 }
 
 export function FormFooter(props: FormFooterProps) {
   const ctx = useFormContext().state;
   const [form] = ctx.formData;
-  const errorFields = () => {
-    const fieldNames = [];
-    for (const key in getErrors(form)) {
-      const value = props.names?.[key] || formUtil.nameToLabel(key);
 
-      fieldNames.push(value);
-    }
-
-    return fieldNames;
-  };
   const isEditMode = () => ctx.mode === FormModes.Edit;
   const isViewMode = () => ctx.mode === FormModes.View;
 
@@ -39,23 +27,7 @@ export function FormFooter(props: FormFooterProps) {
 
   return (
     <>
-      <DebugForm form={form} />
-      <Show when={errorFields().length > 0}>
-        <Alert type="warning" canDismiss title="Invalid Fields">
-          <span>
-            The fields
-            <For each={errorFields()}>
-              {(fieldName, idx) => (
-                <span>
-                  {idx() !== 0 && ','}
-                  {` ${fieldName}`}
-                </span>
-              )}
-            </For>{' '}
-            are invalid. Please enter valid values for them to submit the form.
-          </span>
-        </Alert>
-      </Show>
+      <InvalidFormAlert />
       <footer class="sticky bottom-0 bg-primary-base left-0 flex items-center justify-between py-4">
         <ButtonsWrapper>
           {canDelete() && (

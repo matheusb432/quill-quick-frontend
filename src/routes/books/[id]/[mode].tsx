@@ -27,19 +27,17 @@ export default function BooksDetail() {
   const navigate = useNavigate();
   const api = createBookApi();
 
-  // TODO redirect to mode if getMode is invalid
   const mode = () => routerUtil.getMode(params.mode) as FormModes;
   const title = () => routerUtil.buildTitle(mode(), 'Book');
   const formData = useBooksForm();
 
   onCleanup(() => {
-    // TODO test
-    // reset(formData[0]);
     booksActions.resetForm();
   });
 
   // TODO use root dialog
   useBeforeLeave((e: BeforeLeaveEventArgs) => {
+    // TODO FIX do not validate after submit
     console.log(formData[0].dirty);
     if (formData[0].dirty && !e.defaultPrevented) {
       // preventDefault to block immediately and prompt user async
@@ -121,7 +119,6 @@ export default function BooksDetail() {
     booksActions.resetForm(query.data);
   });
 
-  // TODO test
   const handleSubmit: SubmitHandler<Book> = (data) => {
     switch (mode()) {
       case 'edit':
@@ -136,7 +133,6 @@ export default function BooksDetail() {
   };
 
   function handleDelete() {
-    // TODO implement modal & logic
     dialogStore.actions.asDanger({
       title: 'Delete Book',
       message: 'Are you sure you want to delete this book?',

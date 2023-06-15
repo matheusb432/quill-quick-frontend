@@ -21,7 +21,7 @@ export default function BooksCreate() {
     mutationKey: ['book', 'add'],
     mutationFn: (data: Book) => bookApi.create(data),
     onSuccess: (data) => {
-      console.log(data);
+      // TODO to hook?
       const id = data?.id;
 
       nextToast(ToastAs.success('Book created!'));
@@ -38,7 +38,6 @@ export default function BooksCreate() {
     },
   });
 
-  // TODO test
   const handleSubmit: SubmitHandler<Book> = (data) => {
     createMut.mutate(data);
   };

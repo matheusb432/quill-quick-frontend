@@ -34,7 +34,7 @@ export function Alert(props: AlertProps) {
     <Show when={show() || merged.alwaysShow}>
       <div
         class={strUtil.cx(
-          'my-6 flex flex-col justify-center gap-y-2 rounded-lg border px-4 py-3 text-xl',
+          'mb-6 flex flex-col justify-center gap-y-2 rounded-lg border px-4 py-3 text-xl',
           getTheming(merged.type),
           merged.class,
         )}

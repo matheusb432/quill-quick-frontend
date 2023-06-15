@@ -9,8 +9,8 @@ export function DebugForm<T extends FieldValues, R extends ResponseData>(
 ) {
   return (
     <>
-      <p>{JSON.stringify(getErrors(props.form))}</p>
-      <p>{JSON.stringify(getValues(props.form))}</p>
+      <p>Errors - {JSON.stringify(getErrors(props.form))}</p>
+      <p>Values - {JSON.stringify(getValues(props.form))}</p>
       <p>
         Submit data - count: {JSON.stringify(props.form.submitCount)} submitting:{' '}
         {JSON.stringify(props.form.submitting)} invalid: {JSON.stringify(props.form.invalid)}

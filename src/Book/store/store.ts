@@ -17,7 +17,6 @@ type BookState = {
 
 function createBooksStore() {
   const formData = createBookForm();
-  // TODO expose only necessary form data
   const [state] = createStore<BookState>({ formData });
 
   function resetForm(initialValues?: Book) {
