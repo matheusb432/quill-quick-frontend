@@ -8,6 +8,7 @@ import { toastStore } from './core/store/toast-store';
 import { ToastAs } from './core/types/toast-types';
 import './root.css';
 import { RootDialog } from './components/RootDialog';
+import { setZodGlobalErrorMap } from './core/constants/zod-error-map';
 
 const TEN_MINUTES = 1000 * 60 * 10;
 
@@ -28,6 +29,8 @@ export default function Root() {
       onError: handleNetworkError,
     }),
   });
+
+  setZodGlobalErrorMap();
 
   function handleNetworkError() {
     toastStore.actions.next(ToastAs.error('There was an error connecting to the server!'));

@@ -20,8 +20,7 @@ type TFieldElementProps<TForm, TName> = TForm extends FieldValues
   : FieldElementProps<never, never>;
 
 export type FieldCmp<TForm, TName> = {
-  field: TFieldStore<TForm, TName>;
-  props: TFieldElementProps<TForm, TName>;
+  fieldArgs: [TFieldStore<TForm, TName>, TFieldElementProps<TForm, TName>];
 };
 
 export type SelectItemData = {

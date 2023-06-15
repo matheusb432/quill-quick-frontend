@@ -20,7 +20,7 @@ const FormContext = createContext();
 
 type FormProviderProps<TForm extends FieldValues> = {
   children: JSX.Element;
-  formData: ReturnType<typeof createForm<TForm>>;
+  form: ReturnType<typeof createForm<TForm>>;
   disabled?: boolean;
   isLoading?: boolean;
   mode?: FormModes;

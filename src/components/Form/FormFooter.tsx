@@ -15,7 +15,7 @@ interface FormFooterProps {
 
 export function FormFooter(props: FormFooterProps) {
   const ctx = useFormContext().state;
-  const [form] = ctx.formData;
+  const [form] = ctx.form;
 
   const isEditMode = () => ctx.mode === FormModes.Edit;
   const isViewMode = () => ctx.mode === FormModes.View;

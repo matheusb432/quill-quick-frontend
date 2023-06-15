@@ -1,11 +1,11 @@
-import { SubmitHandler } from '@modular-forms/solid';
+import { SubmitHandler, reset } from '@modular-forms/solid';
 import { useBeforeLeave, BeforeLeaveEventArgs } from '@solidjs/router';
 import { createMutation, createQuery } from '@tanstack/solid-query';
 import { Show, createEffect, onCleanup } from 'solid-js';
 import { useNavigate, useParams } from 'solid-start';
 import { BookForm } from '~/Book/components/BookForm';
 import { createBookApi } from '~/Book/store/api';
-import { booksActions, useBooksForm } from '~/Book/store/store';
+import { createBookForm } from '~/Book/store/form';
 import { Book } from '~/Book/types/book';
 import { Alert } from '~/components/Alert';
 import { Button } from '~/components/Button';
@@ -26,20 +26,23 @@ export default function BooksDetail() {
   const id = () => +params.id;
   const navigate = useNavigate();
   const api = createBookApi();
+  // const { form } = createBookForm();
+  const form = createBookForm();
 
   const mode = () => routerUtil.getMode(params.mode) as FormModes;
   const title = () => routerUtil.buildTitle(mode(), 'Book');
-  const formData = useBooksForm();
+  // const formData = useBooksForm();
 
   onCleanup(() => {
-    booksActions.resetForm();
+    // booksActions.resetForm();
+    reset(form[0]);
   });
 
   // TODO use root dialog
   useBeforeLeave((e: BeforeLeaveEventArgs) => {
     // TODO FIX do not validate after submit
-    console.log(formData[0].dirty);
-    if (formData[0].dirty && !e.defaultPrevented) {
+    console.log(form[0].dirty);
+    if (form[0].dirty && !e.defaultPrevented) {
       // preventDefault to block immediately and prompt user async
       e.preventDefault();
 
@@ -116,7 +119,8 @@ export default function BooksDetail() {
       return;
     }
 
-    booksActions.resetForm(query.data);
+    // booksActions.resetForm(query.data);
+    reset(form[0], { initialValues: query.data });
   });
 
   const handleSubmit: SubmitHandler<Book> = (data) => {
@@ -149,12 +153,7 @@ export default function BooksDetail() {
         onRetry={() => query.refetch()}
         goBackPath={RoutePaths.Books}
       />
-      <FormProvider
-        formData={formData}
-        isLoading={isLoading()}
-        disabled={query.isError}
-        mode={mode()}
-      >
+      <FormProvider form={form} isLoading={isLoading()} disabled={query.isError} mode={mode()}>
         <BookForm onSubmit={handleSubmit} onDelete={handleDelete} />
       </FormProvider>
     </>

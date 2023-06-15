@@ -16,7 +16,7 @@ export function BookForm(props: BookFormProps) {
   const merged = mergeProps({}, props);
 
   const { state, setLabels } = useFormContext<Book>();
-  const [, { Form, Field }] = state.formData;
+  const [, { Form, Field }] = state.form;
 
   setLabels({
     pageCount: 'Pages',
@@ -24,15 +24,15 @@ export function BookForm(props: BookFormProps) {
 
   return (
     <Form onSubmit={merged.onSubmit}>
-      <Field name="title">{(field, props) => <Input field={field} props={props} />}</Field>
+      <Field name="title">{(...args) => <Input fieldArgs={args} />}</Field>
       <FormRow>
-        <Field name="publisher">{(field, props) => <Input field={field} props={props} />}</Field>
-        <Field name="author">{(field, props) => <Input field={field} props={props} />}</Field>
+        <Field name="publisher">{(...args) => <Input fieldArgs={args} />}</Field>
+        <Field name="author">{(...args) => <Input fieldArgs={args} />}</Field>
       </FormRow>
       <Field name="pageCount" type="number">
-        {(field, props) => <Input field={field} props={props} type="number" />}
+        {(...args) => <Input fieldArgs={args} type="number" />}
       </Field>
-      <Field name="summary">{(field, props) => <Textarea field={field} props={props} />}</Field>
+      <Field name="summary">{(...args) => <Textarea fieldArgs={args} />}</Field>
       <FormFooter onDelete={merged.onDelete} />
     </Form>
   );

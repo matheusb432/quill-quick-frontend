@@ -3,7 +3,7 @@ import { createMutation } from '@tanstack/solid-query';
 import { useNavigate } from 'solid-start';
 import { BookForm } from '~/Book/components/BookForm';
 import { createBookApi } from '~/Book/store/api';
-import { useBooksForm } from '~/Book/store/store';
+import { createBookForm } from '~/Book/store/form';
 import { Book } from '~/Book/types/book';
 import { PageTitle } from '~/components/PageTitle';
 import { RoutePaths } from '~/core/constants/route-paths';
@@ -15,11 +15,12 @@ import { routerUtil } from '~/core/util/router-util';
 export default function BooksCreate() {
   const nextToast = (t: ToastData) => toastStore.actions.next(t);
   const navigate = useNavigate();
-  const bookApi = createBookApi();
+  const api = createBookApi();
+  const form = createBookForm();
 
   const createMut = createMutation({
     mutationKey: ['book', 'add'],
-    mutationFn: (data: Book) => bookApi.create(data),
+    mutationFn: (data: Book) => api.create(data),
     onSuccess: (data) => {
       // TODO to hook?
       const id = data?.id;
@@ -45,7 +46,7 @@ export default function BooksCreate() {
   return (
     <>
       <PageTitle>New Book</PageTitle>
-      <FormProvider formData={useBooksForm()} isLoading={createMut.isLoading}>
+      <FormProvider form={form} isLoading={createMut.isLoading}>
         <BookForm onSubmit={handleSubmit} />
       </FormProvider>
     </>

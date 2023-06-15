@@ -6,7 +6,7 @@ import { Alert } from '../Alert';
 
 export function InvalidFormAlert() {
   const { state, labels } = useFormContext();
-  const [form] = state.formData;
+  const [form] = state.form;
 
   const canShow = () => !!form.submitCount && errorFields().length > 0;
   const errorFields = () => {
