@@ -1,4 +1,4 @@
-import { dialogStore } from '~/core/data/dialog-store';
+import { dialogStore } from '~/core/store/dialog-store';
 import { Dialog } from './Dialog';
 import { createMemo } from 'solid-js';
 import { DialogData } from '~/core/types/dialog-types';

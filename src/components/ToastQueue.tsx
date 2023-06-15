@@ -5,7 +5,7 @@ import { ToastData } from '~/core/types/toast-types';
 import { strUtil } from '~/core/util/str-util';
 import { Alert } from './Alert';
 import { Timer } from './Timer';
-import { toastStore } from '~/core/data/toast-store';
+import { toastStore } from '~/core/store/toast-store';
 import { Portal } from 'solid-js/web';
 import { ElementIds } from '~/core/constants/element-ids';
 

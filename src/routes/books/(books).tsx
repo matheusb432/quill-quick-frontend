@@ -1,10 +1,10 @@
 import { SubmitHandler } from '@modular-forms/solid';
 import { createSignal } from 'solid-js';
 import { BookForm } from '~/Book/components/BookForm';
-import { useBooksForm } from '~/Book/data/store';
+import { useBooksForm } from '~/Book/store/store';
 import { Book } from '~/Book/types/book';
 import { PageTitle } from '~/components/PageTitle';
-import { FormProvider } from '~/core/data/form-context';
+import { FormProvider } from '~/core/store/form-context';
 
 // TODO on details/edit, reset the form on cleanup
 export default function Books() {

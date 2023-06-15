@@ -1,7 +1,7 @@
 import { createMemo, mergeProps } from 'solid-js';
 import { FieldCmp, FormModes } from '~/core/types/form-types';
 import { InputContainer } from './InputContainer';
-import { useFormContext } from '~/core/data/form-context';
+import { useFormContext } from '~/core/store/form-context';
 import { FieldValues } from '@modular-forms/solid';
 import { formUtil } from '~/core/util/form-util';
 

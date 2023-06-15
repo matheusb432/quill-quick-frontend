@@ -1,7 +1,7 @@
 import { For, createMemo, mergeProps } from 'solid-js';
 import { FieldCmp, SelectItemData } from '~/core/types/form-types';
 import { InputContainer } from './InputContainer';
-import { useFormContext } from '~/core/data/form-context';
+import { useFormContext } from '~/core/store/form-context';
 
 type SelectProps<TF, TN> = FieldCmp<TF, TN> & {
   options: SelectItemData[];

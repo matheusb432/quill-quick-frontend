@@ -4,17 +4,17 @@ import { createMutation, createQuery } from '@tanstack/solid-query';
 import { Show, createEffect, onCleanup } from 'solid-js';
 import { useNavigate, useParams } from 'solid-start';
 import { BookForm } from '~/Book/components/BookForm';
-import { bookApi } from '~/Book/data/api';
-import { booksActions, useBooksForm } from '~/Book/data/store';
+import { createBookApi } from '~/Book/store/api';
+import { booksActions, useBooksForm } from '~/Book/store/store';
 import { Book } from '~/Book/types/book';
 import { Alert } from '~/components/Alert';
 import { Button } from '~/components/Button';
 import { PageError } from '~/components/PageError';
 import { PageTitle } from '~/components/PageTitle';
 import { RoutePaths } from '~/core/constants/route-paths';
-import { dialogStore } from '~/core/data/dialog-store';
-import { FormProvider } from '~/core/data/form-context';
-import { toastStore } from '~/core/data/toast-store';
+import { dialogStore } from '~/core/store/dialog-store';
+import { FormProvider } from '~/core/store/form-context';
+import { toastStore } from '~/core/store/toast-store';
 import { FormModes } from '~/core/types/form-types';
 import { DetailParams } from '~/core/types/router-types';
 import { ToastAs, ToastData } from '~/core/types/toast-types';
@@ -25,6 +25,7 @@ export default function BooksDetail() {
   const params = useParams<DetailParams>();
   const id = () => +params.id;
   const navigate = useNavigate();
+  const api = createBookApi();
 
   // TODO redirect to mode if getMode is invalid
   const mode = () => routerUtil.getMode(params.mode) as FormModes;
@@ -62,7 +63,7 @@ export default function BooksDetail() {
 
   const query = createQuery<Book>({
     queryKey: () => ['books', id()],
-    queryFn: () => bookApi.getById(id()),
+    queryFn: () => api.byId(id()),
     get enabled() {
       return !!id();
     },
@@ -72,25 +73,24 @@ export default function BooksDetail() {
   // TODO invalidate cache on success
   const updateMut = createMutation({
     mutationKey: ['book', 'update'],
-    mutationFn: (data: Book) => bookApi.update(id(), data),
+    mutationFn: (data: Book) => api.update(id(), data),
     onSuccess: () => {
-      console.log('mutated!');
       nextToast(ToastAs.success('Book successfully updated!'));
     },
   });
 
   const removeMut = createMutation({
     mutationKey: ['book', 'remove'],
-    mutationFn: () => bookApi.remove(id()),
+    mutationFn: () => api.del(id()),
     onSuccess: () => {
-      console.log('mutated!');
       nextToast(ToastAs.success('Book successfully deleted!'));
+      navigate(RoutePaths.Books);
     },
   });
 
   const duplicateMut = createMutation({
     mutationKey: ['book', 'duplicate'],
-    mutationFn: (data: Book) => bookApi.duplicate(data),
+    mutationFn: (data: Book) => api.duplicate(data),
     onSuccess: (data) => {
       const createdId = data?.id;
 

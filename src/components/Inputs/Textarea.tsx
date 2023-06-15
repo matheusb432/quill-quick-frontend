@@ -2,7 +2,7 @@ import { FieldPath, FieldValues } from '@modular-forms/solid';
 import { createMemo, mergeProps } from 'solid-js';
 import { FieldCmp, FormModes } from '~/core/types/form-types';
 import { InputContainer } from './InputContainer';
-import { useFormContext } from '~/core/data/form-context';
+import { useFormContext } from '~/core/store/form-context';
 import { formUtil } from '~/core/util/form-util';
 
 type TextareaProps<TF, TN> = FieldCmp<TF, TN> & {

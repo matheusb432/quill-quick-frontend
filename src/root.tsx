@@ -4,7 +4,7 @@ import { Body, FileRoutes, Head, Html, Meta, Routes, Scripts, Title } from 'soli
 import { ToastQueue } from '~/components/ToastQueue';
 import { RootLayout } from './components/RootLayout';
 import { ElementIds } from './core/constants/element-ids';
-import { toastStore } from './core/data/toast-store';
+import { toastStore } from './core/store/toast-store';
 import { ToastAs } from './core/types/toast-types';
 import './root.css';
 import { RootDialog } from './components/RootDialog';

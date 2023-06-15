@@ -1,6 +1,6 @@
 import { reset } from '@modular-forms/solid';
 import { Show, mergeProps } from 'solid-js';
-import { useFormContext } from '~/core/data/form-context';
+import { useFormContext } from '~/core/store/form-context';
 import { Button } from '../Button';
 import { ButtonsWrapper } from '../ButtonsWrapper';
 import { FormModes } from '~/core/types/form-types';
