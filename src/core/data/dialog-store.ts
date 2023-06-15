@@ -1,7 +1,7 @@
 import { ActionTypes } from '~/core/types/action-types';
 import { createRoot } from 'solid-js';
 import { createStore, produce } from 'solid-js/store';
-import { DialogAs, DialogBaseData, DialogData } from '../types/dialog-types';
+import { DialogAs, DialogBaseData, DialogData, NewDialog } from '../types/dialog-types';
 
 type StoreDialog = Required<DialogData> & { id: number };
 
@@ -75,6 +75,22 @@ function createDialogStore() {
     );
   }
 
+  /**
+   * @description
+   * Creates a new 'danger' type dialog and adds it to the start of the queue.
+   */
+  function asDanger(data: NewDialog) {
+    return create(DialogAs.danger(data));
+  }
+
+  /**
+   * @description
+   * Creates a new 'primary' type dialog and adds it to the start of the queue.
+   */
+  function asPrimary(data: NewDialog) {
+    return create(DialogAs.primary(data));
+  }
+
   function closeCurrent() {
     setState(
       produce((state) => {
@@ -89,7 +105,8 @@ function createDialogStore() {
       show,
     },
     actions: {
-      create,
+      asDanger,
+      asPrimary,
       closeCurrent,
     },
   };

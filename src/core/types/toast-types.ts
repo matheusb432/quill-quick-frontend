@@ -4,7 +4,7 @@ export interface ToastData {
   id: string | number;
   type: AlertTypes;
   message: string;
-  duration?: number;
+  durationMs?: number;
 }
 
 export class ToastAs {
@@ -12,29 +12,29 @@ export class ToastAs {
     type: AlertTypes,
     message: string,
     id?: string,
-    duration?: number,
+    durationMs?: number,
   ): ToastData {
     return {
       id: id ?? new Date().getTime(),
       type,
       message,
-      duration,
+      durationMs,
     };
   }
 
-  static success(message: string, duration?: number, id?: string): ToastData {
-    return this.create('success', message, id, duration);
+  static success(message: string, durationMs?: number, id?: string): ToastData {
+    return this.create('success', message, id, durationMs);
   }
 
-  static error(message: string, duration?: number, id?: string): ToastData {
-    return this.create('error', message, id, duration);
+  static error(message: string, durationMs?: number, id?: string): ToastData {
+    return this.create('error', message, id, durationMs);
   }
 
-  static info(message: string, duration?: number, id?: string): ToastData {
-    return this.create('info', message, id, duration);
+  static info(message: string, durationMs?: number, id?: string): ToastData {
+    return this.create('info', message, id, durationMs);
   }
 
-  static warning(message: string, duration?: number, id?: string): ToastData {
-    return this.create('warning', message, id, duration);
+  static warning(message: string, durationMs?: number, id?: string): ToastData {
+    return this.create('warning', message, id, durationMs);
   }
 }

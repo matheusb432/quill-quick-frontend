@@ -12,6 +12,7 @@ import { Button } from '~/components/Button';
 import { PageError } from '~/components/PageError';
 import { PageTitle } from '~/components/PageTitle';
 import { RoutePaths } from '~/core/constants/route-paths';
+import { dialogStore } from '~/core/data/dialog-store';
 import { FormProvider } from '~/core/data/form-context';
 import { toastStore } from '~/core/data/toast-store';
 import { FormModes } from '~/core/types/form-types';
@@ -68,12 +69,22 @@ export default function BooksDetail() {
   });
 
   // TODO queries & mutations to hooks?
+  // TODO invalidate cache on success
   const updateMut = createMutation({
     mutationKey: ['book', 'update'],
     mutationFn: (data: Book) => bookApi.update(id(), data),
     onSuccess: () => {
       console.log('mutated!');
-      nextToast(ToastAs.success('Book updated!'));
+      nextToast(ToastAs.success('Book successfully updated!'));
+    },
+  });
+
+  const removeMut = createMutation({
+    mutationKey: ['book', 'remove'],
+    mutationFn: () => bookApi.remove(id()),
+    onSuccess: () => {
+      console.log('mutated!');
+      nextToast(ToastAs.success('Book successfully deleted!'));
     },
   });
 
@@ -99,9 +110,15 @@ export default function BooksDetail() {
   const isLoading = () => query.isLoading || updateMut.isLoading;
 
   createEffect(() => {
-    if (query.isSuccess) {
-      booksActions.resetForm(query.data);
+    if (!query.isSuccess) return;
+
+    if (!query.data) {
+      nextToast(ToastAs.info(`Book with ID ${id()} not found! Redirecting to Books...`, 7000));
+      navigate(RoutePaths.Books);
+      return;
     }
+
+    booksActions.resetForm(query.data);
   });
 
   // TODO test
@@ -120,6 +137,11 @@ export default function BooksDetail() {
 
   function handleDelete() {
     // TODO implement modal & logic
+    dialogStore.actions.asDanger({
+      title: 'Delete Book',
+      message: 'Are you sure you want to delete this book?',
+      onConfirm: removeMut.mutate,
+    });
   }
 
   return (

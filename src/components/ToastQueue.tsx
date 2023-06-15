@@ -38,7 +38,7 @@ type ToastProps = {
 };
 
 function Toast(props: ToastProps) {
-  const duration = () => props.data.duration || ToastDefaults.DurationMs;
+  const duration = () => props.data.durationMs || ToastDefaults.DurationMs;
   const theming = () => getTheming(props.data.type);
   const timerTheming = () => timerClassMap[props.data.type];
   const toastId = () => props.data.id;
@@ -56,7 +56,10 @@ function Toast(props: ToastProps) {
 
   return (
     <div
-      class={strUtil.cx('fixed right-3 top-3 w-80 transition-all duration-500', slideAnimation())}
+      class={strUtil.cx(
+        'fixed right-3 top-3 min-w-[320px] max-w-xl transition-all duration-500',
+        slideAnimation(),
+      )}
     >
       <Alert
         class={strUtil.cx(theming(), 'text-md my-0')}
@@ -67,6 +70,7 @@ function Toast(props: ToastProps) {
         alwaysShow
       >
         {props.data.message}
+
         <Timer key={toastId()} durationMs={duration()} class={timerTheming()} />
       </Alert>
     </div>
@@ -78,14 +82,14 @@ function getTheming(type: AlertTypes) {
 }
 
 const classMap: Record<AlertTypes, string> = {
-  info: 'bg-black-100',
+  info: 'bg-info-base text-primary-text',
   error: 'bg-red-100',
   success: 'bg-green-100',
   warning: 'bg-yellow-100 text-secondary-text',
 };
 
 const timerClassMap: Record<AlertTypes, string> = {
-  info: 'bg-black-500',
+  info: 'bg-primary-text',
   error: 'bg-red-500',
   success: 'bg-accent',
   warning: 'bg-yellow-500',

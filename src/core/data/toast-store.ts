@@ -17,7 +17,7 @@ function createToastStore() {
   const [state, setState] = createStore<ToastState>(initialToastState);
   const activeToast = (): ToastData | undefined => state.queue[0];
   const nextId = (): string | number | undefined => state.queue[1]?.id;
-  const duration = () => activeToast()?.duration || ToastDefaults.DurationMs;
+  const duration = () => activeToast()?.durationMs || ToastDefaults.DurationMs;
   let closingTimeout: NodeJS.Timeout;
   let closedTimeout: NodeJS.Timeout;
 
