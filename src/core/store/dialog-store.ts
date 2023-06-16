@@ -1,4 +1,3 @@
-import { ActionTypes } from '~/core/types/action-types';
 import { createRoot } from 'solid-js';
 import { createStore, produce } from 'solid-js/store';
 import { DialogAs, DialogBaseData, DialogData, NewDialog } from '../types/dialog-types';
@@ -75,20 +74,16 @@ function createDialogStore() {
     );
   }
 
-  /**
-   * @description
-   * Creates a new 'danger' type dialog and adds it to the start of the queue.
-   */
   function asDanger(data: NewDialog) {
     return create(DialogAs.danger(data));
   }
 
-  /**
-   * @description
-   * Creates a new 'primary' type dialog and adds it to the start of the queue.
-   */
   function asPrimary(data: NewDialog) {
     return create(DialogAs.primary(data));
+  }
+
+  function asWarning(data: NewDialog) {
+    return create(DialogAs.warning(data));
   }
 
   function closeCurrent() {
@@ -107,6 +102,7 @@ function createDialogStore() {
     actions: {
       asDanger,
       asPrimary,
+      asWarning,
       closeCurrent,
     },
   };

@@ -48,9 +48,11 @@ const filledMap = {
     'text-primary-text bg-accent border-accent hover:bg-accent/80 focus:bg-accent/80 active:bg-accent/70',
   danger:
     'text-primary-text bg-red-600 border-red-500 hover:bg-red-800 focus:bg-red-800 active:bg-red-900',
+  warning:
+    'text-secondary-text bg-yellow-500 border-yellow-500 hover:bg-yellow-600 focus:bg-yellow-600 active:bg-yellow-700',
 };
 
-const classMap: Record<Modes, Record<Themes, string>> = {
+const classMap: Record<Modes, Record<ActionTypes, string>> = {
   filled: filledMap,
   fab: filledMap,
   stroked: {
@@ -58,10 +60,12 @@ const classMap: Record<Modes, Record<Themes, string>> = {
       'bg-primary-text text-secondary-text border-accent hover:bg-green-100 focus:bg-green-100 active:bg-green-200',
     danger:
       'bg-primary-text text-secondary-text border-red-500 hover:bg-red-100 focus:bg-red-100 active:bg-red-200',
+    warning:
+      'bg-primary-text text-secondary-text border-yellow-500 hover:bg-yellow-100 focus:bg-yellow-100 active:bg-yellow-200',
   },
 };
 
-function getTheming(mode: Modes = 'filled', theme: Themes = 'primary') {
+function getTheming(mode: Modes = 'filled', theme: ActionTypes = 'primary') {
   let classes = classMap[mode][theme];
 
   if (mode === 'fab') {
@@ -72,5 +76,4 @@ function getTheming(mode: Modes = 'filled', theme: Themes = 'primary') {
 }
 
 type Modes = 'filled' | 'stroked' | 'fab';
-type Themes = 'primary' | 'danger';
 type BtnTypes = 'button' | 'submit' | 'reset';

@@ -42,4 +42,8 @@ export class DialogAs {
   static primary(data: NewDialog) {
     return DialogAs.create('primary', data);
   }
+
+  static warning(data: NewDialog) {
+    return DialogAs.create('warning', data);
+  }
 }

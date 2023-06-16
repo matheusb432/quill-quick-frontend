@@ -1,11 +1,21 @@
 import { Slogan } from '~/Home/Slogan';
 import { Alert } from '~/components/Alert';
+import { Button } from '~/components/Button';
 import { Heading } from '~/components/Heading';
+import { dialogStore } from '~/core/store/dialog-store';
 
 export default function Home() {
   return (
     <>
       <Alert type="info">Greetings</Alert>
+      {/* TODO warning dialog */}
+      <Button
+        onClick={() =>
+          dialogStore.actions.asWarning({ message: 'helo', onConfirm: () => console.log('1') })
+        }
+      >
+        Click me
+      </Button>
 
       <header class="px-6 py-8">
         <Heading class="mb-4 font-sans font-normal">Welcome to Quill Quick</Heading>

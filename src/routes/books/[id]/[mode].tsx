@@ -1,14 +1,12 @@
 import { SubmitHandler, reset } from '@modular-forms/solid';
-import { useBeforeLeave, BeforeLeaveEventArgs } from '@solidjs/router';
+import { BeforeLeaveEventArgs, useBeforeLeave } from '@solidjs/router';
 import { createMutation, createQuery } from '@tanstack/solid-query';
-import { Show, createEffect, onCleanup } from 'solid-js';
+import { createEffect, onCleanup } from 'solid-js';
 import { useNavigate, useParams } from 'solid-start';
 import { BookForm } from '~/Book/components/BookForm';
 import { createBookApi } from '~/Book/store/api';
 import { createBookForm } from '~/Book/store/form';
 import { Book } from '~/Book/types/book';
-import { Alert } from '~/components/Alert';
-import { Button } from '~/components/Button';
 import { PageError } from '~/components/PageError';
 import { PageTitle } from '~/components/PageTitle';
 import { RoutePaths } from '~/core/constants/route-paths';
@@ -26,32 +24,25 @@ export default function BooksDetail() {
   const id = () => +params.id;
   const navigate = useNavigate();
   const api = createBookApi();
-  // const { form } = createBookForm();
   const form = createBookForm();
 
   const mode = () => routerUtil.getMode(params.mode) as FormModes;
   const title = () => routerUtil.buildTitle(mode(), 'Book');
-  // const formData = useBooksForm();
 
   onCleanup(() => {
-    // booksActions.resetForm();
     reset(form[0]);
   });
 
-  // TODO use root dialog
   useBeforeLeave((e: BeforeLeaveEventArgs) => {
-    // TODO FIX do not validate after submit
-    console.log(form[0].dirty);
-    if (form[0].dirty && !e.defaultPrevented) {
-      // preventDefault to block immediately and prompt user async
+    const canLeave = !form[0].dirty || form[0].submitted;
+    if (!canLeave && !e.defaultPrevented) {
       e.preventDefault();
 
-      setTimeout(() => {
-        if (window.confirm('Discard unsaved changes - are you sure?')) {
-          // user wants to proceed anyway so retry with force=true
-          e.retry(true);
-        }
-      }, 100);
+      dialogStore.actions.asWarning({
+        title: 'Unsaved Changes',
+        message: 'Are you sure you want to discard unsaved changes?',
+        onConfirm: () => e.retry(true),
+      });
     }
   });
 
@@ -77,6 +68,7 @@ export default function BooksDetail() {
     mutationFn: (data: Book) => api.update(id(), data),
     onSuccess: () => {
       nextToast(ToastAs.success('Book successfully updated!'));
+      navigate(RoutePaths.Books);
     },
   });
 
@@ -114,12 +106,11 @@ export default function BooksDetail() {
     if (!query.isSuccess) return;
 
     if (!query.data) {
-      nextToast(ToastAs.info(`Book with ID ${id()} not found! Redirecting to Books...`, 7000));
+      nextToast(ToastAs.info(`Book with ID ${id()} not found! Redirecting to Books...`));
       navigate(RoutePaths.Books);
       return;
     }
 
-    // booksActions.resetForm(query.data);
     reset(form[0], { initialValues: query.data });
   });
 

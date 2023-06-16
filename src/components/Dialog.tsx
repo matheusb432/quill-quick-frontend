@@ -1,13 +1,13 @@
 import { Portal } from 'solid-js/web';
 import { HIXCircle } from '~/assets/icons/HIXCircle';
 import { ElementIds } from '~/core/constants/element-ids';
-import { ActionTypes } from '~/core/types/action-types';
 import { DialogData } from '~/core/types/dialog-types';
 import { strUtil } from '~/core/util/str-util';
 import { ActionIcon } from './ActionIcon';
 import { Backdrop } from './Backdrop';
 import { Button } from './Button';
 import { Heading } from './Heading';
+import { ActionTypes } from '~/core/types/action-types';
 
 export interface DialogProps {
   data: Required<DialogData>;
@@ -68,4 +68,5 @@ export function Dialog(props: DialogProps) {
 const headerThemeMap: Record<ActionTypes, string> = {
   primary: 'bg-accent',
   danger: 'bg-red-500',
+  warning: 'bg-yellow-500 text-secondary-text',
 };
