@@ -23,18 +23,18 @@ export class ToastAs {
   }
 
   static success(message: string, durationMs?: number, id?: string): ToastData {
-    return this.create('success', message, id, durationMs);
+    return ToastAs.create('success', message, id, durationMs);
   }
 
   static error(message: string, durationMs?: number, id?: string): ToastData {
-    return this.create('error', message, id, durationMs);
+    return ToastAs.create('error', message, id, durationMs);
   }
 
   static info(message: string, durationMs?: number, id?: string): ToastData {
-    return this.create('info', message, id, durationMs);
+    return ToastAs.create('info', message, id, durationMs);
   }
 
   static warning(message: string, durationMs?: number, id?: string): ToastData {
-    return this.create('warning', message, id, durationMs);
+    return ToastAs.create('warning', message, id, durationMs);
   }
 }

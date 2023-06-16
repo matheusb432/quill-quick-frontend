@@ -18,16 +18,16 @@ export default function BooksDetail() {
   const params = useParams<DetailParams>();
   const id = () => +params.id;
 
-  const { form, queryAs, mutationAs, onBeforeLeave } = createBook();
+  const { form, queryAs, mutations, onBeforeLeave, redirectToDetails } = createBook();
   const query = queryAs.byId(id);
 
   const { mode, title } = createDetailPage('Book', query, RoutePaths.Books);
 
   useBeforeLeave(onBeforeLeave);
 
-  const updateMut = mutationAs.update(id);
-  const delMut = mutationAs.del(id, true);
-  const duplicateMut = mutationAs.duplicate();
+  const updateMut = mutations.update;
+  const delMut = mutations.del;
+  const duplicateMut = mutations.duplicate;
 
   const isLoading = () =>
     query.isLoading || updateMut.isLoading || delMut.isLoading || duplicateMut.isLoading;
@@ -41,10 +41,15 @@ export default function BooksDetail() {
   const handleSubmit: SubmitHandler<Book> = (data) => {
     switch (mode()) {
       case 'edit':
-        updateMut.mutate(data);
+        updateMut.mutate({ ...data, id: id() });
         break;
       case 'duplicate':
-        duplicateMut.mutate(data);
+        duplicateMut.mutate(data, {
+          onSuccess(data) {
+            console.log('redirecting...');
+            redirectToDetails(data?.id);
+          },
+        });
         break;
       default:
         toastStore.actions.asError('Invalid form submission!');
@@ -55,7 +60,7 @@ export default function BooksDetail() {
     dialogStore.actions.asDanger({
       title: 'Delete Book',
       message: 'Are you sure you want to delete this book?',
-      onConfirm: delMut.mutate,
+      onConfirm: () => delMut.mutate(id()),
     });
   }
 

@@ -9,6 +9,7 @@ import { ToastAs } from './core/types/toast-types';
 import './root.css';
 import { RootDialog } from './components/RootDialog';
 import { setZodGlobalErrorMap } from './core/constants/zod-error-map';
+import { AxiosError } from 'axios';
 
 const TEN_MINUTES = 1000 * 60 * 10;
 
@@ -23,14 +24,27 @@ export default function Root() {
       },
     },
     queryCache: new QueryCache({
-      onError: handleNetworkError,
+      onError: (error) => handleError(error as Error | AxiosError),
     }),
     mutationCache: new MutationCache({
-      onError: handleNetworkError,
+      onError: (error) => handleError(error as Error | AxiosError),
     }),
   });
 
   setZodGlobalErrorMap();
+
+  function handleError(error: Error | AxiosError) {
+    if (error instanceof AxiosError) {
+      handleNetworkError();
+      return;
+    }
+
+    handleGenericError();
+  }
+
+  function handleGenericError() {
+    toastStore.actions.next(ToastAs.error('Something went wrong!'));
+  }
 
   function handleNetworkError() {
     toastStore.actions.next(ToastAs.error('There was an error connecting to the server!'));

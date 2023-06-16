@@ -10,7 +10,19 @@ async function responseToData<T>(request: Promise<AxiosResponse<T>>): Promise<T>
   return response.data;
 }
 
+function buildNotifications(name: string) {
+  return {
+    success: {
+      create: `${name} created successfully!`,
+      update: `${name} updated successfully!`,
+      delete: `${name} deleted successfully!`,
+      duplicate: `${name} duplicated successfully!`,
+    },
+  };
+}
+
 export const apiUtil = {
   createUrl,
   responseToData,
+  buildNotifications,
 };

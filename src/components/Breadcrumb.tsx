@@ -26,9 +26,7 @@ export function Breadcrumb(props: BreadcrumbProps) {
   return (
     <nav>
       <ol>
-        <For each={crumbss}>
-          <li></li>
-        </For>
+        <For each={crumbss}>{(crumb) => <li></li>}</For>
       </ol>
     </nav>
   );
