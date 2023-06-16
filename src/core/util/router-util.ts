@@ -41,10 +41,26 @@ function unsavedChangesGuard(e: BeforeLeaveEventArgs, dirty: boolean, submitted:
   });
 }
 
+function toSearchParams(query: string): Record<string, string> {
+  return searchParamsToRecord(new URLSearchParams(query));
+}
+
+function searchParamsToRecord(searchParams: URLSearchParams): Record<string, string> {
+  const obj: Record<string, string> = {};
+
+  for (const [key, value] of searchParams) {
+    obj[key] = value;
+  }
+
+  return obj;
+}
+
 export const routerUtil = {
   replaceParams,
   replaceDetailParams,
   getMode,
   buildTitle,
   unsavedChangesGuard,
+  toSearchParams,
+  searchParamsToRecord,
 };

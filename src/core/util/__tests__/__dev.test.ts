@@ -1,7 +1,7 @@
-import { ODataOperators, ODataOptions } from '../../types/odata-types';
+import { ODataOperators } from '../../types/odata-types';
 import { odataUtil } from '../odata-util';
 export function runBenchmark(fn: () => void): void {
-  const iterations = 1_00_000;
+  const iterations = 1_000_000;
   const startTime = Date.now();
 
   for (let i = 0; i < iterations; i++) {
@@ -16,19 +16,12 @@ export function runBenchmark(fn: () => void): void {
 
 //.skip
 it('should benchmark', () => {
-  // fn: 130ms
-  //   runBenchmark(() => odataUtil.query('/books', { filter: { id: 1 } }));
-  // fn: 260ms
-  //   runBenchmark(() =>
-  //     odataUtil.query('/books', {
-  //       filter: { name: 'John', age: undefined, lastName: [[ODataOperators.Contains, undefined]] },
-  //       orderBy: ['name', 'asc'],
-  //     }),
-  //   );
-
   const date = new Date();
-  // 310ms
-  // 1M - 3100ms
+  // 1M foreach - 4300ms
+  // 1M forof - 4300ms
+  // 1M forin - 3800ms
+  // 1M forin & no recursion - 3650ms
+  // 1M forin & no recursion & no undefined - 3600ms
   runBenchmark(() =>
     odataUtil.query('/books', {
       filter: {
@@ -41,23 +34,14 @@ it('should benchmark', () => {
         'yetAnotherProp/its/nested': date,
         lastName: [[ODataOperators.Contains, undefined]],
       },
-      orderBy: ['name', 'asc'],
-    }),
-  );
-
-  console.warn(
-    odataUtil.query('/books', {
-      filter: {
-        name: 'John',
-        age: undefined,
-        anotherProp: [
-          [ODataOperators.GreaterThanOrEqualTo, 50],
-          [ODataOperators.LessThanOrEqualTo, 100],
-        ],
-        'yetAnotherProp/its/nested': date,
-        lastName: [[ODataOperators.Contains, undefined]],
-      },
-      orderBy: ['name', 'asc'],
+      orderBy: [
+        [['nested', 'prop', 'test'], 'asc'],
+        [['title'], 'asc'],
+        [['city', 'date'], 'desc'],
+      ],
+      count: true,
+      skip: 30,
+      top: 10,
     }),
   );
 });

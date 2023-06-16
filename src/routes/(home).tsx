@@ -1,12 +1,14 @@
 import { Slogan } from '~/Home/Slogan';
+import { Breadcrumb } from '~/components/Breadcrumb';
 import { Heading } from '~/components/Heading';
 
 export default function Home() {
   return (
     <>
+      <Breadcrumb crumbs={[]} />
       <header class="px-6 py-8">
         <Heading class="mb-4 font-sans font-normal">Welcome to Quill Quick</Heading>
-        <Slogan />
+        {/* <Slogan /> */}
       </header>
       <p class="align-center my-4 flex justify-center gap-x-4">
         <span class="font-sans text-4xl font-bold text-green-300">Home</span>

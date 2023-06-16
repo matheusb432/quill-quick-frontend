@@ -67,44 +67,46 @@ const builder = {
     return queryUrl;
   },
   query(options: ODataOptions): string {
-    let queryString = '';
+    let queryStr = '';
 
-    if (options.select) queryString += `$select=${options.select.join(',')}&`;
-    if (options.expand) queryString += `$expand=${options.expand.join(',')}&`;
-    queryString += builder.getFilter(options.filter);
-    if (options.top != null) queryString += `$top=${options.top}&`;
-    if (options.skip != null) queryString += `$skip=${options.skip}&`;
-    queryString += builder.getOrderBy(options.orderBy);
-    if (options.count) queryString += `$count=${options.count}&`;
+    if (options.select) queryStr += `$select=${options.select.join(',')}&`;
+    if (options.expand) queryStr += `$expand=${options.expand.join(',')}&`;
+    queryStr += builder.getFilter(options.filter);
+    if (options.top != null) queryStr += `$top=${options.top}&`;
+    if (options.skip != null) queryStr += `$skip=${options.skip}&`;
+    queryStr += builder.getOrderBy(options.orderBy);
+    if (options.count) queryStr += `$count=${options.count}&`;
 
-    // return queryString.substring(0, -1);
-    return queryString.slice(0, -1);
+    return queryStr.slice(0, -1);
   },
   filter(filter: ODataFilter): string {
-    let filterString = '';
+    let filterStr = '';
 
-    for (const [key, value] of Object.entries(filter)) {
+    for (const key in filter) {
+      const value = filter[key];
       if (value === undefined) continue;
 
-      if (value instanceof Array) {
-        value.forEach(([operator, filterValue]) => {
-          const normalized = builder.normalize(filterValue);
+      if (!Array.isArray(value)) {
+        filterStr += builder.createFilter(key, ODataOperators.EqualTo, value);
+        continue;
+      }
 
-          if (normalized === undefined) return;
-          if (operator === 'contains') {
-            filterString += `contains(${key}, ${normalized}) and `;
-            return;
-          }
-
-          filterString += `(${key} ${operator} ${normalized}) and `;
-        });
-      } else {
-        const normalized = builder.normalize(value);
-        filterString += normalized !== undefined ? `(${key} eq ${normalized}) and ` : '';
+      for (const [operator, filterValue] of value) {
+        filterStr += builder.createFilter(key, operator, filterValue);
       }
     }
 
-    return filterString.slice(0, -5);
+    return filterStr.slice(0, -5);
+  },
+  createFilter(key: string, operator: ODataOperators, value: ODataFilterValue): string {
+    const normalized = builder.normalize(value);
+
+    if (normalized === undefined) return '';
+    if (operator === ODataOperators.Contains) {
+      return `contains(${key}, ${normalized}) and `;
+    }
+
+    return `(${key} ${operator} ${normalized}) and `;
   },
   normalize(value: ODataFilterValue): string | undefined {
     if (value == null) return undefined;
@@ -132,13 +134,15 @@ const builder = {
     if (!orderBy) return;
 
     if (orderBy[1] === 'asc' || orderBy[1] === 'desc') {
-      builder.pushOrderBy(orderByRes, [orderBy as ODataOrderBy]);
+      orderByRes.push(builder.formatNestableItem(orderBy as ODataOrderBy));
       return;
     }
-    orderBy.forEach((x) => {
-      const [prop, direction] = x;
 
-      orderByRes.push(`${Array.isArray(prop) ? prop.join('/') : prop} ${direction}`);
-    });
+    for (const item of orderBy as ODataOrderBy[]) {
+      orderByRes.push(builder.formatNestableItem(item));
+    }
+  },
+  formatNestableItem(item: ODataOrderBy): string {
+    return `${Array.isArray(item[0]) ? item[0].join('/') : item[0]} ${item[1]}`;
   },
 };

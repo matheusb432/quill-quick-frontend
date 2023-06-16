@@ -16,7 +16,8 @@ export function createBook() {
   const client = useQueryClient();
   const api = createBookApi();
   const form = createBookForm();
-  const baseKey = 'books';
+  const keys = api.keys;
+  const baseKey = keys.base;
 
   function onBeforeLeave(e: BeforeLeaveEventArgs) {
     const { dirty, submitted } = form[0];
@@ -25,14 +26,14 @@ export function createBook() {
 
   const createPaginatedQuery = (opt: Accessor<PaginationOptions>) => {
     return createQuery<PaginatedResult<Book>>({
-      queryKey: () => [baseKey, opt()],
+      queryKey: () => api.appendParamsToKey(baseKey, opt()),
       queryFn: () => api.paginated(opt()),
     });
   };
 
   const createDetailQuery = (id: Accessor<number>) => {
     return createQuery<Book>({
-      queryKey: () => [baseKey, id()],
+      queryKey: () => [...baseKey, id()],
       queryFn: () => api.byId(id()),
       get enabled() {
         return !!id();
@@ -42,7 +43,7 @@ export function createBook() {
 
   const createUpdateMutation = (id: Accessor<number>) => {
     return createMutation({
-      mutationKey: [baseKey, 'update'],
+      mutationKey: keys.update,
       mutationFn: (data: Book) => api.update(id(), data),
       onSuccess: () => {
         toastStore.actions.asSuccess('Book successfully updated!');
@@ -53,7 +54,7 @@ export function createBook() {
 
   const createDelMutation = (id: Accessor<number>, redirect: boolean) => {
     return createMutation({
-      mutationKey: [baseKey, 'remove'],
+      mutationKey: keys.del,
       mutationFn: () => api.del(id()),
       onSuccess: () => {
         toastStore.actions.asSuccess('Book successfully deleted!');
@@ -65,7 +66,7 @@ export function createBook() {
 
   const createDuplicateMutation = () => {
     return createMutation({
-      mutationKey: [baseKey, 'duplicate'],
+      mutationKey: keys.duplicate,
       mutationFn: (data: Book) => api.duplicate(data),
       onSuccess: onCreateSuccess,
     });
@@ -73,7 +74,7 @@ export function createBook() {
 
   const createAddMutation = () => {
     return createMutation({
-      mutationKey: ['book', 'add'],
+      mutationKey: keys.add,
       mutationFn: (data: Book) => api.create(data),
       onSuccess: onCreateSuccess,
     });

@@ -6,11 +6,12 @@ import { odataUtil } from '~/core/util/odata-util';
 import { Book } from '../types/book';
 
 export function createBookApi() {
-  const { send, omitId, withId } = createApi();
+  const { send, omitId, withId, keys, appendParamsToKey } = createApi('/books');
 
-  const get = (opt: ODataOptions) => send<Book[]>('get', odataUtil.build('/books', opt));
+  // TODO test with new createApi
+  const get = (opt: ODataOptions) => send<Book[]>('get', odataUtil.query('/books', opt));
   function paginated(opt: PaginationOptions) {
-    return send<PaginatedResult<Book>>('get', odataUtil.buildPaginated('/books', opt));
+    return send<PaginatedResult<Book>>('get', odataUtil.paginated('/books', opt));
   }
   async function byId(id: number) {
     const res = await get({ filter: { id } });
@@ -29,5 +30,7 @@ export function createBookApi() {
     duplicate,
     update,
     del,
+    keys,
+    appendParamsToKey,
   };
 }
