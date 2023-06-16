@@ -1,115 +1,39 @@
 import { SubmitHandler, reset } from '@modular-forms/solid';
-import { BeforeLeaveEventArgs, useBeforeLeave } from '@solidjs/router';
-import { createMutation, createQuery } from '@tanstack/solid-query';
-import { createEffect, onCleanup } from 'solid-js';
-import { useNavigate, useParams } from 'solid-start';
+import { useBeforeLeave } from '@solidjs/router';
+import { createEffect } from 'solid-js';
+import { useParams } from 'solid-start';
 import { BookForm } from '~/Book/components/BookForm';
-import { createBookApi } from '~/Book/store/api';
-import { createBookForm } from '~/Book/store/form';
+import { createBook } from '~/Book/create-book';
 import { Book } from '~/Book/types/book';
 import { PageError } from '~/components/PageError';
 import { PageTitle } from '~/components/PageTitle';
 import { RoutePaths } from '~/core/constants/route-paths';
+import { createDetailPage } from '~/core/store/create-detail-page';
 import { dialogStore } from '~/core/store/dialog-store';
 import { FormProvider } from '~/core/store/form-context';
 import { toastStore } from '~/core/store/toast-store';
-import { FormModes } from '~/core/types/form-types';
 import { DetailParams } from '~/core/types/router-types';
-import { ToastAs, ToastData } from '~/core/types/toast-types';
-import { routerUtil } from '~/core/util/router-util';
 
 export default function BooksDetail() {
-  const nextToast = (t: ToastData) => toastStore.actions.next(t);
   const params = useParams<DetailParams>();
   const id = () => +params.id;
-  const navigate = useNavigate();
-  const api = createBookApi();
-  const form = createBookForm();
 
-  const mode = () => routerUtil.getMode(params.mode) as FormModes;
-  const title = () => routerUtil.buildTitle(mode(), 'Book');
+  const { form, queryAs, mutationAs, onBeforeLeave } = createBook();
+  const query = queryAs.byId(id);
 
-  onCleanup(() => {
-    reset(form[0]);
-  });
+  const { mode, title } = createDetailPage('Book', query, RoutePaths.Books);
 
-  useBeforeLeave((e: BeforeLeaveEventArgs) => {
-    const canLeave = !form[0].dirty || form[0].submitted;
-    if (!canLeave && !e.defaultPrevented) {
-      e.preventDefault();
+  useBeforeLeave(onBeforeLeave);
 
-      dialogStore.actions.asWarning({
-        title: 'Unsaved Changes',
-        message: 'Are you sure you want to discard unsaved changes?',
-        onConfirm: () => e.retry(true),
-      });
-    }
-  });
+  const updateMut = mutationAs.update(id);
+  const delMut = mutationAs.del(id, true);
+  const duplicateMut = mutationAs.duplicate();
 
-  createEffect(() => {
-    if (!Number.isNaN(id())) return;
-
-    nextToast(ToastAs.error('Invalid Book ID!'));
-    navigate(RoutePaths.Books);
-  });
-
-  const query = createQuery<Book>({
-    queryKey: () => ['books', id()],
-    queryFn: () => api.byId(id()),
-    get enabled() {
-      return !!id();
-    },
-  });
-
-  // TODO queries & mutations to hooks?
-  // TODO invalidate cache on success
-  const updateMut = createMutation({
-    mutationKey: ['book', 'update'],
-    mutationFn: (data: Book) => api.update(id(), data),
-    onSuccess: () => {
-      nextToast(ToastAs.success('Book successfully updated!'));
-      navigate(RoutePaths.Books);
-    },
-  });
-
-  const removeMut = createMutation({
-    mutationKey: ['book', 'remove'],
-    mutationFn: () => api.del(id()),
-    onSuccess: () => {
-      nextToast(ToastAs.success('Book successfully deleted!'));
-      navigate(RoutePaths.Books);
-    },
-  });
-
-  const duplicateMut = createMutation({
-    mutationKey: ['book', 'duplicate'],
-    mutationFn: (data: Book) => api.duplicate(data),
-    onSuccess: (data) => {
-      const createdId = data?.id;
-
-      nextToast(ToastAs.success('Book duplicated!'));
-      if (!createdId) {
-        nextToast(ToastAs.warning('Failed to redirect to book details!'));
-        return;
-      }
-      const detailPath = routerUtil.replaceDetailParams(RoutePaths.BookDetail, {
-        id: createdId.toString(),
-        mode: 'edit',
-      });
-      navigate(detailPath);
-    },
-  });
-
-  const isLoading = () => query.isLoading || updateMut.isLoading;
+  const isLoading = () =>
+    query.isLoading || updateMut.isLoading || delMut.isLoading || duplicateMut.isLoading;
 
   createEffect(() => {
     if (!query.isSuccess) return;
-
-    if (!query.data) {
-      nextToast(ToastAs.info(`Book with ID ${id()} not found! Redirecting to Books...`));
-      navigate(RoutePaths.Books);
-      return;
-    }
 
     reset(form[0], { initialValues: query.data });
   });
@@ -123,7 +47,7 @@ export default function BooksDetail() {
         duplicateMut.mutate(data);
         break;
       default:
-        nextToast(ToastAs.error('Invalid form submission!'));
+        toastStore.actions.asError('Invalid form submission!');
     }
   };
 
@@ -131,7 +55,7 @@ export default function BooksDetail() {
     dialogStore.actions.asDanger({
       title: 'Delete Book',
       message: 'Are you sure you want to delete this book?',
-      onConfirm: removeMut.mutate,
+      onConfirm: delMut.mutate,
     });
   }
 

@@ -1,7 +1,7 @@
 import { createEffect, createRoot, onCleanup } from 'solid-js';
 import { createStore, produce } from 'solid-js/store';
 import { ToastDefaults } from '../constants/defaults';
-import { ToastData } from '../types/toast-types';
+import { ToastAs, ToastData } from '../types/toast-types';
 
 type ToastState = {
   queue: ToastData[];
@@ -41,6 +41,32 @@ function createToastStore() {
     );
   }
 
+  // function asSuccess(message: string, durationMs?: number) {
+  //   return next(ToastAs.success(message,durationMs));
+  // }
+
+  // function asError(message: string, durationMs?: number) {
+  //   return next(ToastAs.error(message,durationMs));
+  // }
+
+  // function asInfo(message: string, durationMs?: number) {
+  //   return next(ToastAs.info(message,durationMs));
+  // }
+
+  // function asWarning(message: string, durationMs?: number) {
+  //   return next(ToastAs.warning(message,durationMs));
+  // }
+  function makeToastCreator(toastAsFn: (message: string, durationMs?: number) => ToastData) {
+    return (message: string, durationMs?: number) => {
+      return next(toastAsFn(message, durationMs));
+    };
+  }
+
+  const asSuccess = makeToastCreator(ToastAs.success);
+  const asError = makeToastCreator(ToastAs.error);
+  const asInfo = makeToastCreator(ToastAs.info);
+  const asWarning = makeToastCreator(ToastAs.warning);
+
   function remove(id: string | number | undefined) {
     if (id === undefined) return;
     const isLast = nextId() === undefined;
@@ -71,6 +97,10 @@ function createToastStore() {
     state,
     actions: {
       next,
+      asSuccess,
+      asError,
+      asInfo,
+      asWarning,
       remove,
       startClosing,
     },

@@ -1,14 +1,17 @@
 import { createApi } from '~/core/store/create-api';
+import { PostRes } from '~/core/types/api-types';
 import { ODataOptions } from '~/core/types/odata-types';
+import { PaginatedResult, PaginationOptions } from '~/core/types/pagination-types';
 import { odataUtil } from '~/core/util/odata-util';
 import { Book } from '../types/book';
-import { PostRes } from '~/core/types/api-types';
 
-// TODO refactor to createApi?
 export function createBookApi() {
   const { send, omitId, withId } = createApi();
 
   const get = (opt: ODataOptions) => send<Book[]>('get', odataUtil.build('/books', opt));
+  function paginated(opt: PaginationOptions) {
+    return send<PaginatedResult<Book>>('get', odataUtil.buildPaginated('/books', opt));
+  }
   async function byId(id: number) {
     const res = await get({ filter: { id } });
     return res[0] ?? null;
@@ -20,6 +23,7 @@ export function createBookApi() {
 
   return {
     get,
+    paginated,
     byId,
     create,
     duplicate,

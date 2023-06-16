@@ -5,3 +5,8 @@ export type PaginationOptions = {
   itemsPerPage?: number;
   options?: ODataOptions;
 };
+
+export type PaginatedResult<T = unknown> = {
+  total: number;
+  items: T[];
+};
