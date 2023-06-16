@@ -1,5 +1,5 @@
 import { CreateQueryResult } from '@tanstack/solid-query';
-import { createEffect } from 'solid-js';
+import { createEffect, createSignal, untrack } from 'solid-js';
 import { useNavigate, useParams } from 'solid-start';
 import { RoutePaths } from '../constants/route-paths';
 import { FormModes } from '../types/form-types';
@@ -15,21 +15,29 @@ export function createDetailPage<T>(
   const params = useParams<DetailParams>();
   const navigate = useNavigate();
   const title = () => routerUtil.buildTitle(mode(), 'Book');
+  const [canNotify, setCanNotify] = createSignal(true);
 
   const mode = () => routerUtil.getMode(params.mode) as FormModes;
 
   createEffect(() => {
     if (!Number.isNaN(+params.id)) return;
 
-    toastStore.actions.asError(`Invalid ${page} ID!`);
+    if (untrack(canNotify)) toastStore.actions.asError(`Invalid ${page} ID!`);
     redirect();
   });
 
   createEffect(() => {
-    const didNotFind = query.isSuccess && !query.data;
-    if (!didNotFind) return;
+    if (params.id) setCanNotify(true);
+  });
 
-    toastStore.actions.asWarning(`${page} with ID ${params.id} not found!`);
+  createEffect(() => {
+    const didNotFind = query.isSuccess && !query.data;
+    if (!didNotFind) {
+      if (query.isFetched) setCanNotify(false);
+      return;
+    }
+
+    if (untrack(canNotify)) toastStore.actions.asWarning(`${page} with ID ${params.id} not found!`);
     redirect();
   });
 
@@ -40,5 +48,6 @@ export function createDetailPage<T>(
   return {
     mode,
     title,
+    redirect,
   };
 }

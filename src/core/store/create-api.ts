@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { apiUtil } from '../util/api-util';
 import { Defaults } from '../constants/defaults';
+import { apiUtil } from '../util/api-util';
 
 const api = axios.create({
   baseURL: Defaults.ApiUrl as string,
@@ -39,9 +39,6 @@ export function createApi() {
       send<TResponse, TData>(method, url, data);
   }
 
-  // function get() {
-  //   return sendCreator('get')();
-  // }
   const get = sendWithoutData('get');
   const post = sendWithData('post');
   const put = sendWithData('put');

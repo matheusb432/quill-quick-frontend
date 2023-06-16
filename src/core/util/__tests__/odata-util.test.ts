@@ -101,16 +101,12 @@ describe('odata-util', () => {
       });
 
       const expectedParams = {
-        // filter: `$filter=(name eq 'John') and (anotherProp ge 50) and (anotherProp le 100) and (yetAnotherProp/its/nested eq 2023-05-01)`,
         filter: `$filter=(name eq 'John') and (anotherProp ge 50) and (anotherProp le 100) and (yetAnotherProp/its/nested eq 2023-05-01)`,
-
-        // orderBy: '$orderby=name asc',
         orderBy: '$orderby=nested/prop/test asc,title asc,city/date desc',
         count: '$count=true',
         skip: '$skip=30',
         top: '$top=10',
       };
-      // const expectedResult = `/example?$filter=(name eq 'John') and (anotherProp ge 50) and (anotherProp le 100) and (yetAnotherProp/its/nested eq 2023-05-01)&$orderby=name asc`;
       const expectedResult = `/example?$filter=(name eq 'John') and (anotherProp ge 50) and (anotherProp le 100) and (yetAnotherProp/its/nested eq 2023-05-01)&$orderby=nested/prop/test asc,title asc,city/date desc&$count=true&$skip=30&$top=10`;
 
       expect(result.length).toEqual(expectedResult.length);

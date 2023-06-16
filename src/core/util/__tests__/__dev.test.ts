@@ -14,14 +14,8 @@ export function runBenchmark(fn: () => void): void {
   console.warn(`Function executed ${iterations} times in ${elapsedTime.toFixed(2)} ms`);
 }
 
-//.skip
-it('should benchmark', () => {
+it.skip('should benchmark', () => {
   const date = new Date();
-  // 1M foreach - 4300ms
-  // 1M forof - 4300ms
-  // 1M forin - 3800ms
-  // 1M forin & no recursion - 3650ms
-  // 1M forin & no recursion & no undefined - 3600ms
   runBenchmark(() =>
     odataUtil.query('/books', {
       filter: {

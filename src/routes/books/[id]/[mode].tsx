@@ -1,7 +1,7 @@
 import { SubmitHandler, reset } from '@modular-forms/solid';
 import { useBeforeLeave } from '@solidjs/router';
 import { createEffect } from 'solid-js';
-import { useParams } from 'solid-start';
+import { useNavigate, useParams } from 'solid-start';
 import { BookForm } from '~/Book/components/BookForm';
 import { createBook } from '~/Book/create-book';
 import { Book } from '~/Book/types/book';
@@ -16,6 +16,7 @@ import { DetailParams } from '~/core/types/router-types';
 
 export default function BooksDetail() {
   const params = useParams<DetailParams>();
+  const navigate = useNavigate();
   const id = () => +params.id;
 
   const { form, queryAs, mutations, onBeforeLeave, redirectToDetails } = createBook();
@@ -45,10 +46,7 @@ export default function BooksDetail() {
         break;
       case 'duplicate':
         duplicateMut.mutate(data, {
-          onSuccess(data) {
-            console.log('redirecting...');
-            redirectToDetails(data?.id);
-          },
+          onSuccess: (data) => redirectToDetails(data?.id),
         });
         break;
       default:

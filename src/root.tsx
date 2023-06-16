@@ -19,6 +19,7 @@ export default function Root() {
       queries: {
         refetchOnMount: true,
         staleTime: TEN_MINUTES,
+        cacheTime: TEN_MINUTES * 2,
         retry: false,
         refetchOnWindowFocus: false,
       },

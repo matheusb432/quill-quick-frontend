@@ -32,7 +32,10 @@ export function createFeatureApi<TEntity extends WithId>(featureUrl: string) {
   const paginated = (opt: PaginationOptions) =>
     api.get<PaginatedResult<TEntity>>(odataUtil.paginated(featureUrl, opt));
 
-  const byId = (id: IdType) => query({ filter: { id } });
+  const byId = async (id: IdType) => {
+    const res = await query({ filter: { id } });
+    return res[0] ?? null;
+  };
 
   const create = (book: PostEntity) => api.post<PostRes, PostEntity>(featureUrl, book);
 
@@ -62,7 +65,6 @@ export function createFeatureApi<TEntity extends WithId>(featureUrl: string) {
     return createQuery({
       queryKey: () => keys.id(id()),
       queryFn: () => byId(id()),
-      select: (data) => data[0] ?? null,
       get enabled() {
         return !!id();
       },
