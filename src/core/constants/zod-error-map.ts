@@ -24,14 +24,16 @@ const userFriendlyErrorMap: z.ZodErrorMap = (issue, ctx) => {
   switch (issue.code) {
     case z.ZodIssueCode.invalid_type: {
       const types = {
-        bigint: 'number',
-        string: 'text',
-        number: 'number',
-        date: 'date',
+        bigint: 'a number',
+        string: 'a text',
+        number: 'a number',
+        date: 'a date',
+        integer: 'a whole number',
+        float: 'a decimal number',
       };
       const key = issue.expected as keyof typeof types;
       const type = types[key];
-      return { message: `Expected a ${type || issue.expected}` };
+      return { message: `Must be ${type || issue.expected}` };
     }
 
     case z.ZodIssueCode.too_small: {
