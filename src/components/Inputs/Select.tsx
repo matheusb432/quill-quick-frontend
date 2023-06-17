@@ -31,7 +31,7 @@ export function Select<TF, TN>(props: SelectProps<TF, TN>) {
         id={name()}
         value={getValue()}
         class="peer form-select input-fx h-16 border-0 border-l-4 pb-0 transition-all"
-        classList={{ 'text-divider': !getValue() }}
+        classList={{ 'text-neutral-content/80': !getValue() }}
         disabled={!canEdit()}
       >
         <option value="" disabled>

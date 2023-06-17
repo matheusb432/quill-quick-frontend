@@ -5,7 +5,9 @@ export function NavMenu() {
   const location = useLocation();
 
   function active(path: string) {
-    return path === location.pathname ? 'border-accent' : 'border-transparent hover:border-accent';
+    return path === location.pathname
+      ? 'border-primary-focus'
+      : 'border-transparent hover:border-primary-focus';
   }
 
   const navItems = [
@@ -14,7 +16,7 @@ export function NavMenu() {
   ];
 
   return (
-    <ul class="flex items-center text-primary-content">
+    <ul class="flex items-center">
       <For each={navItems}>
         {(item) => (
           <li class={`border-b-2 ${active(item.path)} mx-1.5 transition-colors sm:mx-6`}>

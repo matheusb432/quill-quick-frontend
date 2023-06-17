@@ -24,7 +24,7 @@ export function Dialog(props: DialogProps) {
         <Backdrop onClick={data().onClose} show={props.show} />
         <div
           class={strUtil.cx(
-            `fixed left-1/2 top-1/2 flex w-[480px] -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-between rounded-md bg-primary text-primary-content transition-all duration-500 ease-out`,
+            `fixed left-1/2 top-1/2 flex w-[480px] -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-between rounded-md bg-neutral text-neutral-content transition-all duration-500 ease-out`,
             props.show ? 'z-50 opacity-100' : '-z-50 scale-75 opacity-0',
           )}
         >
@@ -46,13 +46,8 @@ export function Dialog(props: DialogProps) {
             }
           </header>
           <article class="max-h-32 overflow-y-auto p-4">{data().message}</article>
-          <footer class="flex w-full items-center justify-center gap-x-6 border-t border-t-divider/30 p-4">
-            <Button
-              onClick={data().onClose}
-              theme={type()}
-              disabled={data().isLoadingConfirm}
-              mode="stroked"
-            >
+          <footer class="flex w-full items-center justify-center gap-x-6 border-t border-secondary p-4">
+            <Button onClick={data().onClose} theme={'default'} disabled={data().isLoadingConfirm}>
               Cancel
             </Button>
             <Button onClick={data().onConfirm} theme={type()} isLoading={data().isLoadingConfirm}>
@@ -66,7 +61,9 @@ export function Dialog(props: DialogProps) {
 }
 
 const headerThemeMap: Record<ActionTypes, string> = {
-  primary: 'bg-accent',
+  primary: 'bg-primary',
+  secondary: 'bg-secondary',
+  default: 'bg-neutral',
   danger: 'bg-red-500',
-  warning: 'bg-yellow-500 text-secondary-content',
+  warning: 'bg-yellow-500 text-neutral-content',
 };

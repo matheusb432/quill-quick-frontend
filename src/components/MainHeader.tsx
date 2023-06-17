@@ -5,7 +5,7 @@ import { RoutePaths } from '~/core/constants/route-paths';
 
 export function MainHeader() {
   return (
-    <nav class="flex h-14 sticky top-0 items-center justify-between bg-green-700 px-6">
+    <nav class="flex h-14 sticky top-0 items-center justify-between bg-primary text-primary-content px-6">
       <A href={RoutePaths.Home}>
         <div class="flex items-center gap-x-2 active:scale-95 transition">
           <Logo type="rounded" />

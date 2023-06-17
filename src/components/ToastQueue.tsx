@@ -82,15 +82,15 @@ function getTheming(type: AlertTypes) {
 }
 
 const classMap: Record<AlertTypes, string> = {
-  info: 'bg-info text-primary-content',
+  info: 'bg-info text-neutral-content',
   error: 'bg-red-100',
   success: 'bg-green-100',
-  warning: 'bg-yellow-100 text-secondary-content',
+  warning: 'bg-yellow-100 text-neutral-content',
 };
 
 const timerClassMap: Record<AlertTypes, string> = {
-  info: 'bg-primary-content',
+  info: 'bg-neutral-content',
   error: 'bg-red-500',
-  success: 'bg-accent',
+  success: 'bg-success',
   warning: 'bg-yellow-500',
 };

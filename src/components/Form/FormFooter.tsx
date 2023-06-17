@@ -28,7 +28,7 @@ export function FormFooter(props: FormFooterProps) {
   return (
     <>
       <InvalidFormAlert />
-      <footer class="sticky bottom-0 bg-primary left-0 flex items-center justify-between py-4">
+      <footer class="sticky bottom-0 bg-neutral left-0 flex items-center justify-between py-4">
         <ButtonsWrapper>
           {canDelete() && (
             <Button
@@ -43,11 +43,11 @@ export function FormFooter(props: FormFooterProps) {
         <ButtonsWrapper>
           <Show when={canRenderSubmit()}>
             {merged.withReset && (
-              <Button mode="stroked" disabled={ctx.isLoading} onClick={() => reset(form)}>
+              <Button theme="default" disabled={ctx.isLoading} onClick={() => reset(form)}>
                 Reset
               </Button>
             )}
-            <Button type="submit" isLoading={ctx.isLoading} disabled={ctx.disabled} theme="primary">
+            <Button type="submit" isLoading={ctx.isLoading} disabled={ctx.disabled}>
               {submitLabel()}
             </Button>
           </Show>

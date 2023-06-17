@@ -1,1 +1,1 @@
-export type ActionTypes = 'primary' | 'danger' | 'warning';
+export type ActionTypes = 'primary' | 'secondary' | 'default' | 'danger' | 'warning';

@@ -8,7 +8,7 @@ interface BreadcrumbProps {
 
 export function Breadcrumb(props: BreadcrumbProps) {
   return (
-    <nav class="border-b-2 border-accent pb-4 mb-5">
+    <nav class="border-b-2 border-primary pb-4 mb-5">
       <Crumbs crumbs={props.crumbs} />
     </nav>
   );
@@ -35,14 +35,14 @@ type CrumbItemProps = Crumb & {
 export function CrumbItem(props: CrumbItemProps) {
   return (
     <>
-      <li class="flex justify-center items-center gap-x-2 text-xl text-accent transition-all group cursor-pointer">
+      <li class="flex justify-center items-center gap-x-2 text-xl text-primary transition-all group cursor-pointer">
         <Show when={props.path} fallback={<span>{props.label}</span>}>
           <A class="group-hover:underline transition" href={props.path as string}>
             {props.label}
           </A>
         </Show>
       </li>
-      <HIPaperAirplane class="h-5 w-5 text-accent" />
+      <HIPaperAirplane class="h-5 w-5 text-primary" />
     </>
   );
 }

@@ -57,12 +57,7 @@ module.exports = {
       colors: {
         black: newBlack,
         green: newGreen,
-        primary: {
-          light: newBlack[500],
-          hover: newBlack[550],
-          focus: newBlack[600],
-        },
-        divider: colors.gray[400],
+        'secondary-hover': newBlack[550],
       },
     },
     fontFamily: {
@@ -76,12 +71,11 @@ module.exports = {
     themes: [
       {
         light: {
-          primary: newGreen[700],
+          primary: newGreen[600],
           secondary: newBlack[500],
+          neutral: newBlack[700],
           'secondary-focus': newBlack[600],
-          accent: newGreen[500],
-          neutral: newBlack[500],
-          'base-100': '#22191f',
+          'base-100': newBlack[700],
           info: '#3b82f6',
           success: newGreen[500],
           warning: '#eab308',

@@ -23,9 +23,7 @@ export function PageError(props: PageErrorProps) {
       <Alert type="error">
         {merged.message}
         <div class="flex gap-x-6 justify-center items-center my-3">
-          <Button mode="stroked" onClick={handleGoBack}>
-            Go Back
-          </Button>
+          <Button onClick={handleGoBack}>Go Back</Button>
           {merged.onRetry && <Button onClick={() => merged.onRetry?.()}>Try again</Button>}
         </div>
       </Alert>
