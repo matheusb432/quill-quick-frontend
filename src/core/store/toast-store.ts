@@ -1,7 +1,7 @@
 import { createEffect, createRoot, onCleanup } from 'solid-js';
 import { createStore, produce } from 'solid-js/store';
-import { ToastDefaults } from '../constants/defaults';
 import { ToastAs, ToastData } from '../types/toast-types';
+import { ToastDefaults } from '../constants/ui-defaults';
 
 type ToastState = {
   queue: ToastData[];

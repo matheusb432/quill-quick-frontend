@@ -5,9 +5,7 @@ export function NavMenu() {
   const location = useLocation();
 
   function active(path: string) {
-    return path === location.pathname
-      ? 'border-green-700'
-      : 'border-transparent hover:border-green-700';
+    return path === location.pathname ? 'border-accent' : 'border-transparent hover:border-accent';
   }
 
   const navItems = [

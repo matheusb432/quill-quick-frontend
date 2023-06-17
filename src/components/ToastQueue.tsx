@@ -1,5 +1,4 @@
 import { Show } from 'solid-js';
-import { ToastDefaults } from '~/core/constants/defaults';
 import { AlertTypes } from '~/core/types/alert-types';
 import { ToastData } from '~/core/types/toast-types';
 import { strUtil } from '~/core/util/str-util';
@@ -8,6 +7,7 @@ import { Timer } from './Timer';
 import { toastStore } from '~/core/store/toast-store';
 import { Portal } from 'solid-js/web';
 import { ElementIds } from '~/core/constants/element-ids';
+import { ToastDefaults } from '~/core/constants/ui-defaults';
 
 export function ToastQueue() {
   const state = () => toastStore.state;

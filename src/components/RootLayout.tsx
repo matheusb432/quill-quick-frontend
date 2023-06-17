@@ -1,6 +1,6 @@
 import { JSX } from 'solid-js';
 import { ErrorBoundary } from 'solid-start';
-import { MainContainer } from './MainContainer';
+import { MainHeader } from './MainHeader';
 
 interface RootProps {
   children: JSX.Element;
@@ -9,7 +9,10 @@ interface RootProps {
 export function RootLayout(props: RootProps) {
   return (
     <ErrorBoundary>
-      <MainContainer>{props.children}</MainContainer>
+      <div class="max-h-screen min-h-screen overflow-x-hidden scroll-smooth bg-primary-base text-primary-text">
+        <MainHeader />
+        {props.children}
+      </div>
     </ErrorBoundary>
   );
 }
