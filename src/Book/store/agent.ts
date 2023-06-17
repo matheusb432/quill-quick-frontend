@@ -5,8 +5,12 @@ import { apiUtil } from '~/core/util/api-util';
 import { Book } from '../types/book';
 import { PostRes } from '~/core/types/api-types';
 
+export function createBookApi() {
+  return createFeatureApi<Book>('/books');
+}
+
 export function createBookAgent() {
-  const api = createFeatureApi<Book>('/books');
+  const api = createBookApi();
   const notifications = apiUtil.buildNotifications('Book');
   const client = useQueryClient();
 

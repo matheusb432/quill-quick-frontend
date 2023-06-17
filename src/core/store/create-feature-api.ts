@@ -22,14 +22,15 @@ export function createFeatureApi<TEntity extends WithId>(featureUrl: string) {
 
   type IdType = number | string;
   type PostEntity = Omit<TEntity, 'id'>;
+  type QueryEntity = TEntity & { id: IdType };
 
   const omitId = (obj: TEntity): PostEntity => ({ ...obj, id: undefined });
   const withId = (id: IdType, obj: TEntity) => ({ ...obj, id });
 
-  const query = (opt: ODataOptions) => api.get<TEntity[]>(odataUtil.query(featureUrl, opt));
+  const query = (opt: ODataOptions) => api.get<QueryEntity[]>(odataUtil.query(featureUrl, opt));
 
   const paginated = (opt: PaginationOptions) =>
-    api.get<PaginatedResult<TEntity>>(odataUtil.paginated(featureUrl, opt));
+    api.get<PaginatedResult<QueryEntity>>(odataUtil.paginated(featureUrl, opt));
 
   const byId = async (id: IdType) => {
     const res = await query({ filter: { id } });

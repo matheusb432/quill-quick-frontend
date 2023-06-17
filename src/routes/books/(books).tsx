@@ -1,59 +1,58 @@
-import { BookTable } from '~/Book/components/BookTable';
-import { Book } from '~/Book/types/book';
+import { createQuery } from '@tanstack/solid-query';
+import { createSignal } from 'solid-js';
+import { BookRow, BookTable } from '~/Book/components/BookTable';
+import { createBook } from '~/Book/create-book';
+import { createBookApi } from '~/Book/store/agent';
 import { PageTitle } from '~/components/PageTitle';
+import { dialogStore } from '~/core/store/dialog-store';
+import { paginationUtil } from '~/core/util/pagination-util';
 
 export default function Books() {
+  const { mutations, redirectToDetails } = createBook();
+  const { keyWithParams, paginated } = createBookApi();
+
+  const [filters] = createSignal(paginationUtil.default());
+  // TODO no reactive context using queryAs?
+  // const query = queryAs.paginated(filters);
+  const query = createQuery({
+    queryKey: () => keyWithParams(filters()),
+    queryFn: () => paginated(filters()),
+  });
+
+  const delMut = mutations.del;
+
+  function handleView(book: BookRow) {
+    redirectToDetails(book.id, 'view');
+  }
+
+  function handleEdit(book: BookRow) {
+    redirectToDetails(book.id, 'edit');
+  }
+
+  function handleDuplicate(book: BookRow) {
+    redirectToDetails(book.id, 'duplicate');
+  }
+
+  function handleDelete(book: BookRow) {
+    dialogStore.actions.asDanger({
+      title: 'Delete Book',
+      message: 'Are you sure you want to delete this book?',
+      onConfirm: () => delMut.mutate(book.id),
+    });
+  }
+
   return (
     <>
       <PageTitle subtitle="Review or add new books">Books</PageTitle>
       <section class="flex flex-col items-center justify-center gap-y-6">
-        <BookTable items={mockBooks} />
+        <BookTable
+          items={query.data?.items ?? []}
+          viewFn={handleView}
+          editFn={handleEdit}
+          duplicateFn={handleDuplicate}
+          removeFn={handleDelete}
+        />
       </section>
     </>
   );
 }
-
-const mockBooks: Book[] = [
-  {
-    id: 4,
-    title: 'Tailwind docs 22',
-    author: 'Tailwind Dev - editasdvv',
-    publisher: 'TailwindLabs',
-    summary:
-      'Whatever you do, don’t use @apply just to make things look “cleaner”. Yes, HTML templates littered with Tailwind classes are kind of ugly. Making changes in a project that has tons of custom CSS is worse.',
-    pageCount: 105,
-  },
-  {
-    id: 6,
-    title: '444 new book 2',
-    author: 'author',
-    publisher: 'publisher',
-    summary: 'lorem ipsum',
-    pageCount: 10,
-  },
-  {
-    id: 7,
-    title: 'New Book from frontend!',
-    author: 'auth',
-    publisher: 'Test publisher',
-    summary: "This is a really really cool book i'd recommend u check it out o _ o",
-    pageCount: 300,
-  },
-  {
-    id: 10,
-    title: 'Tailwind docs - dupl',
-    author: 'Tailwind Dev - edit 2',
-    publisher: 'TailwindLabs',
-    summary:
-      'Whatever you do, don’t use @apply just to make things look “cleaner”. Yes, HTML templates littered with Tailwind classes are kind of ugly. Making changes in a project that has tons of custom CSS is worse.',
-    pageCount: 105,
-  },
-  {
-    id: 11,
-    title: 'new book',
-    author: 'author',
-    publisher: 'publisher',
-    summary: 'lorem ipsum',
-    pageCount: 0,
-  },
-];

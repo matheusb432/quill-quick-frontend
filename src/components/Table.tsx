@@ -1,14 +1,16 @@
-import { For, JSX, mergeProps } from 'solid-js';
+import { For } from 'solid-js';
 import { WithId } from '~/core/types/model-types';
 import { TableAction, TableColumn, TableProps } from '~/core/types/table-types';
 
 export function Table<T extends WithId>(props: TableProps<T>) {
   return (
     <div class="overflow-x-auto w-full">
+      {/* TODO add loading state to table */}
       <table class="table lg:text-lg xl:text-xl">
         <thead class="text-primary">
-          <tr>
+          <tr class="border-b-primary">
             <For each={props.columns}>{({ cx, header }) => <th class={cx}>{header}</th>}</For>
+            <For each={props.actions}>{({ cx, header }) => <th class={cx}>{header}</th>}</For>
           </tr>
         </thead>
         <tbody>
@@ -37,13 +39,15 @@ interface TableRowProps<T extends WithId> {
 
 export function TableRow<T extends WithId>(props: TableRowProps<T>) {
   return (
-    <tr>
+    <tr class="border-b-secondary">
       <For each={props.columns}>
         {({ cx, render, accessor }) => (
           <td class={cx}>{render ? render(props.item, props.index) : props.item[accessor]}</td>
         )}
       </For>
-      <For each={props.actions}>{({ render }) => <td>{render(props.item, props.index)}</td>}</For>
+      <For each={props.actions}>
+        {({ cx, render }) => <td class={cx}>{render(props.item, props.index)}</td>}
+      </For>
     </tr>
   );
 }

@@ -11,12 +11,12 @@ export type TableColumn<T extends WithId> = {
 export type TableProps<T extends WithId> = {
   items: T[];
   columns: TableColumn<T>[];
-  className?: string;
   actions?: TableAction<T>[];
 };
 
 export type TableAction<T extends WithId> = {
-  actionId: string;
+  header?: string;
+  cx?: string;
   render: ActionRenderFn<T>;
 };
 
