@@ -1,4 +1,5 @@
-import { JSX, mergeProps } from 'solid-js';
+import { Table } from '~/components/Table';
+import { TableColumn } from '~/core/types/table-types';
 import { Book } from '../types/book';
 
 interface BookTableProps {
@@ -7,6 +8,16 @@ interface BookTableProps {
 
 // TODO implement
 export function BookTable(props: BookTableProps) {
-  const merged = mergeProps({}, props);
-  return <div>TODO</div>;
+  const columns: TableColumn<Book>[] = [
+    { header: 'Title', accessor: 'title' },
+    { header: 'Author', accessor: 'author' },
+    { header: 'Publisher', accessor: 'publisher' },
+    { header: 'Pages', accessor: 'pageCount' },
+  ];
+
+  return (
+    <>
+      <Table items={props.items} columns={columns} />
+    </>
+  );
 }
