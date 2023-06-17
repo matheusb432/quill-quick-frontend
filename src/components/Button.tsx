@@ -1,7 +1,6 @@
 import { JSX, mergeProps } from 'solid-js';
-import { strUtil } from '~/core/util/str-util';
-import { Loading } from './Loading';
 import { ActionTypes } from '~/core/types/action-types';
+import { strUtil } from '~/core/util/str-util';
 import { Ping } from './Ping';
 
 export interface ButtonProps {
@@ -27,7 +26,7 @@ export function Button(props: ButtonProps) {
     <div title={merged.isLoading ? 'Loading...' : ''}>
       <button
         class={strUtil.cx(
-          `relative flex gap-x-2 items-center rounded-sm border px-4 py-2 ring-2 ring-secondary-text/5 ring-offset-1 ring-offset-primary-light/20 transition-colors focus:outline-none  disabled:pointer-events-none disabled:border-opacity-30 disabled:bg-opacity-30`,
+          `relative flex gap-x-2 items-center rounded-sm border px-4 py-2 ring-2 ring-secondary-text/5 duration-200 ring-offset-1 ring-offset-primary-light/20 transition focus:outline-none active:scale-90 disabled:pointer-events-none disabled:border-opacity-30 disabled:bg-opacity-30`,
           getTheming(merged.mode, merged.theme),
         )}
         type={merged.type}
@@ -42,26 +41,21 @@ export function Button(props: ButtonProps) {
 }
 
 const fabClasses = 'ring-8 ring-offset-4 rounded-full w-16 h-16';
+const strokedClasses = 'bg-primary-text text-secondary-text';
 
 const filledMap = {
-  primary:
-    'text-primary-text bg-accent border-accent hover:bg-accent/80 focus:bg-accent/80 active:bg-accent/70',
-  danger:
-    'text-primary-text bg-red-600 border-red-500 hover:bg-red-800 focus:bg-red-800 active:bg-red-900',
-  warning:
-    'text-secondary-text bg-yellow-500 border-yellow-500 hover:bg-yellow-600 focus:bg-yellow-600 active:bg-yellow-700',
+  primary: 'text-primary-text bg-accent border-accent hover:bg-accent/80 ',
+  danger: 'text-primary-text bg-red-600 border-red-500 hover:bg-red-800 ',
+  warning: 'text-secondary-text bg-yellow-500 border-yellow-500 hover:bg-yellow-600 ',
 };
 
 const classMap: Record<Modes, Record<ActionTypes, string>> = {
   filled: filledMap,
   fab: filledMap,
   stroked: {
-    primary:
-      'bg-primary-text text-secondary-text border-accent hover:bg-green-100 focus:bg-green-100 active:bg-green-200',
-    danger:
-      'bg-primary-text text-secondary-text border-red-500 hover:bg-red-100 focus:bg-red-100 active:bg-red-200',
-    warning:
-      'bg-primary-text text-secondary-text border-yellow-500 hover:bg-yellow-100 focus:bg-yellow-100 active:bg-yellow-200',
+    primary: 'border-accent hover:bg-green-100',
+    danger: 'border-red-500 hover:bg-red-100',
+    warning: 'border-yellow-500 hover:bg-yellow-100',
   },
 };
 
@@ -70,6 +64,9 @@ function getTheming(mode: Modes = 'filled', theme: ActionTypes = 'primary') {
 
   if (mode === 'fab') {
     classes += ` ${fabClasses}`;
+  }
+  if (mode === 'stroked') {
+    classes += ` ${strokedClasses}`;
   }
 
   return classes;

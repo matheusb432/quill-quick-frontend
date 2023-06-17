@@ -1,12 +1,11 @@
-import { InvalidateOptions, QueryKey, createQuery, useQueryClient } from '@tanstack/solid-query';
-import { createApi } from './create-api';
-import { WithId } from '../types/model-types';
-import { send } from 'vite';
-import { PostRes } from '../types/api-types';
-import { ODataOptions } from '../types/odata-types';
-import { PaginationOptions, PaginatedResult } from '../types/pagination-types';
-import { odataUtil } from '../util/odata-util';
+import { InvalidateOptions, createQuery, useQueryClient } from '@tanstack/solid-query';
 import { Accessor } from 'solid-js';
+import { PostRes } from '../types/api-types';
+import { WithId } from '../types/model-types';
+import { ODataOptions } from '../types/odata-types';
+import { PaginatedResult, PaginationOptions } from '../types/pagination-types';
+import { odataUtil } from '../util/odata-util';
+import { createApi } from './create-api';
 
 export function createFeatureApi<TEntity extends WithId>(featureUrl: string) {
   const api = createApi();

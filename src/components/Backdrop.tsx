@@ -9,7 +9,7 @@ interface BackdropProps {
 }
 
 export function Backdrop(props: BackdropProps) {
-  const merged = mergeProps({ show: true, animationMs: 500 }, props);
+  const merged = mergeProps({ show: true, animationMs: 200 }, props);
 
   return (
     <Portal mount={document.getElementById(ElementIds.BackdropRoot) ?? undefined}>

@@ -1,7 +1,6 @@
 import { useLocation } from '@solidjs/router';
 import { Accessor } from 'solid-js';
 import { Outlet } from 'solid-start';
-import { HIBookOpen } from '~/assets/icons/HIBookOpen';
 import { Breadcrumb, Crumb } from '~/components/Breadcrumb';
 import { MainContainer } from '~/components/MainContainer';
 import { RoutePaths, RouteSubPaths } from '~/core/constants/route-paths';
@@ -31,5 +30,4 @@ export default function BooksLayout() {
 const bookCrumb: Crumb = {
   label: 'Books',
   path: RoutePaths.Books,
-  iconFn: HIBookOpen,
 };

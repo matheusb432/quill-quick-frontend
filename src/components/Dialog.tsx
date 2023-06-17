@@ -25,7 +25,7 @@ export function Dialog(props: DialogProps) {
         <div
           class={strUtil.cx(
             `fixed left-1/2 top-1/2 flex w-[480px] -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-between rounded-md bg-primary-base text-primary-text transition-all duration-500 ease-out`,
-            props.show ? 'visible z-50' : 'invisible -z-50 scale-0',
+            props.show ? 'z-50 opacity-100' : '-z-50 scale-75 opacity-0',
           )}
         >
           <header
