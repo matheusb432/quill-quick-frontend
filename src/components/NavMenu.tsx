@@ -14,7 +14,7 @@ export function NavMenu() {
   ];
 
   return (
-    <ul class="flex items-center text-primary-text">
+    <ul class="flex items-center text-primary-content">
       <For each={navItems}>
         {(item) => (
           <li class={`border-b-2 ${active(item.path)} mx-1.5 transition-colors sm:mx-6`}>

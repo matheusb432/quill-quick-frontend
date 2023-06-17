@@ -9,7 +9,7 @@ interface RootProps {
 export function RootLayout(props: RootProps) {
   return (
     <ErrorBoundary>
-      <div class="max-h-screen min-h-screen overflow-x-hidden scroll-smooth bg-primary-base text-primary-text">
+      <div class="max-h-screen min-h-screen overflow-x-hidden scroll-smooth bg-primary text-primary-content">
         <MainHeader />
         {props.children}
       </div>

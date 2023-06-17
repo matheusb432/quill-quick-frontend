@@ -54,29 +54,16 @@ module.exports = {
           '100%': { transform: 'translateX(0%)', opacity: '1' },
         },
       },
-    },
-    colors: {
-      transparent: 'transparent',
-      current: 'currentColor',
-      yellow: colors.yellow,
-      info: {
-        base: colors.blue[500],
+      colors: {
+        black: newBlack,
+        green: newGreen,
+        primary: {
+          light: newBlack[500],
+          hover: newBlack[550],
+          focus: newBlack[600],
+        },
+        divider: colors.gray[400],
       },
-      black: newBlack,
-      green: newGreen,
-      red: colors.red,
-      primary: {
-        base: newBlack[700],
-        light: newBlack[500],
-        hover: newBlack[550],
-        focus: newBlack[600],
-        text: newBlack[50],
-      },
-      secondary: {
-        text: newBlack[900],
-      },
-      divider: colors.gray[400],
-      accent: newGreen[500],
     },
     fontFamily: {
       sans: ['Jost', 'sans-serif'],
@@ -84,5 +71,23 @@ module.exports = {
       hand: ['Indie Flower', 'cursive'],
     },
   },
-  plugins: [require('@tailwindcss/forms')],
+  plugins: [require('@tailwindcss/forms'), require('daisyui')],
+  daisyui: {
+    themes: [
+      {
+        light: {
+          primary: newGreen[700],
+          secondary: newBlack[500],
+          'secondary-focus': newBlack[600],
+          accent: newGreen[500],
+          neutral: newBlack[500],
+          'base-100': '#22191f',
+          info: '#3b82f6',
+          success: newGreen[500],
+          warning: '#eab308',
+          error: '#dc2626',
+        },
+      },
+    ],
+  },
 };

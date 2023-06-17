@@ -28,7 +28,7 @@ export function FormFooter(props: FormFooterProps) {
   return (
     <>
       <InvalidFormAlert />
-      <footer class="sticky bottom-0 bg-primary-base left-0 flex items-center justify-between py-4">
+      <footer class="sticky bottom-0 bg-primary left-0 flex items-center justify-between py-4">
         <ButtonsWrapper>
           {canDelete() && (
             <Button

@@ -61,7 +61,7 @@ function getIcon(type: AlertTypes) {
 }
 
 const classMap: Record<AlertTypes, string> = {
-  info: 'border-info-base text-info-base',
+  info: 'border-info text-info',
   error: 'border-red-400 text-red-500',
   success: 'border-green-300 text-green-500',
   warning: 'border-yellow-300 text-yellow-500',

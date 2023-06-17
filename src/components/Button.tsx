@@ -26,7 +26,7 @@ export function Button(props: ButtonProps) {
     <div title={merged.isLoading ? 'Loading...' : ''}>
       <button
         class={strUtil.cx(
-          `relative flex gap-x-2 items-center rounded-sm border px-4 py-2 ring-2 ring-secondary-text/5 duration-200 ring-offset-1 ring-offset-primary-light/20 transition focus:outline-none active:scale-90 disabled:pointer-events-none disabled:border-opacity-30 disabled:bg-opacity-30`,
+          `relative flex gap-x-2 items-center rounded-sm border px-4 py-2 ring-2 ring-secondary-content/5 duration-200 ring-offset-1 ring-offset-primary-light/20 transition focus:outline-none active:scale-90 disabled:pointer-events-none disabled:border-opacity-30 disabled:bg-opacity-30`,
           getTheming(merged.mode, merged.theme),
         )}
         type={merged.type}
@@ -41,12 +41,12 @@ export function Button(props: ButtonProps) {
 }
 
 const fabClasses = 'ring-8 ring-offset-4 rounded-full w-16 h-16';
-const strokedClasses = 'bg-primary-text text-secondary-text';
+const strokedClasses = 'bg-primary-content text-secondary-content';
 
 const filledMap = {
-  primary: 'text-primary-text bg-accent border-accent hover:bg-accent/80 ',
-  danger: 'text-primary-text bg-red-600 border-red-500 hover:bg-red-800 ',
-  warning: 'text-secondary-text bg-yellow-500 border-yellow-500 hover:bg-yellow-600 ',
+  primary: 'text-primary-content bg-accent border-accent hover:bg-accent/80 ',
+  danger: 'text-primary-content bg-red-600 border-red-500 hover:bg-red-800 ',
+  warning: 'text-secondary-content bg-yellow-500 border-yellow-500 hover:bg-yellow-600 ',
 };
 
 const classMap: Record<Modes, Record<ActionTypes, string>> = {

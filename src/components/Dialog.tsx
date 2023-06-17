@@ -24,7 +24,7 @@ export function Dialog(props: DialogProps) {
         <Backdrop onClick={data().onClose} show={props.show} />
         <div
           class={strUtil.cx(
-            `fixed left-1/2 top-1/2 flex w-[480px] -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-between rounded-md bg-primary-base text-primary-text transition-all duration-500 ease-out`,
+            `fixed left-1/2 top-1/2 flex w-[480px] -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-between rounded-md bg-primary text-primary-content transition-all duration-500 ease-out`,
             props.show ? 'z-50 opacity-100' : '-z-50 scale-75 opacity-0',
           )}
         >
@@ -68,5 +68,5 @@ export function Dialog(props: DialogProps) {
 const headerThemeMap: Record<ActionTypes, string> = {
   primary: 'bg-accent',
   danger: 'bg-red-500',
-  warning: 'bg-yellow-500 text-secondary-text',
+  warning: 'bg-yellow-500 text-secondary-content',
 };
