@@ -1,13 +1,18 @@
 import { createQuery } from '@tanstack/solid-query';
-import { createSignal } from 'solid-js';
+import { createSignal, onMount } from 'solid-js';
+import { BookFilterForm } from '~/Book/components/BookFilterForm';
 import { BookRow, BookTable } from '~/Book/components/BookTable';
 import { createBook } from '~/Book/create-book';
 import { createBookApi } from '~/Book/store/agent';
+import { createBookFilterForm } from '~/Book/store/form';
+import { BookFilter } from '~/Book/types/filters';
 import { Button } from '~/components/Button';
+import { Input } from '~/components/Inputs/Input';
 import { PageTitle } from '~/components/PageTitle';
 import { Pagination } from '~/components/Pagination';
 import { createPagination } from '~/core/store/create-pagination';
 import { dialogStore } from '~/core/store/dialog-store';
+import { FormProvider, useFormContext } from '~/core/store/form-context';
 import { paginationUtil } from '~/core/util/pagination-util';
 
 export default function Books() {
@@ -22,6 +27,8 @@ export default function Books() {
     queryKey: () => keyWithParams(filters()),
     queryFn: () => paginated(filters()),
   });
+  const filterForm = createBookFilterForm();
+  // const [, { Field }] = filterForm;
 
   const delMut = mutations.del;
 
@@ -37,11 +44,18 @@ export default function Books() {
     });
   }
 
+  function handleFilter(filter: BookFilter) {
+    console.warn(filter);
+  }
+
   return (
     <>
       <PageTitle subtitle="Review or add new books">Books</PageTitle>
-      <div class="flex justify-end items-center">
+      <div class="flex justify-between items-center">
         <Button onClick={() => redirectToCreate()}>Add Book</Button>
+        <FormProvider form={filterForm}>
+          <BookFilterForm onSubmit={handleFilter} />
+        </FormProvider>
       </div>
       <section class="flex flex-col items-center justify-center gap-y-6">
         <BookTable

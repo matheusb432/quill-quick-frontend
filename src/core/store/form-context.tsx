@@ -24,6 +24,7 @@ type FormProviderProps<TForm extends FieldValues> = {
   disabled?: boolean;
   isLoading?: boolean;
   mode?: FormModes;
+  labels?: Partial<Record<FieldPath<TForm>, string>>;
 };
 
 export function FormProvider<TForm extends FieldValues>(props: FormProviderProps<TForm>) {

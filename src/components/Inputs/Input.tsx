@@ -1,11 +1,13 @@
-import { createMemo, mergeProps } from 'solid-js';
+import { Component, createMemo, mergeProps } from 'solid-js';
 import { createField } from '~/core/store/create-field';
 import { FieldCmp } from '~/core/types/form-types';
 import { InputContainer } from './InputContainer';
+import { HeroIconProps } from '~/assets/icons/types';
 
 type InputProps<TF, TN> = FieldCmp<TF, TN> & {
   type?: 'text' | 'number' | 'email' | 'password';
   placeholder?: string;
+  iconFn?: Component<HeroIconProps>;
 };
 
 export function Input<TF, TN>(props: InputProps<TF, TN>) {
@@ -31,6 +33,7 @@ export function Input<TF, TN>(props: InputProps<TF, TN>) {
       isError={!!merged.fieldArgs[0].error}
       isLoading={isLoading()}
       errorText={errorText()}
+      iconFn={merged.iconFn}
     >
       <input
         {...merged.fieldArgs[1]}
