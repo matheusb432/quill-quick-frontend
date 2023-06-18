@@ -6,6 +6,9 @@ import { Ping } from './Ping';
 export interface ButtonProps {
   children: JSX.Element;
   class?: string;
+  classList?: {
+    [k: string]: boolean | undefined;
+  };
   isLoading?: boolean;
   mode?: Modes;
   theme?: ActionTypes;
@@ -31,6 +34,7 @@ export function Button(props: ButtonProps) {
         getTheming(merged.mode, merged.theme, merged.fabSize),
         props.class,
       )}
+      classList={props.classList}
       type={merged.type}
       disabled={merged.disabled || merged.isLoading}
       onClick={() => merged.onClick?.()}

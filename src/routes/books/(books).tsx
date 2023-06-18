@@ -3,14 +3,17 @@ import { createSignal } from 'solid-js';
 import { BookRow, BookTable } from '~/Book/components/BookTable';
 import { createBook } from '~/Book/create-book';
 import { createBookApi } from '~/Book/store/agent';
+import { Button } from '~/components/Button';
 import { PageTitle } from '~/components/PageTitle';
 import { Pagination } from '~/components/Pagination';
+import { createPagination } from '~/core/store/create-pagination';
 import { dialogStore } from '~/core/store/dialog-store';
 import { paginationUtil } from '~/core/util/pagination-util';
 
 export default function Books() {
-  const { mutations, redirectToDetails } = createBook();
+  const { mutations, redirectToDetails, redirectToCreate } = createBook();
   const { keyWithParams, paginated } = createBookApi();
+  const pagination = createPagination();
 
   const [filters] = createSignal(paginationUtil.default());
   // TODO no reactive context using queryAs?
@@ -22,17 +25,9 @@ export default function Books() {
 
   const delMut = mutations.del;
 
-  function handleView(book: BookRow) {
-    redirectToDetails(book.id, 'view');
-  }
-
-  function handleEdit(book: BookRow) {
-    redirectToDetails(book.id, 'edit');
-  }
-
-  function handleDuplicate(book: BookRow) {
-    redirectToDetails(book.id, 'duplicate');
-  }
+  const handleView = (book: BookRow) => redirectToDetails(book.id, 'view');
+  const handleEdit = (book: BookRow) => redirectToDetails(book.id, 'edit');
+  const handleDuplicate = (book: BookRow) => redirectToDetails(book.id, 'duplicate');
 
   function handleDelete(book: BookRow) {
     dialogStore.actions.asDanger({
@@ -45,6 +40,9 @@ export default function Books() {
   return (
     <>
       <PageTitle subtitle="Review or add new books">Books</PageTitle>
+      <div class="flex justify-end items-center">
+        <Button onClick={() => redirectToCreate()}>Add Book</Button>
+      </div>
       <section class="flex flex-col items-center justify-center gap-y-6">
         <BookTable
           items={query.data?.items ?? []}
@@ -53,7 +51,7 @@ export default function Books() {
           duplicateFn={handleDuplicate}
           removeFn={handleDelete}
         />
-        <Pagination total={query.data?.total} />
+        <Pagination total={query.data?.total} pagination={pagination} />
       </section>
     </>
   );

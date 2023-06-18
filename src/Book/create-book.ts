@@ -34,10 +34,13 @@ export function createBook() {
     navigate(getDetailPath(id, mode));
   }
 
+  const redirectToCreate = () => navigate(RoutePaths.BookCreate);
+
   return {
     form,
     onBeforeLeave: preventUnsavedChangesExit,
     redirectToDetails,
+    redirectToCreate,
     ...agent,
   };
 }
