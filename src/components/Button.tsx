@@ -5,6 +5,7 @@ import { Ping } from './Ping';
 
 export interface ButtonProps {
   children: JSX.Element;
+  class?: string;
   isLoading?: boolean;
   mode?: Modes;
   theme?: ActionTypes;
@@ -24,20 +25,19 @@ export function Button(props: ButtonProps) {
     props,
   ) as Required<ButtonProps>;
   return (
-    <div title={merged.isLoading ? 'Loading...' : ''}>
-      <button
-        class={strUtil.cx(
-          `relative flex gap-x-2 items-center rounded-sm border px-4 py-2 duration-200 transition focus:outline-none active:scale-90 disabled:pointer-events-none disabled:border-opacity-30 disabled:bg-opacity-30`,
-          getTheming(merged.mode, merged.theme, merged.fabSize),
-        )}
-        type={merged.type}
-        disabled={merged.disabled || merged.isLoading}
-        onClick={() => merged.onClick?.()}
-      >
-        {merged.children}
-        {merged.isLoading && <Ping class="absolute -top-1 -right-1" />}
-      </button>
-    </div>
+    <button
+      class={strUtil.cx(
+        `relative flex gap-x-2 items-center rounded-sm border px-4 py-2 duration-200 transition focus:outline-none active:scale-90 disabled:pointer-events-none disabled:border-opacity-30 disabled:bg-opacity-30`,
+        getTheming(merged.mode, merged.theme, merged.fabSize),
+        props.class,
+      )}
+      type={merged.type}
+      disabled={merged.disabled || merged.isLoading}
+      onClick={() => merged.onClick?.()}
+    >
+      {merged.children}
+      {merged.isLoading && <Ping class="absolute -top-1 -right-1" />}
+    </button>
   );
 }
 

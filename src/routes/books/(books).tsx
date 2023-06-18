@@ -4,6 +4,7 @@ import { BookRow, BookTable } from '~/Book/components/BookTable';
 import { createBook } from '~/Book/create-book';
 import { createBookApi } from '~/Book/store/agent';
 import { PageTitle } from '~/components/PageTitle';
+import { Pagination } from '~/components/Pagination';
 import { dialogStore } from '~/core/store/dialog-store';
 import { paginationUtil } from '~/core/util/pagination-util';
 
@@ -52,6 +53,7 @@ export default function Books() {
           duplicateFn={handleDuplicate}
           removeFn={handleDelete}
         />
+        <Pagination total={query.data?.total} />
       </section>
     </>
   );

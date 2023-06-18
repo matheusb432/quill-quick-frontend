@@ -1,4 +1,5 @@
 import { For } from 'solid-js';
+import { HIQuestionMarkCircle } from '~/assets/icons/HIQuestionMarkCircle';
 import { WithId } from '~/core/types/model-types';
 import { TableAction, TableColumn, TableProps } from '~/core/types/table-types';
 
@@ -26,6 +27,7 @@ export function Table<T extends WithId>(props: TableProps<T>) {
           </For>
         </tbody>
       </table>
+      {props.items.length === 0 && <TableEmpty />}
     </div>
   );
 }
@@ -49,5 +51,14 @@ export function TableRow<T extends WithId>(props: TableRowProps<T>) {
         {({ cx, render }) => <td class={cx}>{render(props.item, props.index)}</td>}
       </For>
     </tr>
+  );
+}
+
+function TableEmpty() {
+  return (
+    <div class="flex flex-col items-center justify-center h-48 pb-6 border-b border-b-secondary">
+      <HIQuestionMarkCircle class="text-primary w-32 h-32" />
+      <span class="text-2xl">No Items were found!</span>
+    </div>
   );
 }
