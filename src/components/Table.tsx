@@ -2,12 +2,16 @@ import { For } from 'solid-js';
 import { HIQuestionMarkCircle } from '~/assets/icons/HIQuestionMarkCircle';
 import { WithId } from '~/core/types/model-types';
 import { TableAction, TableColumn, TableProps } from '~/core/types/table-types';
+import { Ping } from './Ping';
 
 export function Table<T extends WithId>(props: TableProps<T>) {
+  const loadingClassList = () => ({
+    'opacity-50': props.isLoading,
+  });
+
   return (
-    <div class="overflow-x-auto w-full">
-      {/* TODO add loading state to table */}
-      <table class="table lg:text-lg xl:text-xl">
+    <div class="relative overflow-x-auto w-full">
+      <table class="table lg:text-lg xl:text-xl" classList={loadingClassList()}>
         <thead class="text-primary">
           <tr class="border-b-primary">
             <For each={props.columns}>{({ cx, header }) => <th class={cx}>{header}</th>}</For>
@@ -27,7 +31,8 @@ export function Table<T extends WithId>(props: TableProps<T>) {
           </For>
         </tbody>
       </table>
-      {props.items.length === 0 && <TableEmpty />}
+      {props.isLoading && <Ping class="absolute top-2 right-2" />}
+      {props.items.length === 0 && <TableEmpty classList={loadingClassList()} />}
     </div>
   );
 }
@@ -54,9 +59,18 @@ export function TableRow<T extends WithId>(props: TableRowProps<T>) {
   );
 }
 
-function TableEmpty() {
+type TableEmptyProps = {
+  classList?: {
+    [k: string]: boolean | undefined;
+  };
+};
+
+function TableEmpty(props: TableEmptyProps) {
   return (
-    <div class="flex flex-col items-center justify-center h-48 pb-6 border-b border-b-secondary">
+    <div
+      class="flex flex-col items-center justify-center h-48 pb-6 border-b border-b-secondary"
+      classList={props.classList}
+    >
       <HIQuestionMarkCircle class="text-primary w-32 h-32" />
       <span class="text-2xl">No Items were found!</span>
     </div>

@@ -1,34 +1,29 @@
-import { createQuery } from '@tanstack/solid-query';
-import { createSignal, onMount } from 'solid-js';
+import { createSignal } from 'solid-js';
 import { BookFilterForm } from '~/Book/components/BookFilterForm';
 import { BookRow, BookTable } from '~/Book/components/BookTable';
 import { createBook } from '~/Book/create-book';
-import { createBookApi } from '~/Book/store/agent';
 import { createBookFilterForm } from '~/Book/store/form';
 import { BookFilter } from '~/Book/types/filters';
 import { Button } from '~/components/Button';
-import { Input } from '~/components/Inputs/Input';
 import { PageTitle } from '~/components/PageTitle';
 import { Pagination } from '~/components/Pagination';
+import { Defaults } from '~/core/constants/defaults';
 import { createPagination } from '~/core/store/create-pagination';
 import { dialogStore } from '~/core/store/dialog-store';
-import { FormProvider, useFormContext } from '~/core/store/form-context';
+import { FormProvider } from '~/core/store/form-context';
+import { ODataOperators, ODataOptions } from '~/core/types/odata-types';
 import { paginationUtil } from '~/core/util/pagination-util';
 
 export default function Books() {
-  const { mutations, redirectToDetails, redirectToCreate } = createBook();
-  const { keyWithParams, paginated } = createBookApi();
+  const { mutations, queryAs, redirectToDetails, redirectToCreate } = createBook();
   const pagination = createPagination();
 
-  const [filters] = createSignal(paginationUtil.default());
-  // TODO no reactive context using queryAs?
-  // const query = queryAs.paginated(filters);
-  const query = createQuery({
-    queryKey: () => keyWithParams(filters()),
-    queryFn: () => paginated(filters()),
-  });
+  const [filters, setFilters] = createSignal<ODataOptions>({});
+  const queryFilters = () =>
+    paginationUtil.from(pagination.page(), Defaults.ItemsPerPage, filters());
+  // eslint-disable-next-line solid/reactivity
+  const query = queryAs.paginated(queryFilters);
   const filterForm = createBookFilterForm();
-  // const [, { Field }] = filterForm;
 
   const delMut = mutations.del;
 
@@ -44,8 +39,10 @@ export default function Books() {
     });
   }
 
-  function handleFilter(filter: BookFilter) {
-    console.warn(filter);
+  function handleFilter(data: BookFilter) {
+    setFilters({
+      filter: { title: [[ODataOperators.Contains, data.title]] },
+    });
   }
 
   return (
@@ -54,7 +51,7 @@ export default function Books() {
       <div class="flex justify-between items-center">
         <Button onClick={() => redirectToCreate()}>Add Book</Button>
         <FormProvider form={filterForm}>
-          <BookFilterForm onSubmit={handleFilter} />
+          <BookFilterForm onSubmit={handleFilter} onDebounce={handleFilter} />
         </FormProvider>
       </div>
       <section class="flex flex-col items-center justify-center gap-y-6">
@@ -64,6 +61,7 @@ export default function Books() {
           editFn={handleEdit}
           duplicateFn={handleDuplicate}
           removeFn={handleDelete}
+          isLoading={query.isLoading}
         />
         <Pagination total={query.data?.total} pagination={pagination} />
       </section>

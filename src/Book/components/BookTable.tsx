@@ -12,6 +12,7 @@ export type BookRow = Book & { id: number };
 
 type BookTableProps = {
   items: BookRow[];
+  isLoading?: boolean;
   viewFn?: (book: BookRow) => void;
   editFn?: (book: BookRow) => void;
   duplicateFn?: (book: BookRow) => void;
@@ -65,7 +66,7 @@ export function BookTable(props: BookTableProps) {
   ];
   return (
     <>
-      <Table items={props.items} columns={columns} actions={actions} />
+      <Table items={props.items} columns={columns} actions={actions} isLoading={props.isLoading} />
     </>
   );
 }

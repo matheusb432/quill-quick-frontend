@@ -12,6 +12,7 @@ export type TableProps<T extends WithId> = {
   items: T[];
   columns: TableColumn<T>[];
   actions?: TableAction<T>[];
+  isLoading?: boolean;
 };
 
 export type TableAction<T extends WithId> = {

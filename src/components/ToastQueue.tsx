@@ -57,7 +57,7 @@ function Toast(props: ToastProps) {
   return (
     <div
       class={strUtil.cx(
-        'fixed right-3 top-3 min-w-[320px] max-w-xl transition-all duration-500',
+        'fixed right-3 top-3 min-w-[320px] z-50 max-w-xl transition-all duration-500',
         slideAnimation(),
       )}
     >
