@@ -66,7 +66,12 @@ module.exports = {
       hand: ['Indie Flower', 'cursive'],
     },
   },
-  plugins: [require('@tailwindcss/forms'), require('daisyui')],
+  plugins: [
+    require('@tailwindcss/forms')({
+      strategy: 'class',
+    }),
+    require('daisyui'),
+  ],
   daisyui: {
     themes: [
       {

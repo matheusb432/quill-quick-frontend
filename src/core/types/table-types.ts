@@ -22,3 +22,10 @@ export type TableAction<T extends WithId> = {
 };
 
 export type ActionRenderFn<T extends WithId> = (row: T, index: number) => JSX.Element;
+
+export type CrudFns<T> = {
+  viewFn?: (row: T) => void;
+  editFn?: (row: T) => void;
+  duplicateFn?: (row: T) => void;
+  removeFn?: (row: T) => void;
+};

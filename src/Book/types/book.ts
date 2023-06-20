@@ -10,6 +10,7 @@ export const zBook = z.object({
   // TODO add in review model
   rating: z.coerce.number().int().min(1).max(10),
   dateRange: z.string().optional(),
+  public: z.boolean().optional(),
 });
 
 export type Book = z.infer<typeof zBook>;

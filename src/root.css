@@ -26,7 +26,7 @@
     -moz-appearance: textfield !important;
   }
 
-  input[type='radio'] {
+  /* input[type='radio'] {
     border: none;
   }
 
@@ -34,7 +34,7 @@
     background-image: none;
     border-color: #eab308;
     color: #eab308;
-  }
+  } */
 }
 
 .__animated-cursor::after {

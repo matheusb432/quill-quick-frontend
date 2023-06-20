@@ -7,10 +7,7 @@ interface LabelProps {
 
 export function Label(props: LabelProps) {
   return (
-    <label
-      class="absolute left-4 top-1 text-sm text-neutral-content/80 transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-2xl peer-focus:top-1 peer-focus:text-sm peer-focus:text-primary"
-      for={props.forId}
-    >
+    <label class="text-2xl text-neutral-content/80 transition-all" for={props.forId}>
       {props.children}
     </label>
   );

@@ -35,7 +35,12 @@ function createToastStore() {
   function next(data: ToastData) {
     setState(
       produce((state) => {
-        state.queue.push(data);
+        const current = state.queue[0];
+        if (current?.type === data.type && current?.message === data.message) {
+          state.queue[0] = data;
+        } else {
+          state.queue.push(data);
+        }
         state.closing = false;
       }),
     );

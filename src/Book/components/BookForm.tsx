@@ -6,6 +6,7 @@ import { DateRange } from '~/components/Inputs/DateRange';
 import { Input } from '~/components/Inputs/Input';
 import { Rating } from '~/components/Inputs/Rating';
 import { Textarea } from '~/components/Inputs/Textarea';
+import { Toggle } from '~/components/Inputs/Toggle';
 import { useFormContext } from '~/core/store/form-context';
 import { Book } from '../types/book';
 
@@ -32,7 +33,7 @@ export function BookForm(props: BookFormProps) {
         <Field name="author">{(...args) => <Input fieldArgs={args} />}</Field>
       </FormRow>
       <Field name="pageCount" type="number">
-        {(...args) => <Input fieldArgs={args} type="number" />}
+        {(...args) => <Input fieldArgs={args} type="number" helper="Should be a whole number" />}
       </Field>
       <Field name="summary">{(...args) => <Textarea fieldArgs={args} />}</Field>
       <Field name="rating" type={'string' as 'number'}>
@@ -41,6 +42,10 @@ export function BookForm(props: BookFormProps) {
       <Field name="dateRange" type="string">
         {(...args) => <DateRange fieldArgs={args} />}
       </Field>
+      <Field name="public" type="boolean">
+        {(...args) => <Toggle fieldArgs={args} />}
+      </Field>
+
       <FormFooter onDelete={merged.onDelete} />
     </Form>
   );

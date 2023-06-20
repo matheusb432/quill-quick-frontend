@@ -2,16 +2,14 @@ import flatpickr from 'flatpickr';
 import { mergeProps, onMount } from 'solid-js';
 import { HICalendar } from '~/assets/icons/HICalendar';
 import { createField } from '~/core/store/create-field';
-import { FieldCmp } from '~/core/types/form-types';
+import { ContainerField } from '~/core/types/form-types';
 import { InputContainer } from './InputContainer';
 
-type DateRangeProps<TF, TN> = FieldCmp<TF, TN> & {
-  placeholder?: string;
-};
+type DateRangeProps<TF, TN> = ContainerField<TF, TN>;
 
 export function DateRange<TF, TN>(props: DateRangeProps<TF, TN>) {
   const merged = mergeProps({}, props);
-  const { errorText, label, name, canEdit, isLoading } = createField(merged);
+  const { error, label, name, canEdit, isLoading } = createField(merged);
 
   onMount(() => {
     flatpickr('#dateRange', {
@@ -27,8 +25,9 @@ export function DateRange<TF, TN>(props: DateRangeProps<TF, TN>) {
       label={label()}
       isError={!!merged.fieldArgs[0].error}
       isLoading={isLoading()}
-      errorText={errorText()}
+      error={error()}
       iconFn={HICalendar}
+      helper={merged.helper}
     >
       <input
         {...merged.fieldArgs[1]}

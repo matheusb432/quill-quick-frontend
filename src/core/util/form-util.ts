@@ -28,7 +28,8 @@ function isEdit(formType: string) {
 }
 
 function canEditField<T extends CanEditData>(data: T) {
-  return !data.isLoading && !data.disabled && data.mode !== FormModes.View;
+  const { isLoading, disabled, mode, disableOnLoading } = data;
+  return (!isLoading || !disableOnLoading) && !disabled && mode !== FormModes.View;
 }
 
 function nameToLabel(name: string) {

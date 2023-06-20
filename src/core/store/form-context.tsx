@@ -8,7 +8,7 @@ import {
   splitProps,
   useContext,
 } from 'solid-js';
-import { FormModes } from '../types/form-types';
+import { CanEditData, FormModes } from '../types/form-types';
 
 interface FormContextProps<TForm extends FieldValues> {
   state: Omit<Required<FormProviderProps<TForm>>, 'children'>;
@@ -18,18 +18,18 @@ interface FormContextProps<TForm extends FieldValues> {
 
 const FormContext = createContext();
 
-type FormProviderProps<TForm extends FieldValues> = {
+type FormProviderProps<TForm extends FieldValues> = Partial<CanEditData> & {
   children: JSX.Element;
   form: ReturnType<typeof createForm<TForm>>;
-  disabled?: boolean;
-  isLoading?: boolean;
-  mode?: FormModes;
   labels?: Partial<Record<FieldPath<TForm>, string>>;
 };
 
 export function FormProvider<TForm extends FieldValues>(props: FormProviderProps<TForm>) {
   const [local, others] = splitProps(props, ['children']);
-  const merged = mergeProps({ isLoading: false, disabled: false, mode: FormModes.Create }, others);
+  const merged = mergeProps(
+    { isLoading: false, disableOnLoading: true, disabled: false, mode: FormModes.Create },
+    others,
+  );
   const [labels, setLabels] = createSignal<Record<FieldPath<TForm>, string>>({} as never);
 
   return (

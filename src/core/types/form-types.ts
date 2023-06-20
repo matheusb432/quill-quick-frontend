@@ -23,9 +23,19 @@ export type FieldCmp<TForm, TName> = {
   fieldArgs: [TFieldStore<TForm, TName>, TFieldElementProps<TForm, TName>];
 };
 
+export type ContainerField<TForm, TName> = FieldCmp<TForm, TName> & {
+  placeholder?: string;
+  helper?: string;
+};
+
 export type SelectItemData = {
   label: string;
   value: string;
 };
 
-export type CanEditData = { isLoading: boolean; disabled: boolean; mode: string };
+export type CanEditData = {
+  disabled: boolean;
+  isLoading: boolean;
+  disableOnLoading: boolean;
+  mode: FormModes;
+};

@@ -48,9 +48,9 @@ export default function Books() {
   return (
     <>
       <PageTitle subtitle="Review or add new books">Books</PageTitle>
-      <div class="flex justify-between items-center">
+      <div class="flex items-center justify-between">
         <Button onClick={() => redirectToCreate()}>Add Book</Button>
-        <FormProvider form={filterForm}>
+        <FormProvider form={filterForm} isLoading={query.isLoading} disableOnLoading={false}>
           <BookFilterForm onSubmit={handleFilter} onDebounce={handleFilter} />
         </FormProvider>
       </div>
