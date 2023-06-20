@@ -4,7 +4,6 @@ import { createBook } from '~/Book/create-book';
 import { Book } from '~/Book/types/book';
 import { PageTitle } from '~/components/PageTitle';
 import { FormProvider } from '~/core/store/form-context';
-
 export default function BooksCreate() {
   const { form, mutations, redirectToDetails } = createBook();
 

@@ -1,6 +1,5 @@
 import { Slogan } from '~/Home/Slogan';
 import { Heading } from '~/components/Heading';
-import { DateRange } from '~/components/Inputs/DateRange';
 import { MainContainer } from '~/components/MainContainer';
 
 export default function Home() {
@@ -15,7 +14,6 @@ export default function Home() {
         <span class="font-serif text-4xl font-bold text-primary">Home</span>
         <span class="text-4xl font-bold text-primary">Home</span>
       </p>
-      <DateRange />
     </MainContainer>
   );
 }

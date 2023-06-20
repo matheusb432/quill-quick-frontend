@@ -30,7 +30,7 @@ export function Button(props: ButtonProps) {
   return (
     <button
       class={strUtil.cx(
-        `relative flex gap-x-2 items-center rounded-sm border px-4 py-2 duration-200 transition focus:outline-none active:scale-90 disabled:pointer-events-none disabled:border-opacity-30 disabled:bg-opacity-30`,
+        `relative flex items-center gap-x-2 rounded-sm border px-4 py-2 transition duration-200 active:scale-90 disabled:pointer-events-none disabled:border-opacity-30 disabled:bg-opacity-30`,
         getTheming(merged.mode, merged.theme, merged.fabSize),
         props.class,
       )}
@@ -40,7 +40,7 @@ export function Button(props: ButtonProps) {
       onClick={() => merged.onClick?.()}
     >
       {merged.children}
-      {merged.isLoading && <Ping class="absolute -top-1 -right-1" />}
+      {merged.isLoading && <Ping class="absolute -right-1 -top-1" />}
     </button>
   );
 }

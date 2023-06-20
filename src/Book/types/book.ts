@@ -9,6 +9,7 @@ export const zBook = z.object({
   pageCount: z.coerce.number().int().positive(),
   // TODO add in review model
   rating: z.coerce.number().int().min(1).max(10),
+  dateRange: z.string().optional(),
 });
 
 export type Book = z.infer<typeof zBook>;

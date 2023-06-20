@@ -2,6 +2,7 @@ import { SubmitHandler } from '@modular-forms/solid';
 import { mergeProps } from 'solid-js';
 import { FormFooter } from '~/components/Form/FormFooter';
 import { FormRow } from '~/components/Form/FormRow';
+import { DateRange } from '~/components/Inputs/DateRange';
 import { Input } from '~/components/Inputs/Input';
 import { Rating } from '~/components/Inputs/Rating';
 import { Textarea } from '~/components/Inputs/Textarea';
@@ -36,6 +37,9 @@ export function BookForm(props: BookFormProps) {
       <Field name="summary">{(...args) => <Textarea fieldArgs={args} />}</Field>
       <Field name="rating" type={'string' as 'number'}>
         {(...args) => <Rating fieldArgs={args} />}
+      </Field>
+      <Field name="dateRange" type="string">
+        {(...args) => <DateRange fieldArgs={args} />}
       </Field>
       <FormFooter onDelete={merged.onDelete} />
     </Form>

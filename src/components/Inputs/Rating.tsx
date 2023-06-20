@@ -16,6 +16,15 @@ export function Rating<TF, TN>(props: RatingProps<TF, TN>) {
         {label()}
       </label>
       <div class="rating rating-half rating-lg relative">
+        <input
+          {...merged.fieldArgs[1]}
+          type="radio"
+          name={name()}
+          class="rating-hidden hidden"
+          value={0}
+          checked
+          disabled={!canEdit()}
+        />
         <For each={ratings}>
           {(rating) => (
             <input
@@ -29,6 +38,7 @@ export function Rating<TF, TN>(props: RatingProps<TF, TN>) {
                 'opacity-50': isLoading(),
               }}
               value={rating}
+              checked={merged.fieldArgs[0].value === rating}
               disabled={!canEdit()}
             />
           )}
