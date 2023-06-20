@@ -7,6 +7,7 @@ import { IconButton } from '~/components/IconButton';
 import { Table } from '~/components/Table';
 import { TableAction, TableColumn } from '~/core/types/table-types';
 import { Book } from '../types/book';
+import { Tooltip } from '~/components/Tooltip';
 
 export type BookRow = Book & { id: number };
 
@@ -25,7 +26,17 @@ export function BookTable(props: BookTableProps) {
     { header: 'Title', accessor: 'title' },
     { header: 'Author', accessor: 'author' },
     { header: 'Publisher', accessor: 'publisher' },
-    { header: 'Pages', accessor: 'pageCount' },
+    {
+      header: 'Pages',
+      accessor: 'pageCount',
+      render(row) {
+        return (
+          <Tooltip text={`${row.pageCount} Pages`} position="bottom" theme="primary">
+            {row.pageCount}
+          </Tooltip>
+        );
+      },
+    },
   ];
 
   const actions: TableAction<BookRow>[] = [

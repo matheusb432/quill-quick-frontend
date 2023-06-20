@@ -12,7 +12,7 @@
 
 @layer components {
   .input-fx {
-    @apply border-0 border-l-4 border-transparent border-l-primary disabled:text-neutral-content/80 disabled:border-neutral-content/80 disabled:pointer-events-none disabled:bg-opacity-30 bg-secondary text-xl placeholder-transparent hover:bg-secondary-hover focus:border-primary focus:bg-secondary-focus focus:placeholder-neutral-content/80 focus:outline-4 focus:outline-offset-4 focus:ring-0;
+    @apply border-0 border-l-4 border-transparent border-l-primary bg-secondary text-xl placeholder-transparent hover:bg-secondary-hover focus:border-primary focus:bg-secondary-focus focus:placeholder-neutral-content/80 focus:outline-4 focus:outline-offset-4 focus:ring-0 disabled:pointer-events-none disabled:border-neutral-content/80 disabled:bg-opacity-30 disabled:text-neutral-content/80;
   }
 }
 
@@ -23,6 +23,16 @@
     -webkit-appearance: none;
     margin: 0;
     -moz-appearance: textfield !important;
+  }
+
+  input[type='radio'] {
+    border: none;
+  }
+
+  input[type='radio']:checked {
+    background-image: none;
+    border-color: #eab308;
+    color: #eab308;
   }
 }
 
