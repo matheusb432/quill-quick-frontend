@@ -31,7 +31,7 @@ export function BookTable(props: BookTableProps) {
       accessor: 'pageCount',
       render(row) {
         return (
-          <Tooltip text={`${row.pageCount} Pages`} position="bottom" theme="primary">
+          <Tooltip text={`${row.pageCount} Pages`} position="right" theme="primary">
             {row.pageCount}
           </Tooltip>
         );

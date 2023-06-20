@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Texturina:ital,wght@0,100;0,500;0,700;1,100&display=swap');
+@import 'flatpickr/dist/flatpickr.min.css';
 
 @tailwind base;
 @tailwind components;
