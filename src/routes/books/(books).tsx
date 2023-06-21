@@ -1,4 +1,4 @@
-import { createSignal } from 'solid-js';
+import { batch, createSignal } from 'solid-js';
 import { BookFilterForm } from '~/Book/components/BookFilterForm';
 import { BookRow, BookTable } from '~/Book/components/BookTable';
 import { createBook } from '~/Book/create-book';
@@ -27,10 +27,6 @@ export default function Books() {
 
   const delMut = mutations.del;
 
-  const handleView = (book: BookRow) => redirectToDetails(book.id, 'view');
-  const handleEdit = (book: BookRow) => redirectToDetails(book.id, 'edit');
-  const handleDuplicate = (book: BookRow) => redirectToDetails(book.id, 'duplicate');
-
   function handleDelete(book: BookRow) {
     dialogStore.actions.asDanger({
       title: 'Delete Book',
@@ -40,8 +36,11 @@ export default function Books() {
   }
 
   function handleFilter(data: BookFilter) {
-    setFilters({
-      filter: { title: [[ODataOperators.Contains, data.title]] },
+    batch(() => {
+      pagination.setPage(1);
+      setFilters({
+        filter: { title: [[ODataOperators.Contains, data.title]] },
+      });
     });
   }
 
@@ -57,9 +56,9 @@ export default function Books() {
       <section class="flex flex-col items-center justify-center gap-y-6">
         <BookTable
           items={query.data?.items ?? []}
-          viewFn={handleView}
-          editFn={handleEdit}
-          duplicateFn={handleDuplicate}
+          viewFn={({ id }) => redirectToDetails(id, 'view')}
+          editFn={({ id }) => redirectToDetails(id, 'edit')}
+          duplicateFn={({ id }) => redirectToDetails(id, 'duplicate')}
           removeFn={handleDelete}
           isLoading={query.isLoading}
         />
