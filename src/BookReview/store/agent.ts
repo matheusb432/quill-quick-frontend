@@ -2,27 +2,26 @@ import { createMutation, useQueryClient } from '@tanstack/solid-query';
 import { createFeatureApi } from '~/core/store/create-feature-api';
 import { toastStore } from '~/core/store/toast-store';
 import { apiUtil } from '~/core/util/api-util';
-import { Book } from '../types/book';
 import { PostRes } from '~/core/types/api-types';
+import { BookReview, tBookReviewForm } from '../types';
 
-const url = '/books';
+const url = '/bookreviews';
 
-export function createBookApi() {
-  return createFeatureApi<Book>(url);
+export function createBookReviewApi() {
+  return createFeatureApi<BookReview>(url);
 }
 
-export function createBookAgent() {
-  const api = createBookApi();
+export function createBookReviewAgent() {
+  const api = createBookReviewApi();
   const { post, put, del } = api.api;
-  const notifications = apiUtil.buildNotifications('Book');
+  const notifications = apiUtil.buildNotifications('Book review');
   const client = useQueryClient();
 
-  type tBookForm = Omit<Book, 'id'>;
-
   const mutApi = {
-    create: (book: tBookForm) => post<PostRes, tBookForm>(url, book),
-    duplicate: (book: tBookForm) => mutApi.create(book),
-    update: (id: number, book: tBookForm) => put<void, Book>(url, { ...book, id }),
+    create: (book: tBookReviewForm) => post<PostRes, tBookReviewForm>(url, book),
+    duplicate: (book: tBookReviewForm) => mutApi.create(book),
+    update: (id: number, book: tBookReviewForm) =>
+      put<void, tBookReviewForm & { id: number }>(url, { ...book, id }),
     del: (id: number) => del(`${url}/${id}`),
   };
 
@@ -32,7 +31,7 @@ export function createBookAgent() {
 
   const updateMut = createMutation({
     mutationKey: api.keys.update,
-    mutationFn: (data: Book & { id: number }) => mutApi.update(data.id, data),
+    mutationFn: (data: tBookReviewForm & { id: number }) => mutApi.update(data.id, data),
     onSuccess: (res, data) => {
       notifySuccess('update');
       setUpdatedData(data.id, data);
@@ -50,7 +49,7 @@ export function createBookAgent() {
 
   const duplicateMut = createMutation({
     mutationKey: api.keys.duplicate,
-    mutationFn: (data: Book) => mutApi.duplicate(data),
+    mutationFn: (data: tBookReviewForm) => mutApi.duplicate(data),
     onSuccess: (res, data) => {
       notifySuccess('duplicate');
       setNewData(res, data);
@@ -59,18 +58,18 @@ export function createBookAgent() {
 
   const addMut = createMutation({
     mutationKey: api.keys.add,
-    mutationFn: (data: Book) => mutApi.create(data),
+    mutationFn: (data: tBookReviewForm) => mutApi.create(data),
     onSuccess: (res, data) => {
       notifySuccess('create');
       setNewData(res, data);
     },
   });
 
-  function setUpdatedData(id: number, data: Book | null) {
+  function setUpdatedData(id: number, data: tBookReviewForm | null) {
     client.setQueryData(api.keys.id(id), data);
   }
 
-  function setNewData(res: PostRes, data: Book) {
+  function setNewData(res: PostRes, data: tBookReviewForm) {
     const createdId = res.id;
     client.setQueryData(api.keys.id(createdId), { ...data, id: createdId });
   }

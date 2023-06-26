@@ -36,7 +36,8 @@ export function BookForm(props: BookFormProps) {
         {(...args) => <Input fieldArgs={args} type="number" helper="Should be a whole number" />}
       </Field>
       <Field name="summary">{(...args) => <Textarea fieldArgs={args} />}</Field>
-      <Field name="rating" type={'string' as 'number'}>
+      {/* // TODO add fields in review form  */}
+      {/* <Field name="rating" type={'string' as 'number'}>
         {(...args) => <Rating fieldArgs={args} />}
       </Field>
       <Field name="dateRange" type="string">
@@ -44,7 +45,7 @@ export function BookForm(props: BookFormProps) {
       </Field>
       <Field name="public" type="boolean">
         {(...args) => <Toggle fieldArgs={args} />}
-      </Field>
+      </Field> */}
 
       <FormFooter onDelete={merged.onDelete} />
     </Form>
