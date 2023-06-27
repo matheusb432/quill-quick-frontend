@@ -1,9 +1,9 @@
 import { batch, createSignal } from 'solid-js';
-import { BookFilterForm } from '~/Book/components/BookFilterForm';
+import { BookFilters } from '~/Book/components/BookFilters';
 import { BookRow, BookTable } from '~/Book/components/BookTable';
 import { createBook } from '~/Book/create-book';
 import { createBookFilterForm } from '~/Book/store/form';
-import { BookFilter } from '~/Book/types/filters';
+import { BookFilter } from '~/Book/types/book';
 import { Button } from '~/components/Button';
 import { PageTitle } from '~/components/PageTitle';
 import { Pagination } from '~/components/Pagination';
@@ -50,7 +50,7 @@ export default function Books() {
       <div class="flex items-center justify-between">
         <Button onClick={() => redirectToCreate()}>Add Book</Button>
         <FormProvider form={filterForm} isLoading={query.isLoading} disableOnLoading={false}>
-          <BookFilterForm onSubmit={handleFilter} onDebounce={handleFilter} />
+          <BookFilters onSubmit={handleFilter} onDebounce={handleFilter} />
         </FormProvider>
       </div>
       <section class="flex flex-col items-center justify-center gap-y-6">

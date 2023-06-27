@@ -2,14 +2,14 @@ import { SubmitHandler, getValues } from '@modular-forms/solid';
 import { mergeProps } from 'solid-js';
 import { SearchInput } from '~/components/Inputs/SearchInput';
 import { useFormContext } from '~/core/store/form-context';
-import { BookFilter } from '../types/filters';
+import { BookFilter } from '../types/book';
 
-interface BookFilterFormProps {
+interface BookFiltersProps {
   onSubmit: SubmitHandler<BookFilter>;
   onDebounce(filter: BookFilter): void;
 }
 
-export function BookFilterForm(props: BookFilterFormProps) {
+export function BookFilters(props: BookFiltersProps) {
   const merged = mergeProps({}, props);
 
   const { state } = useFormContext<BookFilter>();

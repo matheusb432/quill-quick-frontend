@@ -1,26 +1,25 @@
 import { z } from 'zod';
-import { BookReviewComment } from './book-review-comment';
+import { Review, zReviewForm } from '~/core/types/review-types';
+import { BookReviewComment, zBookReviewCommentForm } from './book-review-comment';
 
-export type BookReview = {
-  id: number;
+export type BookReview = Review & {
   bookId: number;
   readingMode: string;
-  summary: string;
-  soundtrack: string;
-  startedAt: string;
-  endedAt: string;
   comments: BookReviewComment[];
 };
 
-export const zBookReviewForm = z.object({
-  bookId: z.number().int().positive().optional(),
-  readingMode: z.string().nonempty().max(50),
-  // TODO refactor to base form type
-  summary: z.string().nonempty().max(100),
-  soundtrack: z.string().nonempty().max(100),
-  rating: z.coerce.number().int().min(1).max(10),
+export const zBookReviewFilter = z.object({
   dateRange: z.string().optional(),
-  // ?
+});
+
+export type BookReviewFilter = z.infer<typeof zBookReviewFilter>;
+
+export const zBookReviewForm = z.object({
+  // TODO review's bookId via url ?
+  // bookId: z.number().int().positive().optional(),
+  readingMode: z.string().nonempty().max(50),
+  comments: z.array(zBookReviewCommentForm).optional(),
+  ...zReviewForm.shape,
 });
 
 export type tBookReviewForm = z.infer<typeof zBookReviewForm>;

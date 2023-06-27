@@ -10,3 +10,9 @@ export const zBook = z.object({
 });
 
 export type Book = z.infer<typeof zBook>;
+
+export const zBookFilter = z.object({
+  title: z.string().optional(),
+});
+
+export type BookFilter = z.infer<typeof zBookFilter>;
