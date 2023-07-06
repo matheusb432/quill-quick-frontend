@@ -22,9 +22,14 @@ describe('odata-util', () => {
       }
     });
 
-    it('should remove undefined filters', () => {
+    it('should remove undefined and NaN filters', () => {
       const result = odataUtil.query('https://example.com', {
-        filter: { name: 'John', age: undefined, lastName: [[ODataOperators.Contains, undefined]] },
+        filter: {
+          name: 'John',
+          age: undefined,
+          someId: NaN,
+          lastName: [[ODataOperators.Contains, undefined]],
+        },
         orderBy: ['name', 'asc'],
       });
 
@@ -82,7 +87,9 @@ describe('odata-util', () => {
       const result = odataUtil.query('/example', {
         filter: {
           name: 'John',
+          city: [[ODataOperators.EqualTo, 'New York', ODataOperators.Or]],
           age: undefined,
+          someProp: [[ODataOperators.GreaterThanOrEqualTo, [20, 30, 40]]],
           anotherProp: [
             [ODataOperators.GreaterThanOrEqualTo, 50],
             [ODataOperators.LessThanOrEqualTo, 100],
@@ -92,7 +99,7 @@ describe('odata-util', () => {
         },
         orderBy: [
           [['nested', 'prop', 'test'], 'asc'],
-          [['title'], 'asc'],
+          ['title', 'asc'],
           [['city', 'date'], 'desc'],
         ],
         count: true,
@@ -101,13 +108,13 @@ describe('odata-util', () => {
       });
 
       const expectedParams = {
-        filter: `$filter=(name eq 'John') and (anotherProp ge 50) and (anotherProp le 100) and (yetAnotherProp/its/nested eq 2023-05-01)`,
+        filter: `$filter=(name eq 'John') and (city eq 'New York') or ((someProp ge 20) or (someProp ge 30) or (someProp ge 40)) and (anotherProp ge 50) and (anotherProp le 100) and (yetAnotherProp/its/nested eq 2023-05-01)`,
         orderBy: '$orderby=nested/prop/test asc,title asc,city/date desc',
         count: '$count=true',
         skip: '$skip=30',
         top: '$top=10',
       };
-      const expectedResult = `/example?$filter=(name eq 'John') and (anotherProp ge 50) and (anotherProp le 100) and (yetAnotherProp/its/nested eq 2023-05-01)&$orderby=nested/prop/test asc,title asc,city/date desc&$count=true&$skip=30&$top=10`;
+      const expectedResult = `/example?$filter=(name eq 'John') and (city eq 'New York') or ((someProp ge 20) or (someProp ge 30) or (someProp ge 40)) and (anotherProp ge 50) and (anotherProp le 100) and (yetAnotherProp/its/nested eq 2023-05-01)&$orderby=nested/prop/test asc,title asc,city/date desc&$count=true&$skip=30&$top=10`;
 
       expect(result.length).toEqual(expectedResult.length);
 
@@ -200,6 +207,49 @@ describe('odata-util', () => {
     });
   });
 
+  describe('params', () => {
+    it('should return an empty object when options are not provided', () => {
+      const result = odataUtil.params(undefined as unknown as ODataOptions);
+      const expected = '';
+      expect(result.length).toEqual(expected.length);
+    });
+
+    it('should return an object with filter parameters', () => {
+      const result = odataUtil.params({
+        filter: { name: 'John', age: [[ODataOperators.GreaterThanOrEqualTo, 20]] },
+      });
+      const expected = "$filter=(name eq 'John') and (age ge 20)";
+      expect(result.length).toEqual(expected.length);
+    });
+
+    it('should return an object with orderby parameters', () => {
+      const result = odataUtil.params({
+        orderBy: [['name', 'asc']],
+      });
+      const expected = '$orderby=name asc';
+      expect(result.length).toEqual(expected.length);
+    });
+
+    it('should return an object with multiple parameters', () => {
+      const result = odataUtil.params({
+        filter: { name: 'John' },
+        orderBy: [['name', 'asc']],
+        select: ['name', 'age'],
+      });
+      const expected = "$filter=(name eq 'John')&$orderby=name asc&$select=name,age";
+      expect(result.length).toEqual(expected.length);
+    });
+
+    it('should return an object with $top and $skip parameters', () => {
+      const result = odataUtil.params({
+        top: 5,
+        skip: 10,
+      });
+      const expected = '$top=5&$skip=10';
+      expect(result.length).toEqual(expected.length);
+    });
+  });
+
   describe('paramsObj', () => {
     it('should return an empty object when options are not provided', () => {
       const result = odataUtil.paramsObj(undefined as unknown as ODataOptions);
@@ -251,49 +301,6 @@ describe('odata-util', () => {
         $skip: '10',
       };
       expect(result).toEqual(expected);
-    });
-  });
-
-  describe('params', () => {
-    it('should return an empty object when options are not provided', () => {
-      const result = odataUtil.params(undefined as unknown as ODataOptions);
-      const expected = '';
-      expect(result.length).toEqual(expected.length);
-    });
-
-    it('should return an object with filter parameters', () => {
-      const result = odataUtil.params({
-        filter: { name: 'John', age: [[ODataOperators.GreaterThanOrEqualTo, 20]] },
-      });
-      const expected = "$filter=(name eq 'John') and (age ge 20)";
-      expect(result.length).toEqual(expected.length);
-    });
-
-    it('should return an object with orderby parameters', () => {
-      const result = odataUtil.params({
-        orderBy: [['name', 'asc']],
-      });
-      const expected = '$orderby=name asc';
-      expect(result.length).toEqual(expected.length);
-    });
-
-    it('should return an object with multiple parameters', () => {
-      const result = odataUtil.params({
-        filter: { name: 'John' },
-        orderBy: [['name', 'asc']],
-        select: ['name', 'age'],
-      });
-      const expected = "$filter=(name eq 'John')&$orderby=name asc&$select=name,age";
-      expect(result.length).toEqual(expected.length);
-    });
-
-    it('should return an object with $top and $skip parameters', () => {
-      const result = odataUtil.params({
-        top: 5,
-        skip: 10,
-      });
-      const expected = '$top=5&$skip=10';
-      expect(result.length).toEqual(expected.length);
     });
   });
 });

@@ -1,6 +1,9 @@
 export type ODataFilter = {
-  [key: string]: ODataFilterValue | [ODataOperators, ODataFilterValue][];
+  [key: string]: ODataFilterValue | ODataFilterOperation[];
 };
+type ODataFilterOperation =
+  | [ODataOperators, ODataFilterValue | ODataFilterValue[]]
+  | [ODataOperators, ODataFilterValue | ODataFilterValue[], ODataOperators.Or];
 
 export type ODataFilterValue = string | number | Date | boolean | undefined | null;
 export type ODataOrderBy = [string | string[], 'asc' | 'desc'];

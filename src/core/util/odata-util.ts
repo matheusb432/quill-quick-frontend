@@ -55,6 +55,9 @@ export const odataUtil = {
   paramsObj,
 };
 
+const orSeparator = ` ${ODataOperators.Or} `;
+const andSeparator = ` ${ODataOperators.And} `;
+
 const builder = {
   url(baseUrl: string, options?: ODataOptions): string {
     let queryUrl = baseUrl;
@@ -65,6 +68,11 @@ const builder = {
     }
 
     return queryUrl;
+  },
+  mergeUrlToRawParams(url: string, params: string): string {
+    if (!params) return url;
+
+    return `${url}?${params}`;
   },
   query(options: ODataOptions): string {
     let queryStr = '';
@@ -91,25 +99,57 @@ const builder = {
         continue;
       }
 
-      for (const [operator, filterValue] of value) {
-        filterStr += builder.createFilter(key, operator, filterValue);
+      for (const [operator, filterValue, joinOperator] of value) {
+        if (Array.isArray(filterValue)) {
+          filterStr += builder.createOrFilters(key, operator, filterValue, joinOperator);
+          continue;
+        }
+
+        filterStr += builder.createFilter(key, operator, filterValue, joinOperator);
       }
     }
 
-    return filterStr.slice(0, -5);
+    return builder.sliceSeparator(filterStr, andSeparator);
   },
-  createFilter(key: string, operator: ODataOperators, value: ODataFilterValue): string {
+  createOrFilters(
+    key: string,
+    operator: ODataOperators,
+    values: ODataFilterValue[],
+    joinOperator: ODataOperators.And | ODataOperators.Or = ODataOperators.And,
+  ): string {
+    let orFilterStr = '';
+
+    for (const value of values) {
+      orFilterStr += builder.createFilter(key, operator, value, ODataOperators.Or);
+    }
+
+    if (!orFilterStr) return '';
+
+    const separator = joinOperator === ODataOperators.Or ? orSeparator : andSeparator;
+
+    return `(${builder.sliceSeparator(orFilterStr, orSeparator)})${separator}`;
+  },
+  sliceSeparator(str: string, separator: string): string {
+    return str.slice(0, -separator.length);
+  },
+  createFilter(
+    key: string,
+    operator: ODataOperators,
+    value: ODataFilterValue,
+    joinOperator: ODataOperators.And | ODataOperators.Or = ODataOperators.And,
+  ): string {
     const normalized = builder.normalize(value);
+    const separator = joinOperator === ODataOperators.Or ? orSeparator : andSeparator;
 
     if (normalized === undefined) return '';
     if (operator === ODataOperators.Contains) {
-      return `contains(${key}, ${normalized}) and `;
+      return `contains(${key}, ${normalized})${separator}`;
     }
 
-    return `(${key} ${operator} ${normalized}) and `;
+    return `(${key} ${operator} ${normalized})${separator}`;
   },
   normalize(value: ODataFilterValue): string | undefined {
-    if (value == null) return undefined;
+    if (value == null || Number.isNaN(value)) return undefined;
 
     if (value instanceof Date) return dateUtil.toYyyyMmDd(value);
 
