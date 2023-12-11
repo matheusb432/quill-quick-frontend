@@ -82,7 +82,6 @@ export function createFeatureApi<TEntity extends WithId>(featureUrl: string) {
     paginated,
     byId,
     api,
-
     queryAs: {
       paginated: createPaginatedQuery,
       byId: createDetailQuery,

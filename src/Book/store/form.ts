@@ -1,7 +1,6 @@
 import { createForm, zodForm } from '@modular-forms/solid';
 import { formUtil } from '~/core/util/form-util';
-import { Book, zBook } from '../types/book';
-import { BookFilter, zBookFilter } from '../types/filters';
+import { Book, BookFilter, zBook, zBookFilter } from '../types/book';
 
 export function createBookForm() {
   return createForm<Book>({

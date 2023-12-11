@@ -33,8 +33,9 @@ export function createBookAgent() {
   const updateMut = createMutation({
     mutationKey: api.keys.update,
     mutationFn: (data: Book & { id: number }) => mutApi.update(data.id, data),
-    onSuccess: (res, data) => {
+    onSuccess: async (res, data) => {
       notifySuccess('update');
+      await api.invalidate();
       setUpdatedData(data.id, data);
     },
   });
@@ -42,8 +43,9 @@ export function createBookAgent() {
   const delMut = createMutation({
     mutationKey: api.keys.del,
     mutationFn: (id: number) => mutApi.del(id),
-    onSuccess: (res, id) => {
+    onSuccess: async (res, id) => {
       notifySuccess('delete');
+      await api.invalidate();
       setUpdatedData(id, null);
     },
   });
@@ -51,8 +53,9 @@ export function createBookAgent() {
   const duplicateMut = createMutation({
     mutationKey: api.keys.duplicate,
     mutationFn: (data: Book) => mutApi.duplicate(data),
-    onSuccess: (res, data) => {
+    onSuccess: async (res, data) => {
       notifySuccess('duplicate');
+      await api.invalidate();
       setNewData(res, data);
     },
   });
@@ -60,8 +63,9 @@ export function createBookAgent() {
   const addMut = createMutation({
     mutationKey: api.keys.add,
     mutationFn: (data: Book) => mutApi.create(data),
-    onSuccess: (res, data) => {
+    onSuccess: async (res, data) => {
       notifySuccess('create');
+      await api.invalidate();
       setNewData(res, data);
     },
   });

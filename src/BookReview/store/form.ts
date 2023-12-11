@@ -1,8 +1,8 @@
 import { createForm, zodForm } from '@modular-forms/solid';
+import { Book, BookFilter, zBook, zBookFilter } from '~/Book/types/book';
 import { formUtil } from '~/core/util/form-util';
-import { Book, zBook } from '../types/book';
-import { BookFilter, zBookFilter } from '../types/filters';
 
+// TODO configure book review form
 export function createBookForm() {
   return createForm<Book>({
     validate: zodForm(zBook),
