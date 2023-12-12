@@ -13,6 +13,8 @@ export function NavMenu() {
   const navItems = [
     { path: '/', label: 'Home' },
     { path: '/books', label: 'Books' },
+    // TODO move link to inside books route
+    { path: '/books/reviews', label: 'Book Reviews' },
   ];
 
   return (

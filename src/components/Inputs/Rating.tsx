@@ -13,7 +13,7 @@ export function Rating<TF, TN>(props: RatingProps<TF, TN>) {
 
   return (
     <div class="relative flex flex-col justify-center">
-      <Label forId={name()}>{label()}</Label>
+      <Label forId={name()}>{props.label ?? label()}</Label>
       <div class="rating rating-half rating-lg relative">
         <input
           {...merged.fieldArgs[1]}

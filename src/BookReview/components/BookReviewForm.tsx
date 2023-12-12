@@ -1,4 +1,4 @@
-import { SubmitHandler } from '@modular-forms/solid';
+import { SubmitHandler, insert } from '@modular-forms/solid';
 import { For, mergeProps } from 'solid-js';
 import { FormFooter } from '~/components/Form/FormFooter';
 import { DateRange } from '~/components/Inputs/DateRange';
@@ -8,19 +8,19 @@ import { useFormContext } from '~/core/store/form-context';
 import { tBookReviewForm } from '../types';
 import { Input } from '~/components/Inputs/Input';
 import { Textarea } from '~/components/Inputs/Textarea';
+import { Button } from '~/components/Button';
 
-interface BookReviewsProps {
+interface BookReviewFormProps {
   onSubmit: SubmitHandler<tBookReviewForm>;
   onDelete?: () => void;
 }
 
-export function BookReviews(props: BookReviewsProps) {
+export function BookReviewForm(props: BookReviewFormProps) {
   const merged = mergeProps({}, props);
 
-  const { state, setLabels } = useFormContext<tBookReviewForm>();
-  const [, { Form, Field, FieldArray }] = state.form;
+  const { state } = useFormContext<tBookReviewForm>();
 
-  // setLabels({});
+  const [form, { Form, Field, FieldArray }] = state.form;
 
   return (
     <Form onSubmit={merged.onSubmit}>
@@ -36,14 +36,26 @@ export function BookReviews(props: BookReviewsProps) {
       </Field>
       <FieldArray name="comments">
         {(fieldArray) => (
-          <For each={fieldArray.items}>
-            {(_, index) => (
-              // TODO handle form array context?
-              <Field name={`comments.${index()}.isPublic`} type="boolean">
-                {(...args) => <Toggle fieldArgs={args} />}
-              </Field>
-            )}
-          </For>
+          <>
+            {/* // TODO review comment type */}
+            <Button
+              onClick={() => insert(form, fieldArray.name, { value: { content: '', type: 0 } })}
+            >
+              Add Comment
+            </Button>
+            <For each={fieldArray?.items}>
+              {(_, index) => (
+                <>
+                  <Field name={`comments.${index()}.isPublic`} type="boolean">
+                    {(...args) => <Toggle fieldArgs={args} label="Public" />}
+                  </Field>
+                  <Field name={`comments.${index()}.content`}>
+                    {(...args) => <Textarea fieldArgs={args} label="Content" />}
+                  </Field>
+                </>
+              )}
+            </For>
+          </>
         )}
       </FieldArray>
 

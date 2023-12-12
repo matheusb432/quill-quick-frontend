@@ -11,7 +11,7 @@ export function Toggle<TF, TN>(props: ToggleProps<TF, TN>) {
   return (
     <InputContainer
       name={name()}
-      label={label()}
+      label={props.label ?? label()}
       isError={!!merged.fieldArgs[0].error}
       isLoading={isLoading()}
       sideLabel

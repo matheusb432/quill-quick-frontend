@@ -21,6 +21,7 @@ type TFieldElementProps<TForm, TName> = TForm extends FieldValues
 
 export type FieldCmp<TForm, TName> = {
   fieldArgs: [TFieldStore<TForm, TName>, TFieldElementProps<TForm, TName>];
+  label?: string;
 };
 
 export type ContainerField<TForm, TName> = FieldCmp<TForm, TName> & {

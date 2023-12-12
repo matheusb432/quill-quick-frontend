@@ -20,7 +20,7 @@ export function Select<TF, TN>(props: SelectProps<TF, TN>) {
   return (
     <InputContainer
       name={name()}
-      label={label()}
+      label={props.label ?? label()}
       isError={!!merged.fieldArgs[0].error}
       isLoading={isLoading()}
       error={error()}

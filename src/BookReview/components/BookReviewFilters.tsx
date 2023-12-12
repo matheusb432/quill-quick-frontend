@@ -1,6 +1,5 @@
-import { SubmitHandler, getValues } from '@modular-forms/solid';
+import { SubmitHandler } from '@modular-forms/solid';
 import { mergeProps } from 'solid-js';
-import { SearchInput } from '~/components/Inputs/SearchInput';
 import { useFormContext } from '~/core/store/form-context';
 import { BookReviewFilter } from '../types';
 import { DateRange } from '~/components/Inputs/DateRange';

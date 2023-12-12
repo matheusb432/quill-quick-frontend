@@ -22,7 +22,7 @@ export function DateRange<TF, TN>(props: DateRangeProps<TF, TN>) {
   return (
     <InputContainer
       name={name()}
-      label={label()}
+      label={props.label ?? label()}
       isError={!!merged.fieldArgs[0].error}
       isLoading={isLoading()}
       error={error()}

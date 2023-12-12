@@ -8,16 +8,28 @@ import { defaultCrumbs } from '~/core/constants/ui-defaults';
 
 export default function BooksLayout() {
   const location = useLocation();
-  const crumbs: Accessor<Crumb[]> = () => {
-    const hasPath = (path: string) => location.pathname.includes(path);
+  function crumbs(): Crumb[] {
+    const paths = location.pathname.split('/').filter(Boolean);
+
+    const hasPath = (path: string) => paths.includes(path);
+
+    if (hasPath('books') && hasPath('reviews')) {
+      return [
+        ...bookReviewCrumbs,
+        hasPath(RouteSubPaths.Create) && defaultCrumbs.create,
+        hasPath(RouteSubPaths.Edit) && defaultCrumbs.edit,
+        hasPath(RouteSubPaths.View) && defaultCrumbs.view,
+      ].filter((x): x is Crumb => Boolean(x));
+    }
+
     return [
       bookCrumb,
       hasPath(RouteSubPaths.Create) && defaultCrumbs.create,
       hasPath(RouteSubPaths.Edit) && defaultCrumbs.edit,
       hasPath(RouteSubPaths.View) && defaultCrumbs.view,
       hasPath(RouteSubPaths.Duplicate) && defaultCrumbs.duplicate,
-    ].filter(Boolean) as Crumb[];
-  };
+    ].filter((x): x is Crumb => Boolean(x));
+  }
 
   return (
     <MainContainer>
@@ -31,3 +43,11 @@ const bookCrumb: Crumb = {
   label: 'Books',
   path: RoutePaths.Books,
 };
+
+const bookReviewCrumbs: Crumb[] = [
+  bookCrumb,
+  {
+    label: 'Book Reviews',
+    path: RoutePaths.BookReviews,
+  },
+];

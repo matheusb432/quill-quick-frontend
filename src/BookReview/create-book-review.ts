@@ -1,0 +1,46 @@
+import { BeforeLeaveEventArgs } from '@solidjs/router';
+import { useNavigate } from 'solid-start';
+import { RoutePaths } from '~/core/constants/route-paths';
+import { toastStore } from '~/core/store/toast-store';
+import { routerUtil } from '~/core/util/router-util';
+import { createBookReviewAgent } from './store/agent';
+import { createBookReviewForm } from './store/form';
+
+type ValidModes = 'edit' | 'view' | 'duplicate';
+
+export function createBookReview() {
+  const navigate = useNavigate();
+  const form = createBookReviewForm();
+  const agent = createBookReviewAgent();
+
+  function preventUnsavedChangesExit(e: BeforeLeaveEventArgs) {
+    const { dirty, submitted } = form[0];
+    routerUtil.unsavedChangesGuard(e, dirty, submitted);
+  }
+
+  function getDetailPath(id: number, mode: ValidModes) {
+    return routerUtil.replaceDetailParams(RoutePaths.BookReviews, {
+      id,
+      mode,
+    });
+  }
+
+  function redirectToDetails(id: number, mode: ValidModes = 'edit') {
+    if (id == null) {
+      toastStore.actions.asWarning('Failed to redirect to review details!');
+      return;
+    }
+
+    navigate(getDetailPath(id, mode));
+  }
+
+  const redirectToCreate = () => navigate(RoutePaths.BookReviewCreate);
+
+  return {
+    form,
+    onBeforeLeave: preventUnsavedChangesExit,
+    redirectToDetails,
+    redirectToCreate,
+    ...agent,
+  };
+}

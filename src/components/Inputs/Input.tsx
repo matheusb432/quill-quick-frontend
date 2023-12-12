@@ -19,7 +19,7 @@ export function Input<TF, TN>(props: InputProps<TF, TN>) {
 
     if (merged.type === 'number') {
       const isNumber = !Number.isNaN(value);
-      return isNumber && !isUndefined ? (value as number) : prevValue;
+      return isNumber && !isUndefined ? (value as unknown as number) : prevValue;
     }
 
     return isUndefined ? '' : (value as string);
@@ -28,7 +28,7 @@ export function Input<TF, TN>(props: InputProps<TF, TN>) {
   return (
     <InputContainer
       name={name()}
-      label={label()}
+      label={props.label ?? label()}
       isError={!!merged.fieldArgs[0].error}
       isLoading={isLoading()}
       error={error()}
