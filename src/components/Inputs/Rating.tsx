@@ -1,4 +1,4 @@
-import { For, mergeProps } from 'solid-js';
+import { For, createEffect, mergeProps } from 'solid-js';
 import { createField } from '~/core/store/create-field';
 import { FieldCmp } from '~/core/types/form-types';
 import { ErrorText } from './ErrorText';
@@ -8,7 +8,11 @@ type RatingProps<TF, TN> = FieldCmp<TF, TN>;
 
 export function Rating<TF, TN>(props: RatingProps<TF, TN>) {
   const merged = mergeProps({}, props);
-  const { error, label, name, canEdit, isLoading } = createField(merged);
+  const { error, label, name, canEdit, isLoading, setComponentLabel } = createField(merged);
+  createEffect(() => {
+    if (props.label == null) return;
+    setComponentLabel(props.label);
+  });
   const ratings = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
   return (

@@ -32,4 +32,24 @@ describe('arr-util', () => {
       expect(arrUtil.isEmpty('' as unknown as unknown[])).toBe(true);
     });
   });
+
+  describe('removeDuplicates', () => {
+    it('should remove duplicate values from array', () => {
+      expect(arrUtil.removeDuplicates([1, 2, 3, 1, 2, 3])).toEqual([1, 2, 3]);
+      expect(arrUtil.removeDuplicates([1, 2, 2, 5, 2, 3])).toEqual([1, 2, 5, 3]);
+    });
+
+    it('should return an empty array if array is empty', () => {
+      expect(arrUtil.removeDuplicates([])).toEqual([]);
+    });
+
+    it('should return the array if there are no duplicates', () => {
+      expect(arrUtil.removeDuplicates([1, 2, 3])).toEqual([1, 2, 3]);
+    });
+
+    it('should return an empty array if array is falsy', () => {
+      expect(arrUtil.removeDuplicates(null as never)).toEqual([]);
+      expect(arrUtil.removeDuplicates(undefined as never)).toEqual([]);
+    });
+  });
 });

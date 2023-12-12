@@ -1,5 +1,5 @@
 import flatpickr from 'flatpickr';
-import { mergeProps, onMount } from 'solid-js';
+import { createEffect, mergeProps, onMount } from 'solid-js';
 import { HICalendar } from '~/assets/icons/HICalendar';
 import { createField } from '~/core/store/create-field';
 import { ContainerField } from '~/core/types/form-types';
@@ -9,7 +9,11 @@ type DateRangeProps<TF, TN> = ContainerField<TF, TN>;
 
 export function DateRange<TF, TN>(props: DateRangeProps<TF, TN>) {
   const merged = mergeProps({}, props);
-  const { error, label, name, canEdit, isLoading } = createField(merged);
+  const { error, label, name, canEdit, isLoading, setComponentLabel } = createField(merged);
+  createEffect(() => {
+    if (props.label == null) return;
+    setComponentLabel(props.label);
+  });
 
   onMount(() => {
     flatpickr('#dateRange', {

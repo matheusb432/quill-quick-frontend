@@ -1,9 +1,9 @@
 import { z } from 'zod';
 
 export enum ReviewCommentType {
-  Negative,
-  Neutral,
-  Positive,
+  Negative = 0,
+  Neutral = 1,
+  Positive = 2,
 }
 
 export type Review = {

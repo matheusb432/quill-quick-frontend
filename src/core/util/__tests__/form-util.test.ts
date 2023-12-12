@@ -25,6 +25,13 @@ describe('form-util', () => {
       expect(formUtil.nameToLabel('formFieldName')).toEqual('Form Field Name');
     });
 
+    it('should convert field array field name to label', () => {
+      expect(formUtil.nameToLabel('comments.1.content')).toEqual('Comments - Content');
+      expect(formUtil.nameToLabel('reviewComments.1.someField')).toEqual(
+        'Review Comments - Some Field',
+      );
+    });
+
     it('should return an empty string if name is falsy', () => {
       expect(formUtil.nameToLabel('')).toEqual('');
       expect(formUtil.nameToLabel(null as never)).toEqual('');

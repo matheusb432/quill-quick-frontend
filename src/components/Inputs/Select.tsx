@@ -1,4 +1,4 @@
-import { For, createMemo, mergeProps } from 'solid-js';
+import { For, createEffect, createMemo, mergeProps } from 'solid-js';
 import { createField } from '~/core/store/create-field';
 import { ContainerField, SelectItemData } from '~/core/types/form-types';
 import { InputContainer } from './InputContainer';
@@ -9,13 +9,17 @@ type SelectProps<TF, TN> = ContainerField<TF, TN> & {
 
 export function Select<TF, TN>(props: SelectProps<TF, TN>) {
   const merged = mergeProps({}, props);
-  const { error, label, name, canEdit, isLoading } = createField(merged);
+  const { error, label, name, canEdit, isLoading, setComponentLabel } = createField(merged);
+  createEffect(() => {
+    if (props.label == null) return;
+    setComponentLabel(props.label);
+  });
   const placeholder = () => merged.placeholder || `Select the ${label()}`;
 
   const getValue = createMemo<string | number | undefined>(() => {
     const value = merged.fieldArgs[0].value;
     const isUndefined = value === undefined;
-    return isUndefined ? '' : (value as string);
+    return isUndefined ? '' : (value as unknown as string);
   }, '');
   return (
     <InputContainer

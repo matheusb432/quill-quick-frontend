@@ -1,4 +1,4 @@
-import { Component, createMemo, mergeProps } from 'solid-js';
+import { Component, createEffect, createMemo, mergeProps } from 'solid-js';
 import { HeroIconProps } from '~/assets/icons/types';
 import { createField } from '~/core/store/create-field';
 import { ContainerField } from '~/core/types/form-types';
@@ -11,8 +11,12 @@ type InputProps<TF, TN> = ContainerField<TF, TN> & {
 
 export function Input<TF, TN>(props: InputProps<TF, TN>) {
   const merged = mergeProps({ type: 'text' }, props);
-  const { error, label, name, placeholder, canEdit, isLoading } = createField(merged);
-
+  const { error, label, name, placeholder, canEdit, isLoading, setComponentLabel } =
+    createField(merged);
+  createEffect(() => {
+    if (props.label == null) return;
+    setComponentLabel(props.label);
+  });
   const getValue = createMemo<string | number | undefined>((prevValue) => {
     const value = merged.fieldArgs[0].value;
     const isUndefined = value === undefined;
@@ -22,7 +26,7 @@ export function Input<TF, TN>(props: InputProps<TF, TN>) {
       return isNumber && !isUndefined ? (value as unknown as number) : prevValue;
     }
 
-    return isUndefined ? '' : (value as string);
+    return isUndefined ? '' : (value as unknown as string);
   }, '');
 
   return (

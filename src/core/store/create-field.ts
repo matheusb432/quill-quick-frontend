@@ -1,4 +1,4 @@
-import { createMemo } from 'solid-js';
+import { createMemo, createSignal } from 'solid-js';
 import { ContainerField } from '../types/form-types';
 import { formUtil } from '../util/form-util';
 import { useFormContext } from './form-context';
@@ -10,7 +10,8 @@ export function createField<TForm, TName>(props: CreateFieldProps<TForm, TName>)
   const { state, labels } = useFormContext();
   const canEdit = () => formUtil.canEditField(state);
   const name = () => props.fieldArgs[0].name;
-  const label = () => labels()[name()] || formUtil.nameToLabel(name());
+  const label = () => componentLabel() || labels()[name()] || formUtil.nameToLabel(name());
+  const [componentLabel, setComponentLabel] = createSignal<string>('');
   const placeholder = () => props.placeholder || `Enter the ${label()}`;
 
   return {
@@ -20,5 +21,6 @@ export function createField<TForm, TName>(props: CreateFieldProps<TForm, TName>)
     label,
     placeholder,
     isLoading: () => state.isLoading,
+    setComponentLabel,
   };
 }

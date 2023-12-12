@@ -32,11 +32,20 @@ function canEditField<T extends CanEditData>(data: T) {
   return (!isLoading || !disableOnLoading) && !disabled && mode !== FormModes.View;
 }
 
-function nameToLabel(name: string) {
+function nameToLabel(name: string): string {
   if (!name) return '';
 
+  if (name.includes('.')) {
+    const words = name
+      .split('.')
+      .filter((x) => !strUtil.isNumber(x))
+      .map(nameToLabel);
+
+    return strUtil.capitalizeWords(words.join(' - '));
+  }
+
   const words = name.split(/(?=[A-Z])/);
-  return strUtil.capitalizeFirst(words.join(' '));
+  return strUtil.capitalizeWords(words.join(' '));
 }
 
 export const formUtil = {

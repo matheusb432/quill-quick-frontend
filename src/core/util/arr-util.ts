@@ -8,7 +8,13 @@ function isEmpty(arr: unknown[]): boolean {
   return !arr || arr.length === 0;
 }
 
+function removeDuplicates<T>(arr: T[]): T[] {
+  if (!arr?.length) return [];
+  return [...new Set(arr)];
+}
+
 export const arrUtil = {
   isEmpty,
   arrayFrom,
+  removeDuplicates,
 };

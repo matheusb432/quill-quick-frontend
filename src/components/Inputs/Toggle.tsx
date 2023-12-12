@@ -8,6 +8,7 @@ type ToggleProps<TF, TN> = FieldCmp<TF, TN>;
 export function Toggle<TF, TN>(props: ToggleProps<TF, TN>) {
   const merged = mergeProps({}, props);
   const { error, label, name, canEdit, isLoading } = createField(merged);
+
   return (
     <InputContainer
       name={name()}

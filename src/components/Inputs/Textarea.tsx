@@ -1,4 +1,4 @@
-import { createMemo, mergeProps } from 'solid-js';
+import { createEffect, createMemo, mergeProps } from 'solid-js';
 import { createField } from '~/core/store/create-field';
 import { ContainerField } from '~/core/types/form-types';
 import { InputContainer } from './InputContainer';
@@ -7,7 +7,12 @@ type TextareaProps<TF, TN> = ContainerField<TF, TN>;
 
 export function Textarea<TF, TN>(props: TextareaProps<TF, TN>) {
   const merged = mergeProps({}, props);
-  const { error, label, name, placeholder, canEdit, isLoading } = createField(merged);
+  const { error, label, name, placeholder, canEdit, isLoading, setComponentLabel } =
+    createField(merged);
+  createEffect(() => {
+    if (props.label == null) return;
+    setComponentLabel(props.label);
+  });
 
   const getValue = createMemo<string>(() => {
     const value = merged.fieldArgs[0].value;
@@ -18,7 +23,8 @@ export function Textarea<TF, TN>(props: TextareaProps<TF, TN>) {
   return (
     <InputContainer
       name={name()}
-      label={props.label ?? label()}
+      label={label()}
+      // label={props.label ?? label()}
       isError={!!merged.fieldArgs[0].error}
       isLoading={isLoading()}
       error={error()}

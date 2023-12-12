@@ -10,7 +10,7 @@ export function Table<T extends WithId>(props: TableProps<T>) {
   });
 
   return (
-    <div class="relative overflow-x-auto w-full">
+    <div class="relative w-full overflow-x-auto">
       <table class="table lg:text-lg xl:text-xl" classList={loadingClassList()}>
         <thead class="text-primary">
           <tr class="border-b-primary">
@@ -31,7 +31,7 @@ export function Table<T extends WithId>(props: TableProps<T>) {
           </For>
         </tbody>
       </table>
-      {props.isLoading && <Ping class="absolute top-2 right-2" />}
+      {props.isLoading && <Ping class="absolute right-2 top-2" />}
       {props.items.length === 0 && <TableEmpty classList={loadingClassList()} />}
     </div>
   );
@@ -49,7 +49,11 @@ export function TableRow<T extends WithId>(props: TableRowProps<T>) {
     <tr class="border-b-secondary">
       <For each={props.columns}>
         {({ cx, render, accessor }) => (
-          <td class={cx}>{render ? render(props.item, props.index) : props.item[accessor]}</td>
+          <td class={cx}>
+            {render != null
+              ? render(props.item, props.index)
+              : (props.item[accessor] as unknown as string)}
+          </td>
         )}
       </For>
       <For each={props.actions}>
@@ -68,10 +72,10 @@ type TableEmptyProps = {
 function TableEmpty(props: TableEmptyProps) {
   return (
     <div
-      class="flex flex-col items-center justify-center h-48 pb-6 border-b border-b-secondary"
+      class="flex h-48 flex-col items-center justify-center border-b border-b-secondary pb-6"
       classList={props.classList}
     >
-      <HIQuestionMarkCircle class="text-primary w-32 h-32" />
+      <HIQuestionMarkCircle class="h-32 w-32 text-primary" />
       <span class="text-2xl">No Items were found!</span>
     </div>
   );

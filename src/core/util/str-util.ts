@@ -12,6 +12,11 @@ function cx(...names: ClassNameValue[]) {
   return twMerge(names);
 }
 
+function capitalizeWords(str: string) {
+  if (!str) return '';
+  return str.replace(/(?:^|\s)\S/g, (a) => a.toUpperCase());
+}
+
 function capitalizeFirst(str: string) {
   if (!str) return '';
   return str.charAt(0).toUpperCase() + str.slice(1);
@@ -24,8 +29,14 @@ function to00(value: number | string): string {
   return value < 10 ? `0${value}` : `${value}`;
 }
 
+function isNumber(str: string) {
+  return !isNaN(Number(str));
+}
+
 export const strUtil = {
   cx,
   capitalizeFirst,
+  capitalizeWords,
   to00,
+  isNumber,
 };
