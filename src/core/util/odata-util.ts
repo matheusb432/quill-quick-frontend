@@ -1,5 +1,6 @@
 import { Defaults } from '../constants/defaults';
 import {
+  Guid,
   ODataFilter,
   ODataFilterValue,
   ODataOperators,
@@ -9,20 +10,24 @@ import {
 } from '../types/odata-types';
 import { PaginationOptions } from '../types/pagination-types';
 import { dateUtil } from './date-util';
-import { routerUtil } from './router-util';
 
+/**
+ * @description
+ * Creates a OData URL based on `url` & `options`.
+ *
+ * @example
+ * odataUtil.build('https://website.com', {
+ *       filter: { name: 'John', age: [[ODataOperators.LessThanOrEqualTo, 25]] },
+ *       orderBy: ['name', 'asc'],
+ *     })
+ * // Result: "https://website.com?$filter=(name eq 'John') and (age le 25)&$orderby=name asc"
+ */
 function query(url: string, options?: ODataOptions): string {
   return builder.url(url, options);
 }
 
-function paginated(url: string, { page, itemsPerPage, options }: PaginationOptions): string {
-  page ??= 1;
-  itemsPerPage ??= Defaults.ItemsPerPage;
-
-  const skip = (page - 1) * itemsPerPage;
-  const top = itemsPerPage;
-
-  return query(url, { count: true, skip, top, ...options });
+function paginated(url: string, options: PaginationOptions): string {
+  return builder.mergeUrlToRawParams(url, paginatedParams(options));
 }
 
 function paginatedParams({ page, itemsPerPage, options }: PaginationOptions): string {
@@ -43,16 +48,10 @@ function params(options: ODataOptions): string {
   return queryString;
 }
 
-function paramsObj(options: ODataOptions): ODataParams {
-  return routerUtil.toSearchParams(params(options));
-}
-
 export const odataUtil = {
   query,
   paginated,
-  paginatedParams,
   params,
-  paramsObj,
 };
 
 const orSeparator = ` ${ODataOperators.Or} `;
@@ -89,6 +88,7 @@ const builder = {
   },
   filter(filter: ODataFilter): string {
     let filterStr = '';
+    let lastJoinOperator: ODataOperators | undefined;
 
     for (const key in filter) {
       const value = filter[key];
@@ -100,16 +100,21 @@ const builder = {
       }
 
       for (const [operator, filterValue, joinOperator] of value) {
+        let filters: string | undefined;
         if (Array.isArray(filterValue)) {
-          filterStr += builder.createOrFilters(key, operator, filterValue, joinOperator);
-          continue;
+          filters = builder.createOrFilters(key, operator, filterValue, joinOperator);
+        } else {
+          filters = builder.createFilter(key, operator, filterValue, joinOperator);
         }
 
-        filterStr += builder.createFilter(key, operator, filterValue, joinOperator);
+        if (!filters) continue;
+        filterStr += filters;
+        lastJoinOperator = joinOperator;
       }
     }
+    const separator = lastJoinOperator === ODataOperators.Or ? orSeparator : andSeparator;
 
-    return builder.sliceSeparator(filterStr, andSeparator);
+    return builder.sliceSeparator(filterStr, separator);
   },
   createOrFilters(
     key: string,
@@ -138,8 +143,10 @@ const builder = {
     value: ODataFilterValue,
     joinOperator: ODataOperators.And | ODataOperators.Or = ODataOperators.And,
   ): string {
-    const normalized = builder.normalize(value);
     const separator = joinOperator === ODataOperators.Or ? orSeparator : andSeparator;
+    if (operator === ODataOperators.AsRaw) return `(${key}${value})${separator}`;
+
+    const normalized = builder.normalize(value);
 
     if (normalized === undefined) return '';
     if (operator === ODataOperators.Contains) {
@@ -151,9 +158,11 @@ const builder = {
   normalize(value: ODataFilterValue): string | undefined {
     if (value == null || Number.isNaN(value)) return undefined;
 
+    if (typeof value === 'string') return `'${value}'`;
     if (value instanceof Date) return dateUtil.toYyyyMmDd(value);
+    if (value instanceof Guid) return value.inner;
 
-    return typeof value === 'string' ? `'${value}'` : `${value}`;
+    return value.toString();
   },
   getFilter(filter: ODataFilter | undefined): string {
     if (!filter) return '';

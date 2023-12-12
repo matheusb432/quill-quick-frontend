@@ -12,6 +12,8 @@ import { Button } from '~/components/Button';
 import { ReviewCommentType } from '~/core/types/review-types';
 import { Select } from '~/components/Inputs/Select';
 import { SelectItemData } from '~/core/types/form-types';
+import { Divider } from '~/components/Divider';
+import { Heading } from '~/components/Heading';
 
 interface BookReviewFormProps {
   onSubmit: SubmitHandler<tBookReviewForm>;
@@ -41,6 +43,9 @@ export function BookReviewForm(props: BookReviewFormProps) {
 
   return (
     <Form onSubmit={merged.onSubmit}>
+      <Field name={`isPublic`} type="boolean">
+        {(...args) => <Toggle fieldArgs={args} label="Public Review" />}
+      </Field>
       <Field name="summary">{(...args) => <Textarea fieldArgs={args} />}</Field>
       <Field name="readingMode">{(...args) => <Input fieldArgs={args} />}</Field>
       <Field name="soundtrack">{(...args) => <Input fieldArgs={args} />}</Field>
@@ -51,6 +56,10 @@ export function BookReviewForm(props: BookReviewFormProps) {
       <Field name="dateRange" type="string">
         {(...args) => <DateRange fieldArgs={args} />}
       </Field>
+      <Divider />
+      <Heading as="h2" class="mb-4 font-serif">
+        Comments
+      </Heading>
       <FieldArray name="comments">
         {(fieldArray) => (
           <>
@@ -66,6 +75,9 @@ export function BookReviewForm(props: BookReviewFormProps) {
             <For each={fieldArray?.items}>
               {(_, index) => (
                 <section class="relative mt-4 flex h-full flex-col rounded-md border-2 border-primary p-6">
+                  <Field name={`comments.${index()}.isPublic`} type="boolean">
+                    {(...args) => <Toggle fieldArgs={args} label="Public Comment" />}
+                  </Field>
                   <Field name={`comments.${index()}.type`} type="number">
                     {(...args) => (
                       <Select
@@ -75,9 +87,6 @@ export function BookReviewForm(props: BookReviewFormProps) {
                         placeholder="Select the sentiment"
                       />
                     )}
-                  </Field>
-                  <Field name={`comments.${index()}.isPublic`} type="boolean">
-                    {(...args) => <Toggle fieldArgs={args} label="Public" />}
                   </Field>
                   <Field name={`comments.${index()}.content`}>
                     {(...args) => (

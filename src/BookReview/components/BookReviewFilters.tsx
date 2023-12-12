@@ -21,7 +21,7 @@ export function BookReviewFilters(props: BookReviewFiltersProps) {
       onSubmit={merged.onSubmit}
     >
       <Field name="dateRange" type="string">
-        {(...args) => <DateRange fieldArgs={args} />}
+        {(...args) => <DateRange fieldArgs={args} helper="Press Enter to search" />}
       </Field>
     </Form>
   );

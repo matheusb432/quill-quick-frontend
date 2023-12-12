@@ -26,7 +26,7 @@ export function InputContainer(props: InputContainerProps) {
       class="relative flex h-full w-full"
       classList={{
         'flex-col gap-y-1': !merged.sideLabel,
-        'gap-x-4': merged.sideLabel,
+        'gap-x-4 mb-4': merged.sideLabel,
       }}
     >
       <Show

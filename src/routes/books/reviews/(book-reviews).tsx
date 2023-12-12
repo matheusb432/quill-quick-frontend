@@ -16,7 +16,9 @@ import { createPagination } from '~/core/store/create-pagination';
 import { dialogStore } from '~/core/store/dialog-store';
 import { FormProvider } from '~/core/store/form-context';
 import { ODataOperators, ODataOptions } from '~/core/types/odata-types';
+import { dateUtil } from '~/core/util/date-util';
 import { paginationUtil } from '~/core/util/pagination-util';
+import { queryUtil } from '~/core/util/query-util';
 
 export default function BookReviews() {
   const { mutations, queryAs, redirectToDetails, redirectToCreate } = createBookReview();
@@ -25,8 +27,7 @@ export default function BookReviews() {
   const [filters, setFilters] = createSignal<ODataOptions>({});
   const queryFilters = () =>
     paginationUtil.from(pagination.page(), Defaults.ItemsPerPage, filters());
-  // eslint-disable-next-line solid/reactivity
-  const query = queryAs.paginated(queryFilters);
+  const query = () => queryAs.paginated(queryFilters);
   const filterForm = createBookFilterForm();
 
   const delMut = mutations.del;
@@ -42,9 +43,11 @@ export default function BookReviews() {
   function handleFilter(data: BookReviewFilter) {
     batch(() => {
       pagination.setPage(1);
+      const dates = dateUtil.rangeToJsonDates(data.dateRange);
+      const dateRangeFilter = queryUtil.getDateRangeFilter(dates.start, dates.end);
+      // TODO test
       setFilters({
-        // TODO configure data range filter via odata
-        filter: { title: [[ODataOperators.Contains, data.dateRange]] },
+        filter: { startedAt: dateRangeFilter, endedAt: dateRangeFilter },
       });
     });
   }
@@ -54,19 +57,19 @@ export default function BookReviews() {
       <PageTitle subtitle="View or create reviews">Book Reviews</PageTitle>
       <div class="flex items-center justify-between">
         <Button onClick={() => redirectToCreate()}>Add Review</Button>
-        <FormProvider form={filterForm} isLoading={query.isLoading} disableOnLoading={false}>
+        <FormProvider form={filterForm} isLoading={query().isLoading} disableOnLoading={false}>
           <BookReviewFilters onSubmit={handleFilter} onDebounce={handleFilter} />
         </FormProvider>
       </div>
       <section class="flex flex-col items-center justify-center gap-y-6">
         <BookReviewTable
-          items={query.data?.items ?? []}
+          items={query().data?.items ?? []}
           viewFn={({ id }) => redirectToDetails(id, 'view')}
           editFn={({ id }) => redirectToDetails(id, 'edit')}
           removeFn={handleDelete}
-          isLoading={query.isLoading}
+          isLoading={query().isLoading}
         />
-        <Pagination total={query.data?.total} pagination={pagination} />
+        <Pagination total={query().data?.total} pagination={pagination} />
       </section>
     </>
   );

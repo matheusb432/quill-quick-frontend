@@ -21,8 +21,7 @@ export default function Books() {
   const [filters, setFilters] = createSignal<ODataOptions>({});
   const queryFilters = () =>
     paginationUtil.from(pagination.page(), Defaults.ItemsPerPage, filters());
-  // eslint-disable-next-line solid/reactivity
-  const query = queryAs.paginated(queryFilters);
+  const query = () => queryAs.paginated(queryFilters);
   const filterForm = createBookFilterForm();
 
   const delMut = mutations.del;
@@ -49,20 +48,20 @@ export default function Books() {
       <PageTitle subtitle="Review or add new books">Books</PageTitle>
       <div class="flex items-center justify-between">
         <Button onClick={() => redirectToCreate()}>Add Book</Button>
-        <FormProvider form={filterForm} isLoading={query.isLoading} disableOnLoading={false}>
+        <FormProvider form={filterForm} isLoading={query().isLoading} disableOnLoading={false}>
           <BookFilters onSubmit={handleFilter} onDebounce={handleFilter} />
         </FormProvider>
       </div>
       <section class="flex flex-col items-center justify-center gap-y-6">
         <BookTable
-          items={query.data?.items ?? []}
+          items={query().data?.items ?? []}
           viewFn={({ id }) => redirectToDetails(id, 'view')}
           editFn={({ id }) => redirectToDetails(id, 'edit')}
           duplicateFn={({ id }) => redirectToDetails(id, 'duplicate')}
           removeFn={handleDelete}
-          isLoading={query.isLoading}
+          isLoading={query().isLoading}
         />
-        <Pagination total={query.data?.total} pagination={pagination} />
+        <Pagination total={query().data?.total} pagination={pagination} />
       </section>
     </>
   );

@@ -1,11 +1,15 @@
 export type ODataFilter = {
-  [key: string]: ODataFilterValue | ODataFilterOperation[];
+  [key: string]: ODataFilterData;
 };
+
+export type ODataFilterData = ODataFilterValue | ODataFilterOperation[];
+
 type ODataFilterOperation =
+  | [ODataOperators.AsRaw, string]
   | [ODataOperators, ODataFilterValue | ODataFilterValue[]]
   | [ODataOperators, ODataFilterValue | ODataFilterValue[], ODataOperators.Or];
 
-export type ODataFilterValue = string | number | Date | boolean | undefined | null;
+export type ODataFilterValue = string | number | Date | Guid | boolean | undefined | null;
 export type ODataOrderBy = [string | string[], 'asc' | 'desc'];
 export enum ODataOperators {
   EqualTo = 'eq',
@@ -18,6 +22,7 @@ export enum ODataOperators {
   Or = 'or',
   Not = 'not',
   Contains = 'contains',
+  AsRaw = '_',
 }
 
 export type ODataOptions = {
@@ -39,3 +44,15 @@ export type ODataParams = Partial<{
   $orderby: string;
   $count: string;
 }>;
+
+export class Guid {
+  private _inner: string;
+
+  get inner(): string {
+    return this._inner;
+  }
+
+  constructor(guid: string) {
+    this._inner = guid;
+  }
+}

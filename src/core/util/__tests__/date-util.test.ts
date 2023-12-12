@@ -39,4 +39,41 @@ describe('date-util', () => {
       expect(dateUtil.rangeToJsonDates(undefined as unknown as string)).toEqual(expected);
     });
   });
+
+  describe('fromDateStr', () => {
+    it('should return a Date object when given a valid date string', () => {
+      expect(dateUtil.fromDateStr('2023-12-31')).toEqual(new Date(2023, 11, 31));
+      expect(dateUtil.fromDateStr('2023-01-20')).toEqual(new Date(2023, 0, 20));
+    });
+
+    it('should return null when given a falsy value', () => {
+      expect(dateUtil.fromDateStr(null as never)).toEqual(null);
+      expect(dateUtil.fromDateStr(undefined as never)).toEqual(null);
+    });
+
+    it('should return null when given an invalid date string', () => {
+      expect(dateUtil.fromDateStr('')).toEqual(null);
+      expect(dateUtil.fromDateStr('2023-12-31 12:00:00')).toEqual(null);
+      expect(dateUtil.fromDateStr('2023-12-31T12:00:00')).toEqual(null);
+      expect(dateUtil.fromDateStr('2023-12-31T12:00:00.000')).toEqual(null);
+      expect(dateUtil.fromDateStr('2023-12-31T12:00:00.000Z')).toEqual(null);
+    });
+  });
+
+  describe('toDate', () => {
+    it('should return a Date object when given a string', () => {
+      expect(dateUtil.toDate('2023-12-31')).toEqual(new Date(2023, 11, 31));
+      expect(dateUtil.toDate('2023-01-20')).toEqual(new Date(2023, 0, 20));
+    });
+
+    it('should return the same Date object when given a Date object', () => {
+      const date = new Date(2023, 11, 31);
+      expect(dateUtil.toDate(date)).toEqual(date);
+    });
+
+    it('should return null when given a falsy value', () => {
+      expect(dateUtil.toDate(null as never)).toEqual(null);
+      expect(dateUtil.toDate(undefined as never)).toEqual(null);
+    });
+  });
 });
