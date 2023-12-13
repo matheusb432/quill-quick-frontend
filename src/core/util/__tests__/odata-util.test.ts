@@ -169,6 +169,26 @@ describe('odata-util', () => {
         expect(result).toContain(param);
       }
     });
+
+    it('should handle operator in', () => {
+      const result = odataUtil.query('https://example.com', {
+        filter: {
+          age: [[ODataOperators.In, [10, 20, 30]]],
+          height: [[ODataOperators.LessThanOrEqualTo, 180]],
+        },
+      });
+
+      const expectedParams = {
+        filter: '$filter=(age in (10,20,30)) and (height le 180)',
+      };
+
+      expect(result.length).toEqual(
+        'https://example.com?$filter=(age in (10,20,30)) and (height le 180)'.length,
+      );
+      for (const param of Object.values(expectedParams)) {
+        expect(result).toContain(param);
+      }
+    });
   });
 
   describe('paginated', () => {

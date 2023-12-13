@@ -45,7 +45,6 @@ export default function BookReviews() {
       pagination.setPage(1);
       const dates = dateUtil.rangeToJsonDates(data.dateRange);
       const dateRangeFilter = queryUtil.getDateRangeFilter(dates.start, dates.end);
-      // TODO test
       setFilters({
         filter: { startedAt: dateRangeFilter, endedAt: dateRangeFilter },
       });

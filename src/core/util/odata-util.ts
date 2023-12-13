@@ -122,6 +122,13 @@ const builder = {
     values: ODataFilterValue[],
     joinOperator: ODataOperators.And | ODataOperators.Or = ODataOperators.And,
   ): string {
+    const separator = joinOperator === ODataOperators.Or ? orSeparator : andSeparator;
+
+    if (operator === ODataOperators.In) {
+      const inFilterValue = `(${values.map((x) => builder.normalize(x)).join(',')})`;
+
+      return `(${key} in ${inFilterValue})${separator}`;
+    }
     let orFilterStr = '';
 
     for (const value of values) {
@@ -129,8 +136,6 @@ const builder = {
     }
 
     if (!orFilterStr) return '';
-
-    const separator = joinOperator === ODataOperators.Or ? orSeparator : andSeparator;
 
     return `(${builder.sliceSeparator(orFilterStr, orSeparator)})${separator}`;
   },

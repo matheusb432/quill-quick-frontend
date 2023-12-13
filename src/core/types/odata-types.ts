@@ -21,6 +21,7 @@ export enum ODataOperators {
   And = 'and',
   Or = 'or',
   Not = 'not',
+  In = 'in',
   Contains = 'contains',
   AsRaw = '_',
 }
