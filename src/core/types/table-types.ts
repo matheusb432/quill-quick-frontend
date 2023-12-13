@@ -29,3 +29,7 @@ export type CrudFns<T> = {
   duplicateFn?: (row: T) => void;
   removeFn?: (row: T) => void;
 };
+
+export type ReviewItemFns<T> = CrudFns<T> & {
+  reviewFn?: (row: T) => void;
+};

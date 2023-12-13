@@ -1,4 +1,5 @@
 import { batch, createSignal } from 'solid-js';
+import { BookCardsGrid } from '~/Book/components/BookCardsGrid';
 import { BookFilters } from '~/Book/components/BookFilters';
 import { BookRow, BookTable } from '~/Book/components/BookTable';
 import { createBook } from '~/Book/create-book';
@@ -16,7 +17,8 @@ import { ODataOperators, ODataOptions } from '~/core/types/odata-types';
 import { paginationUtil } from '~/core/util/pagination-util';
 
 export default function Books() {
-  const { mutations, queryAs, redirectToDetails, redirectToCreate } = createBook();
+  const { mutations, queryAs, redirectToDetails, redirectToCreate, redirectToCreateReview } =
+    createBook();
   const pagination = createPagination();
 
   const [filters, setFilters] = createSignal<ODataOptions>({});
@@ -59,6 +61,7 @@ export default function Books() {
           viewFn={({ id }) => redirectToDetails(id, FormModes.View)}
           editFn={({ id }) => redirectToDetails(id, FormModes.Edit)}
           duplicateFn={({ id }) => redirectToDetails(id, FormModes.Duplicate)}
+          reviewFn={({ id }) => redirectToCreateReview(id)}
           removeFn={handleDelete}
           isLoading={query().isLoading}
         />

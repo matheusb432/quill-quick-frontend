@@ -33,24 +33,10 @@ export function createBookReview() {
     );
   }
 
-  function redirectToCreate(id: number) {
-    if (id == null) {
-      toastStore.actions.asError('Failed to redirect to create review!');
-      return;
-    }
-
-    navigate(
-      routerUtil.replaceCreateReviewParams(RoutePaths.BookReviewCreate, {
-        id,
-      }),
-    );
-  }
-
   return {
     form,
     onBeforeLeave: preventUnsavedChangesExit,
     redirectToDetails,
-    redirectToCreate,
     ...agent,
   };
 }

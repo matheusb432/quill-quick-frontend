@@ -3,11 +3,12 @@ import { HIDocumentCopy } from '~/assets/icons/HIDocumentCopy';
 import { HIPencilSquare } from '~/assets/icons/HIPencilSquare';
 import { HITrash } from '~/assets/icons/HITrash';
 import { HIView } from '~/assets/icons/HIView';
-import { CrudFns } from '~/core/types/table-types';
+import { ReviewItemFns } from '~/core/types/table-types';
 import { IconButton } from './IconButton';
 import { Tooltip } from './Tooltip';
+import { HIBookOpen } from '~/assets/icons/HIBookOpen';
 
-type TableIconsProps<T> = CrudFns<T> & {
+type TableIconsProps<T> = ReviewItemFns<T> & {
   row: T;
   rowName?: string;
 };
@@ -16,6 +17,11 @@ export function TableIcons<T>(props: TableIconsProps<T>) {
   const icons = () => {
     const name = props.rowName ?? 'item';
     return [
+      {
+        actionFn: props.reviewFn,
+        iconFn: HIBookOpen,
+        tooltip: `Review ${name}`,
+      },
       {
         actionFn: props.viewFn,
         iconFn: HIView,

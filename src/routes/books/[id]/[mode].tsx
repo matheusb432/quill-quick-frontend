@@ -21,7 +21,6 @@ export default function BooksDetail() {
 
   const { form, queryAs, mutations, onBeforeLeave, redirectToDetails } = createBook();
   const query = queryAs.byId(id);
-
   const { mode, title } = createDetailPage('Book', query, RoutePaths.Books);
 
   useBeforeLeave(onBeforeLeave);

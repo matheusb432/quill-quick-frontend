@@ -1,11 +1,11 @@
 import { Table } from '~/components/Table';
 import { TableIcons } from '~/components/TableIcons';
-import { CrudFns, TableAction, TableColumn } from '~/core/types/table-types';
+import { ReviewItemFns, TableAction, TableColumn } from '~/core/types/table-types';
 import { Book } from '../types/book';
 
 export type BookRow = Book & { id: number };
 
-type BookTableProps = CrudFns<BookRow> & {
+type BookTableProps = ReviewItemFns<BookRow> & {
   items: BookRow[];
   isLoading?: boolean;
 };
@@ -33,6 +33,7 @@ export function BookTable(props: BookTableProps) {
             editFn={props.editFn}
             duplicateFn={props.duplicateFn}
             removeFn={props.removeFn}
+            reviewFn={props.reviewFn}
           />
         );
       },

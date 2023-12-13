@@ -35,11 +35,25 @@ export function createBook() {
 
   const redirectToCreate = () => navigate(RoutePaths.BookCreate);
 
+  function redirectToCreateReview(bookId: number) {
+    if (bookId == null) {
+      toastStore.actions.asError('Failed to redirect to create review!');
+      return;
+    }
+
+    navigate(
+      routerUtil.replaceCreateReviewParams(RoutePaths.BookReviewCreate, {
+        id: bookId,
+      }),
+    );
+  }
+
   return {
     form,
     onBeforeLeave: preventUnsavedChangesExit,
     redirectToDetails,
     redirectToCreate,
+    redirectToCreateReview,
     ...agent,
   };
 }
