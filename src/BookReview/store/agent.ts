@@ -4,6 +4,7 @@ import { toastStore } from '~/core/store/toast-store';
 import { apiUtil } from '~/core/util/api-util';
 import { PostRes } from '~/core/types/api-types';
 import { BookReview, tBookReviewForm } from '../types';
+import { CreateBookReviewCommand, UpdateBookReviewCommand } from '../types/api-types';
 
 const url = '/bookreviews';
 
@@ -18,10 +19,9 @@ export function createBookReviewAgent() {
   const client = useQueryClient();
 
   const mutApi = {
-    create: (book: tBookReviewForm) => post<PostRes, tBookReviewForm>(url, book),
-    duplicate: (book: tBookReviewForm) => mutApi.create(book),
-    update: (id: number, book: tBookReviewForm) =>
-      put<void, tBookReviewForm & { id: number }>(url, { ...book, id }),
+    create: (book: CreateBookReviewCommand) => post<PostRes, CreateBookReviewCommand>(url, book),
+    update: (id: number, book: UpdateBookReviewCommand) =>
+      put<void, UpdateBookReviewCommand>(url, { ...book, id }),
     del: (id: number) => del(`${url}/${id}`),
   };
 
@@ -47,29 +47,20 @@ export function createBookReviewAgent() {
     },
   });
 
-  const duplicateMut = createMutation({
-    mutationKey: api.keys.duplicate,
-    mutationFn: (data: tBookReviewForm) => mutApi.duplicate(data),
-    onSuccess: (res, data) => {
-      notifySuccess('duplicate');
-      setNewData(res, data);
-    },
-  });
-
   const addMut = createMutation({
     mutationKey: api.keys.add,
-    mutationFn: (data: tBookReviewForm) => mutApi.create(data),
+    mutationFn: mutApi.create,
     onSuccess: (res, data) => {
       notifySuccess('create');
       setNewData(res, data);
     },
   });
 
-  function setUpdatedData(id: number, data: tBookReviewForm | null) {
+  function setUpdatedData(id: number, data: UpdateBookReviewCommand | null) {
     client.setQueryData(api.keys.id(id), data);
   }
 
-  function setNewData(res: PostRes, data: tBookReviewForm) {
+  function setNewData(res: PostRes, data: CreateBookReviewCommand) {
     const createdId = res.id;
     client.setQueryData(api.keys.id(createdId), { ...data, id: createdId });
   }
@@ -79,7 +70,6 @@ export function createBookReviewAgent() {
     mutations: {
       update: updateMut,
       del: delMut,
-      duplicate: duplicateMut,
       add: addMut,
     },
   };

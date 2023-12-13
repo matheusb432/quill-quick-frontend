@@ -5,8 +5,9 @@ import { toastStore } from '~/core/store/toast-store';
 import { routerUtil } from '~/core/util/router-util';
 import { createBookReviewAgent } from './store/agent';
 import { createBookReviewForm } from './store/form';
+import { FormModes } from '~/core/types/form-types';
 
-type ValidModes = 'edit' | 'view' | 'duplicate';
+type ValidModes = FormModes.Edit | FormModes.View;
 
 export function createBookReview() {
   const navigate = useNavigate();
@@ -18,23 +19,32 @@ export function createBookReview() {
     routerUtil.unsavedChangesGuard(e, dirty, submitted);
   }
 
-  function getDetailPath(id: number, mode: ValidModes) {
-    return routerUtil.replaceDetailParams(RoutePaths.BookReviews, {
-      id,
-      mode,
-    });
-  }
-
-  function redirectToDetails(id: number, mode: ValidModes = 'edit') {
+  function redirectToDetails(id: number, mode: ValidModes = FormModes.Edit) {
     if (id == null) {
-      toastStore.actions.asWarning('Failed to redirect to review details!');
+      toastStore.actions.asError('Failed to redirect to review details!');
       return;
     }
 
-    navigate(getDetailPath(id, mode));
+    navigate(
+      routerUtil.replaceDetailParams(RoutePaths.BookReviews, {
+        id,
+        mode,
+      }),
+    );
   }
 
-  const redirectToCreate = () => navigate(RoutePaths.BookReviewCreate);
+  function redirectToCreate(id: number) {
+    if (id == null) {
+      toastStore.actions.asError('Failed to redirect to create review!');
+      return;
+    }
+
+    navigate(
+      routerUtil.replaceCreateReviewParams(RoutePaths.BookReviewCreate, {
+        id,
+      }),
+    );
+  }
 
   return {
     form,

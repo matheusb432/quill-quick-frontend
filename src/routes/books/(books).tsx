@@ -11,6 +11,7 @@ import { Defaults } from '~/core/constants/defaults';
 import { createPagination } from '~/core/store/create-pagination';
 import { dialogStore } from '~/core/store/dialog-store';
 import { FormProvider } from '~/core/store/form-context';
+import { FormModes } from '~/core/types/form-types';
 import { ODataOperators, ODataOptions } from '~/core/types/odata-types';
 import { paginationUtil } from '~/core/util/pagination-util';
 
@@ -55,9 +56,9 @@ export default function Books() {
       <section class="flex flex-col items-center justify-center gap-y-6">
         <BookTable
           items={query().data?.items ?? []}
-          viewFn={({ id }) => redirectToDetails(id, 'view')}
-          editFn={({ id }) => redirectToDetails(id, 'edit')}
-          duplicateFn={({ id }) => redirectToDetails(id, 'duplicate')}
+          viewFn={({ id }) => redirectToDetails(id, FormModes.View)}
+          editFn={({ id }) => redirectToDetails(id, FormModes.Edit)}
+          duplicateFn={({ id }) => redirectToDetails(id, FormModes.Duplicate)}
           removeFn={handleDelete}
           isLoading={query().isLoading}
         />

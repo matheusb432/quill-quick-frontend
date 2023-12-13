@@ -1,3 +1,4 @@
+import { FormModes } from '../../types/form-types';
 import { RoutePaths } from '../../constants/route-paths';
 import { routerUtil } from '../router-util';
 
@@ -22,7 +23,7 @@ describe('router-util', () => {
   describe('replaceDetailParams', () => {
     it('should replace the specified detail parameters in the path', () => {
       const path = RoutePaths.BookDetail;
-      const params = { id: '123', mode: 'edit' };
+      const params = { id: '123', mode: FormModes.Edit };
       const result = routerUtil.replaceDetailParams(path, params);
       const expected = '/books/123/edit';
       expect(result).toEqual(expected);
@@ -36,25 +37,26 @@ describe('router-util', () => {
     });
   });
 
-  describe('getMode', () => {
-    it('should return the specified mode when it is valid', () => {
-      const mode = 'edit';
-      const validModes = ['edit', 'view'];
-      const result = routerUtil.getMode(mode, validModes);
-      expect(result).toEqual(mode);
+  describe('replaceCreateReviewParams', () => {
+    it('should replace the specified detail parameters in the path', () => {
+      const path = RoutePaths.BookReviewCreate;
+      const params = { id: '123' };
+      const result = routerUtil.replaceCreateReviewParams(path, params);
+      const expected = '/books/123/create-review';
+      expect(result).toEqual(expected);
     });
 
-    it('should return the first valid mode when the specified mode is invalid', () => {
-      const mode = 'invalid';
-      const validModes = ['edit', 'view'];
-      const result = routerUtil.getMode(mode, validModes);
-      expect(result).toEqual(validModes[0]);
+    it('should return an empty string when no detail parameters are provided', () => {
+      const path = RoutePaths.BookReviewCreate;
+      const params = {};
+      const result = routerUtil.replaceCreateReviewParams(path, params as never);
+      expect(result).toEqual('');
     });
   });
 
   describe('buildTitle', () => {
     it('should return the page title with the specified mode', () => {
-      const mode = 'edit';
+      const mode = FormModes.Edit;
       const title = 'book';
       const result = routerUtil.buildTitle(mode, title);
       const expected = 'Edit book';

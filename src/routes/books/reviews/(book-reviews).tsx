@@ -15,13 +15,14 @@ import { Defaults } from '~/core/constants/defaults';
 import { createPagination } from '~/core/store/create-pagination';
 import { dialogStore } from '~/core/store/dialog-store';
 import { FormProvider } from '~/core/store/form-context';
+import { FormModes } from '~/core/types/form-types';
 import { ODataOperators, ODataOptions } from '~/core/types/odata-types';
 import { dateUtil } from '~/core/util/date-util';
 import { paginationUtil } from '~/core/util/pagination-util';
 import { queryUtil } from '~/core/util/query-util';
 
 export default function BookReviews() {
-  const { mutations, queryAs, redirectToDetails, redirectToCreate } = createBookReview();
+  const { mutations, queryAs, redirectToDetails } = createBookReview();
   const pagination = createPagination();
 
   const [filters, setFilters] = createSignal<ODataOptions>({});
@@ -55,7 +56,6 @@ export default function BookReviews() {
     <>
       <PageTitle subtitle="View or create reviews">Book Reviews</PageTitle>
       <div class="flex items-center justify-between">
-        <Button onClick={() => redirectToCreate()}>Add Review</Button>
         <FormProvider form={filterForm} isLoading={query().isLoading} disableOnLoading={false}>
           <BookReviewFilters onSubmit={handleFilter} onDebounce={handleFilter} />
         </FormProvider>
@@ -63,8 +63,8 @@ export default function BookReviews() {
       <section class="flex flex-col items-center justify-center gap-y-6">
         <BookReviewTable
           items={query().data?.items ?? []}
-          viewFn={({ id }) => redirectToDetails(id, 'view')}
-          editFn={({ id }) => redirectToDetails(id, 'edit')}
+          viewFn={({ id }) => redirectToDetails(id, FormModes.View)}
+          editFn={({ id }) => redirectToDetails(id, FormModes.Edit)}
           removeFn={handleDelete}
           isLoading={query().isLoading}
         />

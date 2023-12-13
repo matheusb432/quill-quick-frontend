@@ -5,8 +5,9 @@ import { toastStore } from '~/core/store/toast-store';
 import { routerUtil } from '~/core/util/router-util';
 import { createBookAgent } from './store/agent';
 import { createBookForm } from './store/form';
+import { FormModes } from '~/core/types/form-types';
 
-type ValidModes = 'edit' | 'view' | 'duplicate';
+type ValidModes = FormModes.Edit | FormModes.View | FormModes.Duplicate;
 
 export function createBook() {
   const navigate = useNavigate();
@@ -18,20 +19,18 @@ export function createBook() {
     routerUtil.unsavedChangesGuard(e, dirty, submitted);
   }
 
-  function getDetailPath(id: number, mode: ValidModes) {
-    return routerUtil.replaceDetailParams(RoutePaths.BookDetail, {
-      id,
-      mode,
-    });
-  }
-
-  function redirectToDetails(id: number, mode: ValidModes = 'edit') {
+  function redirectToDetails(id: number, mode: ValidModes = FormModes.Edit) {
     if (id == null) {
-      toastStore.actions.asWarning('Failed to redirect to book details!');
+      toastStore.actions.asError('Failed to redirect to book details!');
       return;
     }
 
-    navigate(getDetailPath(id, mode));
+    navigate(
+      routerUtil.replaceDetailParams(RoutePaths.BookDetail, {
+        id,
+        mode,
+      }),
+    );
   }
 
   const redirectToCreate = () => navigate(RoutePaths.BookCreate);

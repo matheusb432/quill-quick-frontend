@@ -15,13 +15,15 @@ function replaceParams<TParams extends Record<string, string | number>>(
   return replacedPath === path ? '' : replacedPath;
 }
 
-const replaceDetailParams = (
+function replaceDetailParams(
   path: RoutePaths,
   params: Omit<DetailParams, 'id'> & { id: string | number },
-) => replaceParams(path, params);
+) {
+  return replaceParams(path, params);
+}
 
-function getMode(mode: string, validModes = ['edit', 'view', 'duplicate']) {
-  return validModes.includes(mode) ? mode : validModes[0];
+function replaceCreateReviewParams(path: RoutePaths, params: { id: string | number }) {
+  return replaceParams(path, params);
 }
 
 function buildTitle(mode: string, title: string) {
@@ -58,8 +60,8 @@ function searchParamsToRecord(searchParams: URLSearchParams): Record<string, str
 export const routerUtil = {
   replaceParams,
   replaceDetailParams,
-  getMode,
   buildTitle,
+  replaceCreateReviewParams,
   unsavedChangesGuard,
   toSearchParams,
   searchParamsToRecord,

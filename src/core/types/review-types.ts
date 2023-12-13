@@ -42,3 +42,7 @@ export const zReviewCommentForm = z.object({
     .max(ReviewCommentType.Positive)
     .default(ReviewCommentType.Neutral),
 });
+
+export type CreateReviewParams = {
+  id: string;
+};

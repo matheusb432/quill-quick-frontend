@@ -12,6 +12,7 @@ import { createDetailPage } from '~/core/store/create-detail-page';
 import { dialogStore } from '~/core/store/dialog-store';
 import { FormProvider } from '~/core/store/form-context';
 import { toastStore } from '~/core/store/toast-store';
+import { FormModes } from '~/core/types/form-types';
 import { DetailParams } from '~/core/types/router-types';
 
 export default function BooksDetail() {
@@ -40,10 +41,10 @@ export default function BooksDetail() {
 
   const handleSubmit: SubmitHandler<Book> = (data) => {
     switch (mode()) {
-      case 'edit':
+      case FormModes.Edit:
         updateMut.mutate({ ...data, id: id() });
         break;
-      case 'duplicate':
+      case FormModes.Duplicate:
         duplicateMut.mutate(data, {
           onSuccess: (data) => redirectToDetails(data?.id),
         });

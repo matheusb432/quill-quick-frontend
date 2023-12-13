@@ -4,7 +4,7 @@ export enum RoutePaths {
   BookCreate = '/books/create',
   BookDetail = '/books/:id/:mode',
   BookReviews = '/books/reviews',
-  BookReviewCreate = '/books/reviews/create',
+  BookReviewCreate = '/books/:id/create-review',
   BookReviewDetail = '/books/reviews/:id/:mode',
   NotFound = '/404',
 }

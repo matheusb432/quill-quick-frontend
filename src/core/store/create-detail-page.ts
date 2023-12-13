@@ -14,10 +14,10 @@ export function createDetailPage<T>(
 ) {
   const params = useParams<DetailParams>();
   const navigate = useNavigate();
-  const title = () => routerUtil.buildTitle(mode(), 'Book');
+  const title = () => routerUtil.buildTitle(mode(), page);
   const [canNotify, setCanNotify] = createSignal(true);
 
-  const mode = () => routerUtil.getMode(params.mode) as FormModes;
+  const mode = () => params.mode as FormModes;
 
   createEffect(() => {
     if (!Number.isNaN(+params.id)) return;
