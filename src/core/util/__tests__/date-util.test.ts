@@ -35,8 +35,29 @@ describe('date-util', () => {
       };
 
       expect(dateUtil.rangeToJsonDates('')).toEqual(expected);
-      expect(dateUtil.rangeToJsonDates(null as unknown as string)).toEqual(expected);
-      expect(dateUtil.rangeToJsonDates(undefined as unknown as string)).toEqual(expected);
+      expect(dateUtil.rangeToJsonDates(null as never)).toEqual(expected);
+      expect(dateUtil.rangeToJsonDates(undefined as never)).toEqual(expected);
+    });
+  });
+
+  describe('rangeToDates', () => {
+    it('should return an object with start and end values as Date objects', () => {
+      const range = '06/06/2023 to 14/06/2023';
+      expect(dateUtil.rangeToDates(range)).toEqual({
+        start: new Date(2023, 5, 6),
+        end: new Date(2023, 5, 14),
+      });
+    });
+
+    it('should return an object with no dates when given a falsy value', () => {
+      const expected = {
+        start: null,
+        end: null,
+      };
+
+      expect(dateUtil.rangeToDates('')).toEqual(expected);
+      expect(dateUtil.rangeToDates(null as never)).toEqual(expected);
+      expect(dateUtil.rangeToDates(undefined as never)).toEqual(expected);
     });
   });
 

@@ -66,7 +66,12 @@ export function BookReviewForm(props: BookReviewFormProps) {
             <Button
               onClick={() =>
                 insert(form, fieldArray.name, {
-                  value: { content: '', type: ReviewCommentType.Neutral },
+                  value: {
+                    content: '',
+                    type: ReviewCommentType.Neutral,
+                    isPublic: false,
+                    isSpoiler: false,
+                  },
                 })
               }
             >

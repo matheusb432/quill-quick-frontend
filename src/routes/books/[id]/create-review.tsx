@@ -10,8 +10,8 @@ import { RoutePaths } from '~/core/constants/route-paths';
 import { createDetailPage } from '~/core/store/create-detail-page';
 import { FormProvider } from '~/core/store/form-context';
 import { CreateReviewParams } from '~/core/types/review-types';
+import { dateUtil } from '~/core/util/date-util';
 
-// TODO should have bookId on url data
 export default function BooksReviewsCreate() {
   const params = useParams<CreateReviewParams>();
   const bookId = () => +params.id;
@@ -24,9 +24,17 @@ export default function BooksReviewsCreate() {
   const addMut = mutations.add;
 
   const handleSubmit: SubmitHandler<tBookReviewForm> = (data) => {
+    const range = dateUtil.rangeToDates(data.dateRange);
     const dto: CreateBookReviewCommand = {
-      ...data,
       bookId: bookId(),
+      readingMode: data.readingMode,
+      summary: data.summary,
+      soundtrack: data.soundtrack,
+      rating: data.rating,
+      isPublic: data.isPublic,
+      startedAt: range.start ?? undefined,
+      endedAt: range.end ?? undefined,
+      comments: data.comments,
     };
 
     // TODO test

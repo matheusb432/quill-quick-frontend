@@ -13,6 +13,7 @@ export type Review = {
   soundtrack: string;
   startedAt: string;
   endedAt: string;
+  isPublic: boolean;
 };
 
 export type ReviewComment = {

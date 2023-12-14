@@ -1,4 +1,4 @@
-import { RangeAsText } from '../types/date-types';
+import { RangeAsDate, RangeAsText } from '../types/date-types';
 import { strUtil } from './str-util';
 
 function toYyyyMmDd(date: Date): string {
@@ -29,6 +29,14 @@ function rangeToJsonDates(range: string | undefined, format = 'dd/MM/yyyy'): Ran
   return { start, end };
 }
 
+function rangeToDates(range: string | undefined, format = 'dd/MM/yyyy'): RangeAsDate {
+  const { start, end } = rangeToJsonDates(range, format);
+  return {
+    start: fromDateStr(start),
+    end: fromDateStr(end),
+  };
+}
+
 /**
  * @description
  * Converts a date in `yyyy-mm-dd` to a Date object.
@@ -54,6 +62,7 @@ function toDate(value: string | Date): Date | null {
 export const dateUtil = {
   toYyyyMmDd,
   rangeToJsonDates,
+  rangeToDates,
   fromDateStr,
   toDate,
 };
