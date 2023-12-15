@@ -14,6 +14,7 @@ import { Select } from '~/components/Inputs/Select';
 import { SelectItemData } from '~/core/types/form-types';
 import { Divider } from '~/components/Divider';
 import { Heading } from '~/components/Heading';
+import { formUtil } from '~/core/util/form-util';
 
 interface BookReviewFormProps {
   onSubmit: SubmitHandler<tBookReviewForm>;
@@ -24,6 +25,7 @@ export function BookReviewForm(props: BookReviewFormProps) {
   const merged = mergeProps({}, props);
 
   const { state } = useFormContext<tBookReviewForm>();
+  const canEdit = () => !formUtil.isView(state.mode);
 
   const [form, { Form, Field, FieldArray }] = state.form;
   const commentTypeOptions: SelectItemData[] = [
@@ -63,20 +65,22 @@ export function BookReviewForm(props: BookReviewFormProps) {
       <FieldArray name="comments">
         {(fieldArray) => (
           <>
-            <Button
-              onClick={() =>
-                insert(form, fieldArray.name, {
-                  value: {
-                    content: '',
-                    type: ReviewCommentType.Neutral,
-                    isPublic: false,
-                    isSpoiler: false,
-                  },
-                })
-              }
-            >
-              Add Comment
-            </Button>
+            {canEdit() && (
+              <Button
+                onClick={() =>
+                  insert(form, fieldArray.name, {
+                    value: {
+                      content: '',
+                      type: ReviewCommentType.Neutral,
+                      isPublic: false,
+                      isSpoiler: false,
+                    },
+                  })
+                }
+              >
+                Add Comment
+              </Button>
+            )}
             <For each={fieldArray.items}>
               {(_, index) => {
                 return (
@@ -103,14 +107,16 @@ export function BookReviewForm(props: BookReviewFormProps) {
                         />
                       )}
                     </Field>
-                    <div class="flex items-center justify-end">
-                      <Button
-                        onClick={() => remove(form, fieldArray.name, { at: index() })}
-                        theme="danger"
-                      >
-                        Delete
-                      </Button>
-                    </div>
+                    {canEdit() && (
+                      <div class="flex items-center justify-end">
+                        <Button
+                          onClick={() => remove(form, fieldArray.name, { at: index() })}
+                          theme="danger"
+                        >
+                          Delete
+                        </Button>
+                      </div>
+                    )}
                   </section>
                 );
               }}

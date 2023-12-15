@@ -43,10 +43,9 @@ export function createBookAgent() {
   const delMut = createMutation({
     mutationKey: api.keys.del,
     mutationFn: (id: number) => mutApi.del(id),
-    onSuccess: async (res, id) => {
+    onSuccess: async () => {
       notifySuccess('delete');
       await api.invalidate();
-      setUpdatedData(id, null);
     },
   });
 

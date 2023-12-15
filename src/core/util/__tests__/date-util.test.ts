@@ -78,6 +78,7 @@ describe('date-util', () => {
   describe('fromDateStr', () => {
     it('should return a Date object when given a valid date string', () => {
       expect(dateUtil.fromDateStr('2023-12-31')).toEqual(new Date(2023, 11, 31));
+      expect(dateUtil.fromDateStr('2023-12-31T12:00:00')).toEqual(new Date(2023, 11, 31));
       expect(dateUtil.fromDateStr('2023-01-20')).toEqual(new Date(2023, 0, 20));
     });
 
@@ -89,15 +90,13 @@ describe('date-util', () => {
     it('should return null when given an invalid date string', () => {
       expect(dateUtil.fromDateStr('')).toEqual(null);
       expect(dateUtil.fromDateStr('2023-12-31 12:00:00')).toEqual(null);
-      expect(dateUtil.fromDateStr('2023-12-31T12:00:00')).toEqual(null);
-      expect(dateUtil.fromDateStr('2023-12-31T12:00:00.000')).toEqual(null);
-      expect(dateUtil.fromDateStr('2023-12-31T12:00:00.000Z')).toEqual(null);
     });
   });
 
   describe('toDate', () => {
     it('should return a Date object when given a string', () => {
       expect(dateUtil.toDate('2023-12-31')).toEqual(new Date(2023, 11, 31));
+      expect(dateUtil.toDate('2023-12-31T00:00:00')).toEqual(new Date(2023, 11, 31));
       expect(dateUtil.toDate('2023-01-20')).toEqual(new Date(2023, 0, 20));
     });
 
@@ -109,6 +108,19 @@ describe('date-util', () => {
     it('should return null when given a falsy value', () => {
       expect(dateUtil.toDate(null as never)).toEqual(null);
       expect(dateUtil.toDate(undefined as never)).toEqual(null);
+    });
+  });
+
+  describe('toDdMmYyyy', () => {
+    it('should return a date string on dd/MM/yyyy format', () => {
+      expect(dateUtil.toDdMmYyyy('2023-03-21')).toEqual('21/03/2023');
+      expect(dateUtil.toDdMmYyyy('2023-12-31')).toEqual('31/12/2023');
+      expect(dateUtil.toDdMmYyyy('2023-12-31T00:00:00')).toEqual('31/12/2023');
+    });
+
+    it('should return an empty string when given a falsy value', () => {
+      expect(dateUtil.toDdMmYyyy(null as never)).toEqual('');
+      expect(dateUtil.toDdMmYyyy(undefined as never)).toEqual('');
     });
   });
 });

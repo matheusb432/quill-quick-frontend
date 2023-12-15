@@ -7,8 +7,6 @@ import { createBookAgent } from './store/agent';
 import { createBookForm } from './store/form';
 import { FormModes } from '~/core/types/form-types';
 
-type ValidModes = FormModes.Edit | FormModes.View | FormModes.Duplicate;
-
 export function createBook() {
   const navigate = useNavigate();
   const form = createBookForm();
@@ -19,7 +17,7 @@ export function createBook() {
     routerUtil.unsavedChangesGuard(e, dirty, submitted);
   }
 
-  function redirectToDetails(id: number, mode: ValidModes = FormModes.Edit) {
+  function redirectToDetails(id: number, mode: FormModes = FormModes.Edit) {
     if (id == null) {
       toastStore.actions.asError('Failed to redirect to book details!');
       return;
@@ -30,10 +28,12 @@ export function createBook() {
         id,
         mode,
       }),
+      { state: routerUtil.FORCE_LEAVE_STATE },
     );
   }
 
-  const redirectToCreate = () => navigate(RoutePaths.BookCreate);
+  const redirectToCreate = () =>
+    navigate(RoutePaths.BookCreate, { state: routerUtil.FORCE_LEAVE_STATE });
 
   function redirectToCreateReview(bookId: number) {
     if (bookId == null) {
@@ -45,6 +45,7 @@ export function createBook() {
       routerUtil.replaceCreateReviewParams(RoutePaths.BookReviewCreate, {
         id: bookId,
       }),
+      { state: routerUtil.FORCE_LEAVE_STATE },
     );
   }
 
@@ -54,6 +55,7 @@ export function createBook() {
     redirectToDetails,
     redirectToCreate,
     redirectToCreateReview,
+    redirectToList: () => navigate(RoutePaths.Books, { state: routerUtil.FORCE_LEAVE_STATE }),
     ...agent,
   };
 }

@@ -1,4 +1,4 @@
-import { SubmitHandler } from '@modular-forms/solid';
+import { SubmitHandler, getValues } from '@modular-forms/solid';
 import { mergeProps } from 'solid-js';
 import { useFormContext } from '~/core/store/form-context';
 import { BookReviewFilter } from '../types';
@@ -15,13 +15,20 @@ export function BookReviewFilters(props: BookReviewFiltersProps) {
   const { state } = useFormContext<BookReviewFilter>();
   const [, { Form, Field }] = state.form;
 
+  function handleDebounce(dateRange: string) {
+    if ((dateRange?.split(' ')?.length ?? 0) < 2) return;
+    merged.onDebounce({ dateRange });
+  }
+
   return (
     <Form
       class="flex w-full max-w-xs items-center justify-end lg:max-w-xl"
       onSubmit={merged.onSubmit}
     >
       <Field name="dateRange" type="string">
-        {(...args) => <DateRange fieldArgs={args} helper="Press Enter to search" />}
+        {(...args) => (
+          <DateRange fieldArgs={args} helper="Press Enter to search" onChange={handleDebounce} />
+        )}
       </Field>
     </Form>
   );

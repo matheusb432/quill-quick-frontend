@@ -2,6 +2,7 @@ import { Table } from '~/components/Table';
 import { TableIcons } from '~/components/TableIcons';
 import { CrudFns, TableAction, TableColumn } from '~/core/types/table-types';
 import { BookReview } from '../types';
+import { dateUtil } from '~/core/util/date-util';
 
 export type BookReviewRow = BookReview & { id: number };
 
@@ -13,10 +14,15 @@ type BookReviewTableProps = Omit<CrudFns<BookReviewRow>, 'duplicateFn'> & {
 export function BookReviewTable(props: BookReviewTableProps) {
   const columns: TableColumn<BookReviewRow>[] = [
     { header: 'Rating', accessor: 'rating' },
-    { header: 'Started at', accessor: 'startedAt' },
+    {
+      header: 'Started at',
+      accessor: 'startedAt',
+      render: (row) => dateUtil.toDdMmYyyy(row.startedAt),
+    },
     {
       header: 'Ended at',
       accessor: 'endedAt',
+      render: (row) => dateUtil.toDdMmYyyy(row.endedAt),
     },
     { header: 'Summary', accessor: 'summary' },
   ];

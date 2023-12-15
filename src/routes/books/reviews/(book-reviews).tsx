@@ -50,7 +50,7 @@ export default function BookReviews() {
   return (
     <>
       <PageTitle subtitle="View or create reviews">Book Reviews</PageTitle>
-      <div class="flex items-center justify-between">
+      <div class="flex items-center justify-end">
         <FormProvider form={filterForm} isLoading={query().isLoading} disableOnLoading={false}>
           <BookReviewFilters onSubmit={handleFilter} onDebounce={handleFilter} />
         </FormProvider>

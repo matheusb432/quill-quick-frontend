@@ -170,7 +170,7 @@ describe('odata-util', () => {
       }
     });
 
-    it('should handle operator in', () => {
+    it('should handle operator In', () => {
       const result = odataUtil.query('https://example.com', {
         filter: {
           age: [[ODataOperators.In, [10, 20, 30]]],
@@ -184,6 +184,29 @@ describe('odata-util', () => {
 
       expect(result.length).toEqual(
         'https://example.com?$filter=(age in (10,20,30)) and (height le 180)'.length,
+      );
+      for (const param of Object.values(expectedParams)) {
+        expect(result).toContain(param);
+      }
+    });
+
+    it('should handle operator BetweenInclusive', () => {
+      const result = odataUtil.query('https://example.com', {
+        filter: {
+          age: [[ODataOperators.BetweenInclusive, [20, 30]]],
+          height: [[ODataOperators.LessThanOrEqualTo, 180]],
+          aDate: [[ODataOperators.BetweenInclusive, [new Date(2023, 4, 1), new Date(2023, 5, 1)]]],
+        },
+      });
+
+      const expectedParams = {
+        filter:
+          '$filter=((age ge 20) and (age le 30)) and (height le 180) and ((aDate ge 2023-05-01) and (aDate le 2023-06-01))',
+      };
+
+      expect(result.length).toEqual(
+        'https://example.com?$filter=((age ge 20) and (age le 30)) and (height le 180) and ((aDate ge 2023-05-01) and (aDate le 2023-06-01))'
+          .length,
       );
       for (const param of Object.values(expectedParams)) {
         expect(result).toContain(param);

@@ -15,13 +15,13 @@ import { FormProvider } from '~/core/store/form-context';
 import { toastStore } from '~/core/store/toast-store';
 import { FormModes } from '~/core/types/form-types';
 import { DetailParams } from '~/core/types/router-types';
-import { formUtil } from '~/core/util/form-util';
+import { modularFormsUtil } from '~/core/util/modular-forms-util';
 
 export default function BookReviewsDetail() {
   const params = useParams<DetailParams>();
   const id = () => +params.id;
 
-  const { form, queryAs, mutations, onBeforeLeave } = createBookReview();
+  const { form, queryAs, mutations, onBeforeLeave, redirectToList } = createBookReview();
   const query = queryAs.byId(id);
   const { mode, title } = createDetailPage('Book Review', query, RoutePaths.BookReviews);
 
@@ -39,7 +39,7 @@ export default function BookReviewsDetail() {
   });
 
   const handleSubmit: SubmitHandler<tBookReviewForm> = () => {
-    const data = formUtil.getAllFormValues(form[0]);
+    const data = modularFormsUtil.getAllFormValues(form[0]);
 
     switch (mode()) {
       case FormModes.Edit:
@@ -54,7 +54,10 @@ export default function BookReviewsDetail() {
     dialogStore.actions.asDanger({
       title: 'Delete Review',
       message: 'Are you sure you want to delete this review?',
-      onConfirm: () => delMut.mutate(id()),
+      onConfirm: () =>
+        delMut.mutate(id(), {
+          onSuccess: () => redirectToList(),
+        }),
     });
   }
 

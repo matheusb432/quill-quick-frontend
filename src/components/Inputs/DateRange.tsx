@@ -5,7 +5,9 @@ import { createField } from '~/core/store/create-field';
 import { ContainerField } from '~/core/types/form-types';
 import { InputContainer } from './InputContainer';
 
-type DateRangeProps<TF, TN> = ContainerField<TF, TN>;
+type DateRangeProps<TF, TN> = ContainerField<TF, TN> & {
+  onChange?(value: string): void;
+};
 
 export function DateRange<TF, TN>(props: DateRangeProps<TF, TN>) {
   const merged = mergeProps({}, props);
@@ -47,6 +49,10 @@ export function DateRange<TF, TN>(props: DateRangeProps<TF, TN>) {
         value={getValue()}
         placeholder={merged.placeholder || 'Pick a date range'}
         disabled={!canEdit()}
+        onChange={(e) => {
+          merged.fieldArgs[1].onChange(e);
+          merged.onChange?.(e.target.value);
+        }}
       />
     </InputContainer>
   );

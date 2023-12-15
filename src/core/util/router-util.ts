@@ -1,7 +1,7 @@
 import { BeforeLeaveEventArgs } from '@solidjs/router';
 import { RoutePaths } from '../constants/route-paths';
 import { dialogStore } from '../store/dialog-store';
-import { DetailParams } from '../types/router-types';
+import { DetailParams, RouterLeaveState } from '../types/router-types';
 import { strUtil } from './str-util';
 
 function replaceParams<TParams extends Record<string, string | number>>(
@@ -31,7 +31,7 @@ function buildTitle(mode: string, title: string) {
 }
 
 function unsavedChangesGuard(e: BeforeLeaveEventArgs, dirty: boolean, submitted: boolean) {
-  const canLeave = !dirty || submitted;
+  const canLeave = !dirty || submitted || (e.options?.state as RouterLeaveState)?.forceLeave;
   if (canLeave || e.defaultPrevented) return;
 
   e.preventDefault();
@@ -65,4 +65,5 @@ export const routerUtil = {
   unsavedChangesGuard,
   toSearchParams,
   searchParamsToRecord,
+  FORCE_LEAVE_STATE: { forceLeave: true } as RouterLeaveState,
 };

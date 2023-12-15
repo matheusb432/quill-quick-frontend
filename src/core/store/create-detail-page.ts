@@ -7,6 +7,16 @@ import { DetailParams } from '../types/router-types';
 import { routerUtil } from '../util/router-util';
 import { toastStore } from './toast-store';
 
+/**
+ * @description
+ * Provides common functionality for detail pages.
+ *
+ * Handles page redirection on invalid ID or not found entity.
+ *
+ * @param page The page name, e.g. "Some Review".
+ * @param query The search by ID query.
+ * @param redirectPath The path to redirect to, ideally the list of the entity.
+ */
 export function createDetailPage<T>(
   page: string,
   query: CreateQueryResult<T>,
@@ -42,7 +52,7 @@ export function createDetailPage<T>(
   });
 
   function redirect() {
-    navigate(redirectPath ?? RoutePaths.NotFound);
+    navigate(redirectPath ?? RoutePaths.NotFound, { state: routerUtil.FORCE_LEAVE_STATE });
   }
 
   return {

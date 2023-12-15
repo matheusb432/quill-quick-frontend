@@ -124,6 +124,20 @@ const builder = {
   ): string {
     const separator = joinOperator === ODataOperators.Or ? orSeparator : andSeparator;
 
+    if (operator === ODataOperators.BetweenInclusive) {
+      if (values.length !== 2) {
+        console.error(
+          `BetweenInclusive operator requires exactly 2 values, ${values.length} given.`,
+        );
+        return '';
+      }
+      const [start, end] = values;
+
+      return `((${key} ge ${builder.normalize(start)}) and (${key} le ${builder.normalize(
+        end,
+      )}))${separator}`;
+    }
+
     if (operator === ODataOperators.In) {
       const inFilterValue = `(${values.map((x) => builder.normalize(x)).join(',')})`;
 

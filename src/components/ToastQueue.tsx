@@ -57,7 +57,7 @@ function Toast(props: ToastProps) {
   return (
     <div
       class={strUtil.cx(
-        'fixed right-3 top-3 min-w-[320px] z-50 max-w-xl transition-all duration-500',
+        'fixed right-3 top-3 z-50 min-w-[320px] max-w-xl transition-all duration-500',
         slideAnimation(),
       )}
     >
@@ -82,10 +82,10 @@ function getTheming(type: AlertTypes) {
 }
 
 const classMap: Record<AlertTypes, string> = {
-  info: 'bg-info text-neutral-content',
+  info: 'bg-info text-primary',
   error: 'bg-red-100',
   success: 'bg-green-100',
-  warning: 'bg-yellow-100 text-neutral-content',
+  warning: 'bg-yellow-100 text-primary',
 };
 
 const timerClassMap: Record<AlertTypes, string> = {

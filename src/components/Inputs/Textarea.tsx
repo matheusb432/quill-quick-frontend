@@ -17,12 +17,6 @@ export function Textarea<TF, TN>(props: TextareaProps<TF, TN>) {
   const getValue = createMemo<string>(() => {
     const value = merged.fieldArgs[0].value;
 
-    // TODO clean
-    // if (label().toLowerCase().includes('content')) {
-    //   console.log(`in ${label()}`);
-    //   console.log(value);
-    // }
-
     return value === undefined ? '' : (value as unknown as string);
   }, '');
 

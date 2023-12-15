@@ -11,6 +11,21 @@ function toYyyyMmDd(date: Date): string {
   return `${year}-${strUtil.to00(month)}-${strUtil.to00(day)}`;
 }
 
+function toDdMmYyyy(dateYyyyMmDd: string): string {
+  if (!dateYyyyMmDd) return '';
+
+  const date = dateYyyyMmDd.split('T')[0];
+
+  if (!date) return '';
+
+  const splitDate = date.split('-');
+
+  if (splitDate.length !== 3) return '';
+
+  const [year, month, day] = splitDate;
+  return `${day}/${month}/${year}`;
+}
+
 function rangeToJsonDates(range: string | undefined, format = 'dd/MM/yyyy'): RangeAsText {
   if (!range) return { start: '', end: '' };
 
@@ -18,6 +33,8 @@ function rangeToJsonDates(range: string | undefined, format = 'dd/MM/yyyy'): Ran
   const end = others[others.length - 1];
 
   if (format === 'dd/MM/yyyy') {
+    if (!start || !end) return { start: '', end: '' };
+
     const [startDay, startMonth, startYear] = start.split('/');
     const [endDay, endMonth, endYear] = end.split('/');
     return {
@@ -40,8 +57,18 @@ function rangeToDates(range: string | undefined, format = 'dd/MM/yyyy'): RangeAs
 function jsonDatesToRange(start: string, end: string): string {
   if (!start || !end) return '';
 
-  const [startYear, startMonth, startDay] = start.split('T')[0].split('-');
-  const [endYear, endMonth, endDay] = end.split('T')[0].split('-');
+  const startDate = start.split('T')[0];
+  const endDate = end.split('T')[0];
+
+  if (!startDate || !endDate) return '';
+
+  const splitStart = startDate.split('-');
+  const splitEnd = endDate.split('-');
+
+  if (splitStart.length !== 3 || splitEnd.length !== 3) return '';
+
+  const [startYear, startMonth, startDay] = splitStart;
+  const [endYear, endMonth, endDay] = splitEnd;
   return `${startDay}/${startMonth}/${startYear} to ${endDay}/${endMonth}/${endYear}`;
 }
 
@@ -52,7 +79,11 @@ function jsonDatesToRange(start: string, end: string): string {
 function fromDateStr(str: string | null): Date | null {
   if (!str) return null;
 
-  const splitDate = str.split('-').map(Number).filter(Number.isInteger);
+  const date = str.split('T')[0];
+
+  if (!date) return null;
+
+  const splitDate = date.split('-').map(Number).filter(Number.isInteger);
 
   if (splitDate.length !== 3) return null;
 
@@ -69,6 +100,7 @@ function toDate(value: string | Date): Date | null {
 
 export const dateUtil = {
   toYyyyMmDd,
+  toDdMmYyyy,
   rangeToJsonDates,
   rangeToDates,
   jsonDatesToRange,

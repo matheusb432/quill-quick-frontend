@@ -23,7 +23,8 @@ export enum ODataOperators {
   Not = 'not',
   In = 'in',
   Contains = 'contains',
-  AsRaw = '_',
+  AsRaw = '_ar',
+  BetweenInclusive = '_bti',
 }
 
 export type ODataOptions = {

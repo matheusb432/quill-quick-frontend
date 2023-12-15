@@ -14,7 +14,7 @@ import { FormProvider } from '~/core/store/form-context';
 import { toastStore } from '~/core/store/toast-store';
 import { FormModes } from '~/core/types/form-types';
 import { DetailParams } from '~/core/types/router-types';
-import { formUtil } from '~/core/util/form-util';
+import { modularFormsUtil } from '~/core/util/modular-forms-util';
 
 export default function BooksDetail() {
   const params = useParams<DetailParams>();
@@ -34,13 +34,13 @@ export default function BooksDetail() {
     query.isLoading || updateMut.isLoading || delMut.isLoading || duplicateMut.isLoading;
 
   createEffect(() => {
-    if (!query.isSuccess) return;
+    if (!query.isSuccess || query.data == null) return;
 
     setValues(form[0], query.data);
   });
 
   const handleSubmit: SubmitHandler<Book> = () => {
-    const data = formUtil.getAllFormValues(form[0]);
+    const data = modularFormsUtil.getAllFormValues(form[0]);
 
     switch (mode()) {
       case FormModes.Edit:
