@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { CanEditData, FormModes } from '../types/form-types';
 import { strUtil } from './str-util';
+import { FieldValues, FormStore, ResponseData, getValues } from '@modular-forms/solid';
 
 function getDefaults<Schema extends z.AnyZodObject>(schema: Schema) {
   const defaults: { [key: string]: unknown } = {};
@@ -48,6 +49,16 @@ function nameToLabel(name: string): string {
   return strUtil.capitalizeWords(words.join(' '));
 }
 
+/**
+ * @description
+ * Returns all form values, including disabled fields.
+ */
+function getAllFormValues<T extends FieldValues, R extends ResponseData>(
+  formStore: FormStore<T, R>,
+): T {
+  return getValues(formStore, { shouldActive: false }) as T;
+}
+
 export const formUtil = {
   getDefaults,
   isView,
@@ -55,4 +66,5 @@ export const formUtil = {
   isEdit,
   canEditField,
   nameToLabel,
+  getAllFormValues,
 };

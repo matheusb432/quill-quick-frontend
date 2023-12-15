@@ -1,4 +1,4 @@
-import { SubmitHandler, reset } from '@modular-forms/solid';
+import { SubmitHandler, setValues } from '@modular-forms/solid';
 import { useBeforeLeave } from '@solidjs/router';
 import { createEffect } from 'solid-js';
 import { useParams } from 'solid-start';
@@ -14,6 +14,7 @@ import { FormProvider } from '~/core/store/form-context';
 import { toastStore } from '~/core/store/toast-store';
 import { FormModes } from '~/core/types/form-types';
 import { DetailParams } from '~/core/types/router-types';
+import { formUtil } from '~/core/util/form-util';
 
 export default function BooksDetail() {
   const params = useParams<DetailParams>();
@@ -35,10 +36,12 @@ export default function BooksDetail() {
   createEffect(() => {
     if (!query.isSuccess) return;
 
-    reset(form[0], { initialValues: query.data });
+    setValues(form[0], query.data);
   });
 
-  const handleSubmit: SubmitHandler<Book> = (data) => {
+  const handleSubmit: SubmitHandler<Book> = () => {
+    const data = formUtil.getAllFormValues(form[0]);
+
     switch (mode()) {
       case FormModes.Edit:
         updateMut.mutate({ ...data, id: id() });

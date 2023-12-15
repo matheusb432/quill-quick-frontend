@@ -5,6 +5,7 @@ import { BookReviewForm } from '~/BookReview/components/BookReviewForm';
 import { createBookReview } from '~/BookReview/create-book-review';
 import { tBookReviewForm } from '~/BookReview/types';
 import { CreateBookReviewCommand } from '~/BookReview/types/api-types';
+import { bookReviewUtil } from '~/BookReview/util/book-review-util';
 import { PageTitle } from '~/components/PageTitle';
 import { RoutePaths } from '~/core/constants/route-paths';
 import { createDetailPage } from '~/core/store/create-detail-page';
@@ -24,20 +25,8 @@ export default function BooksReviewsCreate() {
   const addMut = mutations.add;
 
   const handleSubmit: SubmitHandler<tBookReviewForm> = (data) => {
-    const range = dateUtil.rangeToDates(data.dateRange);
-    const dto: CreateBookReviewCommand = {
-      bookId: bookId(),
-      readingMode: data.readingMode,
-      summary: data.summary,
-      soundtrack: data.soundtrack,
-      rating: data.rating,
-      isPublic: data.isPublic,
-      startedAt: range.start ?? undefined,
-      endedAt: range.end ?? undefined,
-      comments: data.comments,
-    };
+    const dto: CreateBookReviewCommand = bookReviewUtil.mapToCreate(bookId(), data);
 
-    // TODO test
     addMut.mutate(dto, {
       onSuccess(data) {
         redirectToDetails(data?.id);

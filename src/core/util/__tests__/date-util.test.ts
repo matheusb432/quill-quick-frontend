@@ -61,6 +61,20 @@ describe('date-util', () => {
     });
   });
 
+  describe('jsonDatesToRange', () => {
+    it('should return a range string when given two dates', () => {
+      const start = '2023-06-06';
+      const end = '2023-06-14';
+      expect(dateUtil.jsonDatesToRange(start, end)).toEqual('06/06/2023 to 14/06/2023');
+    });
+
+    it('should return an empty string when given a falsy value', () => {
+      expect(dateUtil.jsonDatesToRange('', '')).toEqual('');
+      expect(dateUtil.jsonDatesToRange(null as never, null as never)).toEqual('');
+      expect(dateUtil.jsonDatesToRange(undefined as never, undefined as never)).toEqual('');
+    });
+  });
+
   describe('fromDateStr', () => {
     it('should return a Date object when given a valid date string', () => {
       expect(dateUtil.fromDateStr('2023-12-31')).toEqual(new Date(2023, 11, 31));

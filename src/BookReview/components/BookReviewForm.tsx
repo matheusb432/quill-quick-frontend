@@ -77,42 +77,47 @@ export function BookReviewForm(props: BookReviewFormProps) {
             >
               Add Comment
             </Button>
-            <For each={fieldArray?.items}>
-              {(_, index) => (
-                <section class="relative mt-4 flex h-full flex-col rounded-md border-2 border-primary p-6">
-                  <Field name={`comments.${index()}.isPublic`} type="boolean">
-                    {(...args) => <Toggle fieldArgs={args} label="Public Comment" />}
-                  </Field>
-                  <Field name={`comments.${index()}.type`} type="number">
-                    {(...args) => (
-                      <Select
-                        fieldArgs={args}
-                        options={commentTypeOptions}
-                        label="Sentiment"
-                        placeholder="Select the sentiment"
-                      />
-                    )}
-                  </Field>
-                  <Field name={`comments.${index()}.content`}>
-                    {(...args) => (
-                      <Textarea fieldArgs={args} label="Content" placeholder="Enter the content" />
-                    )}
-                  </Field>
-                  <div class="flex items-center justify-end">
-                    <Button
-                      onClick={() => remove(form, fieldArray.name, { at: index() })}
-                      theme="danger"
-                    >
-                      Delete
-                    </Button>
-                  </div>
-                </section>
-              )}
+            <For each={fieldArray.items}>
+              {(_, index) => {
+                return (
+                  <section class="relative mt-4 flex h-full flex-col rounded-md border-2 border-primary p-6">
+                    <Field name={`comments.${index()}.isPublic`} type="boolean">
+                      {(...args) => <Toggle fieldArgs={args} label="Public Comment" />}
+                    </Field>
+                    <Field name={`comments.${index()}.type`} type="number">
+                      {(...args) => (
+                        <Select
+                          fieldArgs={args}
+                          options={commentTypeOptions}
+                          label="Sentiment"
+                          placeholder="Select the sentiment"
+                        />
+                      )}
+                    </Field>
+                    <Field name={`comments.${index()}.content`}>
+                      {(...args) => (
+                        <Textarea
+                          fieldArgs={args}
+                          label="Content"
+                          placeholder="Enter the content"
+                        />
+                      )}
+                    </Field>
+                    <div class="flex items-center justify-end">
+                      <Button
+                        onClick={() => remove(form, fieldArray.name, { at: index() })}
+                        theme="danger"
+                      >
+                        Delete
+                      </Button>
+                    </div>
+                  </section>
+                );
+              }}
             </For>
           </>
         )}
       </FieldArray>
-
       <FormFooter onDelete={merged.onDelete} />
     </Form>
   );

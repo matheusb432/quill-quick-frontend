@@ -37,6 +37,14 @@ function rangeToDates(range: string | undefined, format = 'dd/MM/yyyy'): RangeAs
   };
 }
 
+function jsonDatesToRange(start: string, end: string): string {
+  if (!start || !end) return '';
+
+  const [startYear, startMonth, startDay] = start.split('T')[0].split('-');
+  const [endYear, endMonth, endDay] = end.split('T')[0].split('-');
+  return `${startDay}/${startMonth}/${startYear} to ${endDay}/${endMonth}/${endYear}`;
+}
+
 /**
  * @description
  * Converts a date in `yyyy-mm-dd` to a Date object.
@@ -63,6 +71,7 @@ export const dateUtil = {
   toYyyyMmDd,
   rangeToJsonDates,
   rangeToDates,
+  jsonDatesToRange,
   fromDateStr,
   toDate,
 };

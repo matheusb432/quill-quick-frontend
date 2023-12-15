@@ -15,8 +15,6 @@ export const zBookReviewFilter = z.object({
 export type BookReviewFilter = z.infer<typeof zBookReviewFilter>;
 
 export const zBookReviewForm = z.object({
-  // TODO review's bookId via url ?
-  // bookId: z.number().int().positive().optional(),
   readingMode: z.string().nonempty().max(50),
   comments: z.array(zBookReviewCommentForm).optional().default([]),
   ...zReviewForm.shape,

@@ -32,7 +32,7 @@ export type BookReviewCommentCreateDto = {
 };
 
 export type BookReviewCommentUpdateDto = {
-  id: number;
+  id: number | undefined;
   content: string;
   isSpoiler?: boolean;
   isPublic?: boolean;

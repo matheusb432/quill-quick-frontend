@@ -25,6 +25,7 @@ export type ReviewComment = {
 };
 
 export const zReviewForm = z.object({
+  id: z.number().int().optional(),
   summary: z.string().nonempty().max(100),
   soundtrack: z.string().nonempty().max(100),
   rating: z.coerce.number().int().min(1).max(10),
@@ -33,15 +34,11 @@ export const zReviewForm = z.object({
 });
 
 export const zReviewCommentForm = z.object({
+  id: z.number().int().optional(),
   content: z.string().nonempty().max(100),
   isSpoiler: z.boolean().default(false),
   isPublic: z.boolean().default(false),
-  type: z
-    .number()
-    .int()
-    .min(ReviewCommentType.Negative)
-    .max(ReviewCommentType.Positive)
-    .default(ReviewCommentType.Neutral),
+  type: z.number().int(),
 });
 
 export type CreateReviewParams = {

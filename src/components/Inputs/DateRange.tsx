@@ -1,5 +1,5 @@
 import flatpickr from 'flatpickr';
-import { createEffect, mergeProps, onMount } from 'solid-js';
+import { createEffect, createMemo, mergeProps, onMount } from 'solid-js';
 import { HICalendar } from '~/assets/icons/HICalendar';
 import { createField } from '~/core/store/create-field';
 import { ContainerField } from '~/core/types/form-types';
@@ -23,6 +23,13 @@ export function DateRange<TF, TN>(props: DateRangeProps<TF, TN>) {
     });
   });
 
+  const getValue = createMemo<string | number | undefined>(() => {
+    const value = merged.fieldArgs[0].value;
+    const isUndefined = value === undefined;
+
+    return isUndefined ? '' : (value as unknown as string);
+  }, '');
+
   return (
     <InputContainer
       name={name()}
@@ -37,6 +44,7 @@ export function DateRange<TF, TN>(props: DateRangeProps<TF, TN>) {
         {...merged.fieldArgs[1]}
         class="input-fx peer form-input h-16 pb-0 transition-all"
         id="dateRange"
+        value={getValue()}
         placeholder={merged.placeholder || 'Pick a date range'}
         disabled={!canEdit()}
       />
