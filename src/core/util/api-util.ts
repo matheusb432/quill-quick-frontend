@@ -1,8 +1,7 @@
 import { AxiosResponse } from 'axios';
-import { Defaults } from '../constants/defaults';
 
 function createUrl(featureUrl: string): string {
-  return `${Defaults.ApiUrl}/${featureUrl}`;
+  return `${import.meta.env.VITE_API_URL}/${featureUrl}`;
 }
 
 async function responseToData<T>(request: Promise<AxiosResponse<T>>): Promise<T> {

@@ -12,20 +12,33 @@ type ODataFilterOperation =
 export type ODataFilterValue = string | number | Date | Guid | boolean | undefined | null;
 export type ODataOrderBy = [string | string[], 'asc' | 'desc'];
 export enum ODataOperators {
-  EqualTo = 'eq',
-  NotEqualTo = 'ne',
-  GreaterThan = 'gt',
-  GreaterThanOrEqualTo = 'ge',
-  LessThan = 'lt',
-  LessThanOrEqualTo = 'le',
-  And = 'and',
-  Or = 'or',
-  Not = 'not',
-  In = 'in',
-  Contains = 'contains',
-  AsRaw = '_ar',
-  BetweenInclusive = '_bti',
+  EqualTo,
+  NotEqualTo,
+  GreaterThan,
+  GreaterThanOrEqualTo,
+  LessThan,
+  LessThanOrEqualTo,
+  And,
+  Or,
+  Not,
+  In,
+  Contains,
+  AsRaw,
+  BetweenInclusive,
 }
+export const odataOperators = {
+  [ODataOperators.EqualTo]: 'eq',
+  [ODataOperators.NotEqualTo]: 'ne',
+  [ODataOperators.GreaterThan]: 'gt',
+  [ODataOperators.GreaterThanOrEqualTo]: 'ge',
+  [ODataOperators.LessThan]: 'lt',
+  [ODataOperators.LessThanOrEqualTo]: 'le',
+  [ODataOperators.And]: 'and',
+  [ODataOperators.Or]: 'or',
+  [ODataOperators.Not]: 'not',
+  [ODataOperators.Contains]: 'contains',
+  [ODataOperators.In]: 'in',
+} as const;
 
 export type ODataOptions = {
   select?: string[];

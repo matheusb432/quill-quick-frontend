@@ -6,7 +6,7 @@ import {
   ODataOperators,
   ODataOptions,
   ODataOrderBy,
-  ODataParams,
+  odataOperators,
 } from '../types/odata-types';
 import { PaginationOptions } from '../types/pagination-types';
 import { dateUtil } from './date-util';
@@ -54,8 +54,8 @@ export const odataUtil = {
   params,
 };
 
-const orSeparator = ` ${ODataOperators.Or} `;
-const andSeparator = ` ${ODataOperators.And} `;
+const orSeparator = ` ${odataOperators[ODataOperators.Or]} `;
+const andSeparator = ` ${odataOperators[ODataOperators.And]} `;
 
 const builder = {
   url(baseUrl: string, options?: ODataOptions): string {
@@ -133,7 +133,9 @@ const builder = {
       }
       const [start, end] = values;
 
-      return `((${key} ge ${builder.normalize(start)}) and (${key} le ${builder.normalize(
+      return `((${key} ${odataOperators[ODataOperators.GreaterThanOrEqualTo]} ${builder.normalize(
+        start,
+      )}) and (${key} ${odataOperators[ODataOperators.LessThanOrEqualTo]} ${builder.normalize(
         end,
       )}))${separator}`;
     }
@@ -141,7 +143,7 @@ const builder = {
     if (operator === ODataOperators.In) {
       const inFilterValue = `(${values.map((x) => builder.normalize(x)).join(',')})`;
 
-      return `(${key} in ${inFilterValue})${separator}`;
+      return `(${key} ${odataOperators[ODataOperators.In]} ${inFilterValue})${separator}`;
     }
     let orFilterStr = '';
 
@@ -169,10 +171,12 @@ const builder = {
 
     if (normalized === undefined) return '';
     if (operator === ODataOperators.Contains) {
-      return `contains(${key}, ${normalized})${separator}`;
+      return `${odataOperators[ODataOperators.Contains]}(${key}, ${normalized})${separator}`;
     }
 
-    return `(${key} ${operator} ${normalized})${separator}`;
+    const operatorStr = odataOperators[operator as never];
+    if (!operatorStr) return '';
+    return `(${key} ${operatorStr} ${normalized})${separator}`;
   },
   normalize(value: ODataFilterValue): string | undefined {
     if (value == null || Number.isNaN(value)) return undefined;

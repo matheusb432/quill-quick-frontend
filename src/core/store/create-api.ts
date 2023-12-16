@@ -1,9 +1,8 @@
 import axios from 'axios';
-import { Defaults } from '../constants/defaults';
 import { apiUtil } from '../util/api-util';
 
 const api = axios.create({
-  baseURL: Defaults.ApiUrl as string,
+  baseURL: import.meta.env.VITE_API_URL,
 });
 
 type ApiMethod = 'get' | 'post' | 'put' | 'delete';

@@ -1,14 +1,13 @@
-import { Defaults } from './../../constants/defaults';
 import { apiUtil } from '../api-util';
 
 describe('api-util', () => {
-  describe('createUrl', () => {
-    it('should create the feature url', () => {
-      const featureUrl = 'books';
-      const expected = Defaults.ApiUrl + '/' + featureUrl;
-      const actual = apiUtil.createUrl(featureUrl);
-
-      expect(actual).toBe(expected);
+  describe('buildNotifications', () => {
+    it('should build success notifications', () => {
+      const notifications = apiUtil.buildNotifications('Test');
+      expect(notifications.success.create).toBe('Test created successfully!');
+      expect(notifications.success.update).toBe('Test updated successfully!');
+      expect(notifications.success.delete).toBe('Test deleted successfully!');
+      expect(notifications.success.duplicate).toBe('Test duplicated successfully!');
     });
   });
 });
