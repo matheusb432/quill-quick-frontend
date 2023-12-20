@@ -3,16 +3,22 @@
   "moduleNameMapper": {
     "\\.(css|less|sass|scss)$": "identity-obj-proxy"
   },
-  "preset": "ts-jest",
+  "preset": "ts-jest/presets/default-esm",
   "moduleFileExtensions": ["tsx", "ts", "js", "jsx"],
   "transform": {
-    "<transform_regex>": [
+    "^.+\\.tsx?$": [
       "ts-jest",
       {
-        "isolatedModules": true,
-        "tsconfig": "tsconfig.json",
-        "babelConfig": {
-          "presets": ["babel-preset-solid", "@babel/preset-env"]
+        "diagnostics": {
+          "ignoreCodes": [1343]
+        },
+        "astTransformers": {
+          "before": [
+            {
+              "path": "node_modules/ts-jest-mock-import-meta",
+              "options": { "metaObjectReplacement": { "url": "https://www.url.com" } }
+            }
+          ]
         }
       }
     ]

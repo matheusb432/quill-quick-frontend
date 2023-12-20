@@ -1,3 +1,4 @@
+import { ODataOptions } from 'odata-qb';
 import { batch, createSignal } from 'solid-js';
 import { createBookFilterForm } from '~/Book/store/form';
 import { BookReviewFilters } from '~/BookReview/components/BookReviewFilters';
@@ -11,7 +12,7 @@ import { createPagination } from '~/core/store/create-pagination';
 import { dialogStore } from '~/core/store/dialog-store';
 import { FormProvider } from '~/core/store/form-context';
 import { FormModes } from '~/core/types/form-types';
-import { ODataOptions } from '~/core/types/odata-types';
+
 import { dateUtil } from '~/core/util/date-util';
 import { paginationUtil } from '~/core/util/pagination-util';
 import { queryUtil } from '~/core/util/query-util';

@@ -1,4 +1,4 @@
-import { ODataOptions } from './odata-types';
+import { ODataOptions } from 'odata-qb';
 
 export type PaginationOptions = {
   page?: number;

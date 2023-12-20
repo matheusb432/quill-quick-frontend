@@ -1,5 +1,5 @@
+import { ODataOptions } from 'odata-qb';
 import { Defaults } from '../constants/defaults';
-import { ODataOptions } from '../types/odata-types';
 import { PaginationOptions } from '../types/pagination-types';
 
 const defaultPage = 1;

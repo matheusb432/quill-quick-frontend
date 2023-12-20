@@ -1,10 +1,10 @@
 import { InvalidateOptions, createQuery, useQueryClient } from '@tanstack/solid-query';
 import { Accessor } from 'solid-js';
 import { WithId } from '../types/model-types';
-import { ODataOptions } from '../types/odata-types';
 import { PaginatedResult, PaginationOptions } from '../types/pagination-types';
-import { odataUtil } from '../util/odata-util';
 import { createApi } from './create-api';
+import { ODataOptions, odataQb } from 'odata-qb';
+import { odataUtil } from '../util/odata-util';
 
 export function createFeatureApi<TEntity extends WithId>(featureUrl: string) {
   const api = createApi();
@@ -22,7 +22,7 @@ export function createFeatureApi<TEntity extends WithId>(featureUrl: string) {
   type IdType = number | string;
   type QueryEntity = TEntity & { id: IdType };
 
-  const query = (opt: ODataOptions) => api.get<QueryEntity[]>(odataUtil.query(featureUrl, opt));
+  const query = (opt: ODataOptions) => api.get<QueryEntity[]>(odataQb.query(featureUrl, opt));
 
   const paginated = (opt: PaginationOptions) =>
     api.get<PaginatedResult<QueryEntity>>(odataUtil.paginated(featureUrl, opt));

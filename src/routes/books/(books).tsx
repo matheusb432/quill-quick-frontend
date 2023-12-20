@@ -1,3 +1,4 @@
+import { ODataOp, ODataOptions } from 'odata-qb';
 import { batch, createSignal } from 'solid-js';
 import { BookCardsGrid } from '~/Book/components/BookCardsGrid';
 import { BookFilters } from '~/Book/components/BookFilters';
@@ -13,7 +14,6 @@ import { createPagination } from '~/core/store/create-pagination';
 import { dialogStore } from '~/core/store/dialog-store';
 import { FormProvider } from '~/core/store/form-context';
 import { FormModes } from '~/core/types/form-types';
-import { ODataOperators, ODataOptions } from '~/core/types/odata-types';
 import { paginationUtil } from '~/core/util/pagination-util';
 
 export default function Books() {
@@ -41,7 +41,7 @@ export default function Books() {
     batch(() => {
       pagination.setPage(1);
       setFilters({
-        filter: { title: [[ODataOperators.Contains, data.title]] },
+        filter: { title: [ODataOp.Contains, data.title] },
       });
     });
   }

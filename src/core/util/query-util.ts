@@ -1,4 +1,4 @@
-import { ODataFilterData, ODataOperators } from '../types/odata-types';
+import { ODataFilterData, ODataFilterType, ODataOp } from 'odata-qb';
 import { Nullish } from '../types/utility-types';
 import { dateUtil } from './date-util';
 
@@ -15,11 +15,7 @@ function getDateRangeFilter<T extends Date | string>(
   if (!end) return dateUtil.toDate(start);
 
   return [
-    [
-      ODataOperators.BetweenInclusive,
-      [dateUtil.toDate(start), dateUtil.toDate(end)],
-      ODataOperators.Or,
-    ],
+    [ODataFilterType.BetweenInclusive, [dateUtil.toDate(start), dateUtil.toDate(end)], ODataOp.Or],
   ];
 }
 
