@@ -5,6 +5,7 @@
     "target": "esnext",
     "module": "esnext",
     "moduleResolution": "node",
+    "experimentalDecorators": true,
     "jsxImportSource": "solid-js",
     "jsx": "preserve",
     "strict": true,
