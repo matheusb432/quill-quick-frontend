@@ -41,7 +41,7 @@
     "@tanstack/solid-query": "^4.29.11",
     "axios": "^1.4.0",
     "flatpickr": "^4.6.13",
-    "odata-qb": "^1.0.1",
+    "odata-qb": "^1.1.0",
     "solid-js": "^1.7.2",
     "solid-start": "^0.2.26",
     "tailwind-merge": "^1.13.0",
