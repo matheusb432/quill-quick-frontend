@@ -21,7 +21,8 @@ export default function Root() {
         staleTime: TEN_MINUTES,
         cacheTime: TEN_MINUTES * 2,
         retry: false,
-        refetchOnWindowFocus: false,
+        retryOnMount: false,
+        refetchOnWindowFocus: true,
       },
     },
     queryCache: new QueryCache({
@@ -36,6 +37,7 @@ export default function Root() {
 
   function handleError(error: Error | AxiosError) {
     if (error instanceof AxiosError) {
+      console.warn('Axios error', error);
       handleNetworkError();
       return;
     }

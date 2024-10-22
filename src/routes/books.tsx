@@ -1,5 +1,4 @@
 import { useLocation } from '@solidjs/router';
-import { Accessor } from 'solid-js';
 import { Outlet } from 'solid-start';
 import { Breadcrumb, Crumb } from '~/components/Breadcrumb';
 import { MainContainer } from '~/components/MainContainer';
