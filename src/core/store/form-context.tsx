@@ -30,7 +30,6 @@ export function FormProvider<TForm extends FieldValues>(props: FormProviderProps
     { isLoading: false, disableOnLoading: true, disabled: false, mode: FormModes.Create },
     others,
   );
-  // TODO remove since it's less versatile and intuitive, use setComponentLabel instead.
   const [labels, setLabels] = createSignal<Record<FieldPath<TForm>, string>>({} as never);
 
   return (

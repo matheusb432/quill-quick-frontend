@@ -12,11 +12,6 @@ export function createBook() {
   const form = createBookForm();
   const agent = createBookAgent();
 
-  function preventUnsavedChangesExit(e: BeforeLeaveEventArgs) {
-    const { dirty, submitted } = form[0];
-    routerUtil.unsavedChangesGuard(e, dirty, submitted);
-  }
-
   function redirectToDetails(id: number, mode: FormModes = FormModes.Edit) {
     if (id == null) {
       toastStore.actions.asError('Failed to redirect to book details!');
@@ -51,7 +46,6 @@ export function createBook() {
 
   return {
     form,
-    onBeforeLeave: preventUnsavedChangesExit,
     redirectToDetails,
     redirectToCreate,
     redirectToCreateReview,

@@ -15,7 +15,7 @@ export function createApi() {
   ) {
     const headers = {
       'Content-Type': 'application/json',
-      // TODO add auth token
+      // TODO add auth token if needed
       // Authorization: `Bearer ${}`
     };
 

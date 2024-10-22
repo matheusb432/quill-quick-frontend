@@ -11,7 +11,6 @@ import { RoutePaths } from '~/core/constants/route-paths';
 import { createDetailPage } from '~/core/store/create-detail-page';
 import { FormProvider } from '~/core/store/form-context';
 import { CreateReviewParams } from '~/core/types/review-types';
-import { dateUtil } from '~/core/util/date-util';
 
 export default function BooksReviewsCreate() {
   const params = useParams<CreateReviewParams>();

@@ -5,7 +5,6 @@ interface BookListProps {
   books: Book[];
 }
 
-// TODO implement
 export function BookCardsGrid(props: BookListProps) {
   return (
     <section class="flex w-full flex-wrap items-center justify-center gap-16 p-4">

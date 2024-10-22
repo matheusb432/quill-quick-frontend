@@ -1,5 +1,4 @@
 import { SubmitHandler, setValues } from '@modular-forms/solid';
-import { useBeforeLeave } from '@solidjs/router';
 import { createEffect } from 'solid-js';
 import { useParams } from 'solid-start';
 import { BookForm } from '~/Book/components/BookForm';
@@ -20,11 +19,9 @@ export default function BooksDetail() {
   const params = useParams<DetailParams>();
   const id = () => +params.id;
 
-  const { form, queryAs, mutations, onBeforeLeave, redirectToDetails } = createBook();
+  const { form, queryAs, mutations, redirectToDetails } = createBook();
   const query = queryAs.byId(id);
   const { mode, title } = createDetailPage('Book', query, RoutePaths.Books);
-
-  useBeforeLeave(onBeforeLeave);
 
   const updateMut = mutations.update;
   const delMut = mutations.del;

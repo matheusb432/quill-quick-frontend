@@ -79,6 +79,7 @@ export function createBookAgent() {
   }
 
   return {
+    api,
     queryAs: api.queryAs,
     mutations: {
       update: updateMut,

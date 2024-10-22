@@ -8,8 +8,6 @@ interface RootProps {
 
 export function RootLayout(props: RootProps) {
   return (
-    // TODO add error boundary for prod
-    // <ErrorBoundary fallback={() => <ErrorBoundaryContent />}>
     <ErrorBoundary>
       <div class="max-h-screen min-h-screen overflow-x-hidden scroll-smooth bg-neutral text-neutral-content">
         <MainHeader />

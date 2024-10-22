@@ -1,5 +1,4 @@
-import { SubmitHandler, getValues, reset, setValues } from '@modular-forms/solid';
-import { useBeforeLeave } from '@solidjs/router';
+import { SubmitHandler, setValues } from '@modular-forms/solid';
 import { createEffect } from 'solid-js';
 import { useParams } from 'solid-start';
 import { BookReviewForm } from '~/BookReview/components/BookReviewForm';
@@ -21,11 +20,9 @@ export default function BookReviewsDetail() {
   const params = useParams<DetailParams>();
   const id = () => +params.id;
 
-  const { form, queryAs, mutations, onBeforeLeave, redirectToList } = createBookReview();
+  const { form, queryAs, mutations, redirectToList } = createBookReview();
   const query = queryAs.byId(id);
   const { mode, title } = createDetailPage('Book Review', query, RoutePaths.BookReviews);
-
-  useBeforeLeave(onBeforeLeave);
 
   const updateMut = mutations.update;
   const delMut = mutations.del;

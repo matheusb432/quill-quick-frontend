@@ -2,11 +2,12 @@ import { Table } from '~/components/Table';
 import { TableIcons } from '~/components/TableIcons';
 import { ReviewItemFns, TableAction, TableColumn } from '~/core/types/table-types';
 import { Book } from '../types/book';
+import { Accessor } from 'solid-js';
 
 export type BookRow = Book & { id: number };
 
 type BookTableProps = ReviewItemFns<BookRow> & {
-  items: BookRow[];
+  items: Accessor<BookRow[]>;
   isLoading?: boolean;
 };
 
@@ -41,7 +42,12 @@ export function BookTable(props: BookTableProps) {
   ];
   return (
     <>
-      <Table items={props.items} columns={columns} actions={actions} isLoading={props.isLoading} />
+      <Table
+        items={props.items()}
+        columns={columns}
+        actions={actions}
+        isLoading={props.isLoading}
+      />
     </>
   );
 }

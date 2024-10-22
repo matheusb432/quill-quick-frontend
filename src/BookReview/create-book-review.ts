@@ -1,4 +1,3 @@
-import { BeforeLeaveEventArgs } from '@solidjs/router';
 import { useNavigate } from 'solid-start';
 import { RoutePaths } from '~/core/constants/route-paths';
 import { toastStore } from '~/core/store/toast-store';
@@ -11,11 +10,6 @@ export function createBookReview() {
   const navigate = useNavigate();
   const form = createBookReviewForm();
   const agent = createBookReviewAgent();
-
-  function preventUnsavedChangesExit(e: BeforeLeaveEventArgs) {
-    const { dirty, submitted } = form[0];
-    routerUtil.unsavedChangesGuard(e, dirty, submitted);
-  }
 
   function redirectToDetails(id: number, mode: FormModes = FormModes.Edit) {
     if (id == null) {
@@ -34,7 +28,6 @@ export function createBookReview() {
 
   return {
     form,
-    onBeforeLeave: preventUnsavedChangesExit,
     redirectToDetails,
     redirectToList: () => navigate(RoutePaths.BookReviews, { state: routerUtil.FORCE_LEAVE_STATE }),
     ...agent,
