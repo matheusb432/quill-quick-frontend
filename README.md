@@ -1,6 +1,6 @@
 # quill-quick-frontend
 
-SolidJS web app to review stuff
+Frontend for quill quick, PoC project using SolidJS as a frontend to create a simple book review system.
 
 ## Linting
 
